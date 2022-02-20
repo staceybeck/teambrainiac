@@ -1,8 +1,9 @@
 matplotlib
 numpy
-scipy
 jupyter
 imageio
 scikit-image
 tqdm
 nibabel
+scipy
+scipy.io
