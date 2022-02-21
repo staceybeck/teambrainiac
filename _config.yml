@@ -1,5 +1,7 @@
 # Information about where the book exists on the web
 repository:
-  url: https://github.com/yecatstevir/teambrainiac/source
+  url                       : https://github.com/yecatstevir/teambrainiac
+  path_to_book              : source/process_data.ipynb
+  branch                    : master
 launch_buttons:
-  colab_url: "https://colab.research.google.com/github/yecatstevir/teambrainiac"
+  colab_url: "https://colab.research.google.com"
