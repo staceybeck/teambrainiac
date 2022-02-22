@@ -2,6 +2,7 @@
 repository:
   url                       : https://github.com/yecatstevir/teambrainiac
   path_to_book              : source/process_data.ipynb
-  branch                    : master
+  branch                    : main
 launch_buttons:
+  notebook_interface: "classic" #"jupyterlab"
   colab_url: "https://colab.research.google.com"
