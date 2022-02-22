@@ -7,3 +7,4 @@ tqdm
 nibabel
 scipy
 scipy.io
+boto3
