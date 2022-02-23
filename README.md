@@ -14,4 +14,6 @@ Mary Soules
 docker build -t test_container .
 
 #### run
-docker run -p 80:80 -v ~/Desktop/projects/fmri/fmri:/src test_container
+docker run -p 80:80 -v ~/path/teambrainiac:/source test_container
+
+* specify your path where 'path'
