@@ -25,6 +25,10 @@ def load_data(path):
 
 
 def convert_mat(path):
+    """
+    convert mat to numpy
+
+    """
     mat_file = scipy.io.loadmat(path)
     return mat_file
 
