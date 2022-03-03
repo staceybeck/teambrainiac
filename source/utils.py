@@ -24,9 +24,9 @@ def load_data(path):
 
 
 
-def convert_mat(path):
+def convert_mat_to_numpy(path):
     """
-    convert mat to numpy
+    convert matlab file to numpy
 
     """
     mat_file = scipy.io.loadmat(path)
