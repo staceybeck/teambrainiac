@@ -13,7 +13,7 @@ RUN pip3 install --upgrade pip
 RUN mkdir /source
 WORKDIR /source
 
-ADD requirements.txt /source/.
+ADD ./requirements.txt /source/.
 #COPY /. /src/.
 
 # Install requirements

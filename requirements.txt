@@ -1,5 +1,4 @@
 matplotlib
-matplotlib.pyplot
 numpy
 jupyter
 imageio
@@ -7,6 +6,5 @@ scikit-image
 tqdm
 nibabel
 scipy
-scipy.io
 boto3
 
