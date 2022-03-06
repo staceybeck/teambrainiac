@@ -2,14 +2,15 @@
 
 Authors:
 
-Stacey Beck 
+- Stacey Beck 
+- Benjamin Merrill
+- Mary Soules
 
-Benjamin Merrill
+## Environment Set-up
 
-Mary Soules
+- requires path_config.py to access data from cloud storage
 
-
-## Connect to Dockerfile 
+### Connect to Dockerfile 
 #### build 
 docker build -t test_container .
 
@@ -17,3 +18,11 @@ docker build -t test_container .
 docker run -p 80:80 -v ~/path/teambrainiac:/source test_container
 
 * specify your path where 'path'
+
+
+### Install packages locally
+
+--RUN:
+- pip install boto3
+- pip install nibabel
+
