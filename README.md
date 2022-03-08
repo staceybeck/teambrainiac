@@ -20,7 +20,6 @@ docker run -p 80:80 -v ~/path/teambrainiac:/source test_container
 
 * specify your path where 'path'
 
-
 ### Install packages locally
 
 --RUN:
