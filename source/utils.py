@@ -8,11 +8,13 @@ using NiBabel Library
 import nibabel as nib
 import os
 import scipy.io
-import matplotlib.pyplot as plt
-from ipywidgets import interact
+#import matplotlib.pyplot as plt
+#from ipywidgets import interact
 import pickle
 from path_config import mat_path
 import boto3
+import tempfile
+
 
 
 
@@ -65,7 +67,7 @@ def open_pickle(file_path):
 
 
 
-def access_load_data(dict_file, dl_file_path):
+def access_load_data(dict_file): #, dl_file_path):
     """
     :param dict_file: dictionary loaded from pickle containing storage data paths
     e.g. file_names_dict['subject_data'][0]
@@ -83,7 +85,10 @@ def access_load_data(dict_file, dl_file_path):
     pubkey = mat_path['ACCESS_KEY']
     seckey = mat_path['SECRET_KEY']
     client = boto3.client('s3', aws_access_key_id=pubkey, aws_secret_access_key=seckey)
-    s3 = boto3.resource('s3', aws_access_key_id=pubkey, aws_secret_access_key=seckey)
+    s3 = boto3.resource('s3', aws_access_key_id = pubkey, aws_secret_access_key = seckey)
+
+    # Create a temporary file
+    temp = tempfile.NamedTemporaryFile()
 
     # Grab bucket name
     bucket = s3.Bucket('teambrainiac')
@@ -93,8 +98,10 @@ def access_load_data(dict_file, dl_file_path):
     obj = dict_file
 
     # Define
-    client.download_file(bucket_, obj, dl_file_path)
-    data = load_mat(dl_file_path)
+    client.download_file(bucket_, obj, temp.name)
+    #client.download_file(bucket_, obj, dl_file_path)
+    data = load_mat(temp.name)
+    temp.close()
 
     return data
 
