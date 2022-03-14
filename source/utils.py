@@ -14,6 +14,7 @@ import pickle
 from path_config import mat_path
 import boto3
 import tempfile
+import numpy as np
 
 
 
@@ -67,13 +68,10 @@ def open_pickle(file_path):
 
 
 
-def access_load_data(dict_file): #, dl_file_path):
+def access_load_data(dict_file):
     """
     :param dict_file: dictionary loaded from pickle containing storage data paths
     e.g. file_names_dict['subject_data'][0]
-
-    :param dl_file_path: path name where to store data from cloud onto local,
-    e.g. f"data/subject_{file_names_dict['subject_ID'][0]}_data.mat"
 
     :return: matlab data
     """
@@ -99,11 +97,28 @@ def access_load_data(dict_file): #, dl_file_path):
 
     # Define
     client.download_file(bucket_, obj, temp.name)
-    #client.download_file(bucket_, obj, dl_file_path)
     data = load_mat(temp.name)
     temp.close()
 
     return data
+
+
+
+
+
+def save_data(data, local_file_path):
+    """
+
+    :param data: Will contain the data as .mat
+    :param local_file_path: specified local path to save data
+
+    Saves a numpy file of the data locally
+
+    """
+    with open(local_file_path, 'wb') as f:
+        np.save(f, data)
+
+    f.close()
 
 
 
