@@ -2,6 +2,7 @@
 *.mat
 *path_config.py
 *.npy
+*all_data_dictionary.pkl
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
