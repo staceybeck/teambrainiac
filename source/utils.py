@@ -17,6 +17,7 @@ import tempfile
 import numpy as np
 from collections import defaultdict
 import tqdm
+from sklearn.preprocessing import StandardScaler
 
 
 
@@ -178,8 +179,15 @@ def masking_data(subject, mask, mask_labels, binary_labels):
     for i in tqdm.tqdm(range(4)):
         user_key = 'run_0' + str(i+1) + '_vec'
         array = subject[user_key]
-        array = array[:, mask] 
-        arr.append(array[mask_labels])
+        array_masked = array[:, mask] 
+        
+        # Add function for standard scaler z-score normalization 
+        # across each run
+        scaler = StandardScaler.fit(array_masked[mask_labels])
+        masked_norm_data = scaler.transform(array_masked[mask_labels])
+        
+        
+        arr.append(masked_norm_data)
         label_arr.append(binary_labels)
     
     return arr, label_arr
