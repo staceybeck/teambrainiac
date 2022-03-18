@@ -197,9 +197,9 @@ def masking_data(subject, mask, mask_labels, binary_labels):
         
         t = TimeSeries(array_masked, sampling_interval = 1.89)
         p_ch = NormalizationAnalyzer(t).percent_change
-        p_ch = np.asarray(p_ch)
+        p_ch_nd = p_ch.data
         
-        arr.append(p_ch)
+        arr.append(p_ch_nd)
         label_arr.append(binary_labels)
     
     return arr, label_arr
