@@ -3,6 +3,7 @@
 *path_config.py
 *.npy
 *all_data_dictionary.pkl
+*all_data_norm_dict.pkl
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

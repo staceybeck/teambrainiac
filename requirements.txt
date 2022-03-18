@@ -7,4 +7,5 @@ tqdm
 nibabel
 scipy
 boto3
+nitime
 

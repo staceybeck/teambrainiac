@@ -17,8 +17,13 @@ import tempfile
 import numpy as np
 from collections import defaultdict
 import tqdm
-from sklearn.preprocessing import StandardScaler
-
+#from sklearn.preprocessing import StandardScaler
+import nitime
+#Import the time-series objects:
+from nitime.timeseries import TimeSeries
+#Import utility functions:
+from nitime.utils import percent_change
+from nitime.analysis import NormalizationAnalyzer
 
 
 
@@ -179,15 +184,22 @@ def masking_data(subject, mask, mask_labels, binary_labels):
     for i in tqdm.tqdm(range(4)):
         user_key = 'run_0' + str(i+1) + '_vec'
         array = subject[user_key]
-        array_masked = array[:, mask] 
+        array_masked = array[:, mask]
+        array_masked = array_masked[mask_labels]
         
         # Add function for standard scaler z-score normalization 
         # across each run
-        scaler = StandardScaler.fit(array_masked[mask_labels])
-        masked_norm_data = scaler.transform(array_masked[mask_labels])
+        #scaler = StandardScaler.fit(array_masked[mask_labels])
+        #masked_norm_data = scaler.transform(array_masked[mask_labels])
         
         
-        arr.append(masked_norm_data)
+        #arr.append(masked_norm_data)
+        
+        t = TimeSeries(array_masked, sampling_interval = 1.89)
+        p_ch = NormalizationAnalyzer(t).percent_change
+        p_ch = np.asarray(p_ch)
+        
+        arr.append(p_ch)
         label_arr.append(binary_labels)
     
     return arr, label_arr
