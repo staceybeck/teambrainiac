@@ -24,7 +24,7 @@ from nitime.timeseries import TimeSeries
 #Import utility functions:
 from nitime.utils import percent_change
 from nitime.analysis import NormalizationAnalyzer
-
+from nilearn.signal import clean
 
 
 
@@ -173,7 +173,7 @@ def labels_mask_binary(label_data_path, label_type = 'rt_labels'):
 
 
 
-def masking_data(subject, mask, mask_labels, binary_labels):
+def masking_data(subject, mask, mask_labels, binary_labels,do_norm):
     """
     
     
@@ -194,12 +194,10 @@ def masking_data(subject, mask, mask_labels, binary_labels):
         
         
         #arr.append(masked_norm_data)
+        if do_norm:
+            array_masked = clean(array_masked,standardize='psc')
         
-        t = TimeSeries(array_masked, sampling_interval = 1.89)
-        p_ch = NormalizationAnalyzer(t).percent_change
-        p_ch_nd = p_ch.data
-        
-        arr.append(p_ch_nd)
+        arr.append(array_masked)
         label_arr.append(binary_labels)
     
     return arr, label_arr
