@@ -151,7 +151,7 @@ def create_mask(mask_data_filepath, mask_type = 'mask'):
 
 
 
-def labels_mask_binary(label_data_path, label_type = 'rt_label'):
+def labels_mask_binary(label_data_path, label_type = 'rt_labels'):
     """
     
     """
