@@ -173,7 +173,7 @@ def labels_mask_binary(label_data_path, label_type = 'rt_labels'):
 
 
 
-def masking_data(subject, mask, mask_labels, binary_labels,do_norm):
+def masking_data(subject, mask, mask_labels, binary_labels, do_norm):
     """
     
     
@@ -207,7 +207,7 @@ def masking_data(subject, mask, mask_labels, binary_labels,do_norm):
 
 
 
-def masked_data_n_labels(mask_type, label_type, path_dict):
+def masked_data_n_labels(mask_type, label_type, path_dict, do_norm):
     """
     mask_type: String for type of mask we want
     label_type: String for which labels we want
@@ -230,11 +230,11 @@ def masked_data_n_labels(mask_type, label_type, path_dict):
     mask_labels_indices, binary_labels = labels_mask_binary(label_data_path, label_type)
     
     # Loop through all subjects
-    for ind, val in tqdm.tqdm(enumerate(path_dict['subject_ID'])):
+    for ind, val in tqdm.tqdm(enumerate(path_dict['subject_ID'][:1])):
         sub_id = val
         sub_path = path_dict['subject_data'][ind]
         subject = access_load_data(sub_path)
-        user_data_dict[sub_id], bi_lb = masking_data(subject, mask, mask_labels_indices, binary_labels)
+        user_data_dict[sub_id], bi_lb = masking_data(subject, mask, mask_labels_indices, binary_labels, do_norm)
         user_data_dict[f"{sub_id}_{label_type}"] = bi_lb
 
     
