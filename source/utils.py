@@ -18,12 +18,6 @@ import numpy as np
 from collections import defaultdict
 import tqdm
 #from sklearn.preprocessing import StandardScaler
-import nitime
-#Import the time-series objects:
-from nitime.timeseries import TimeSeries
-#Import utility functions:
-from nitime.utils import percent_change
-from nitime.analysis import NormalizationAnalyzer
 from nilearn.signal import clean
 
 
