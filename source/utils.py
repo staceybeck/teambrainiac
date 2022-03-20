@@ -230,7 +230,7 @@ def masked_data_n_labels(mask_type, label_type, path_dict, do_norm):
     mask_labels_indices, binary_labels = labels_mask_binary(label_data_path, label_type)
     
     # Loop through all subjects
-    for ind, val in tqdm.tqdm(enumerate(path_dict['subject_ID'][:1])):
+    for ind, val in tqdm.tqdm(enumerate(path_dict['subject_ID'])):
         sub_id = val
         sub_path = path_dict['subject_data'][ind]
         subject = access_load_data(sub_path)
