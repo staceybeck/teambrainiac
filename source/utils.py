@@ -140,7 +140,7 @@ def create_mask(mask_data_filepath, mask_type = 'mask'):
     returns: a numpy-compatible mask
     
     """
-    mask_type_dict = access_load_data(mask_data_filepath)
+    mask_type_dict = access_load_data(mask_data_filepath, True)
     np_array_mask = mask_type_dict[mask_type]
     np_compatible_mask = np.ma.make_mask(np_array_mask).reshape(79*95*79)
     
@@ -156,7 +156,7 @@ def labels_mask_binary(label_data_path, label_type = 'rt_labels'):
     
     """
     # Get Mask data
-    label_data_dict = access_load_data(label_data_path)
+    label_data_dict = access_load_data(label_data_path, True)
     labels = label_data_dict[label_type]
     mask_labels_indices = np.where(labels != 9999)
     mask_labels_indices = mask_labels_indices[0]
@@ -187,13 +187,7 @@ def masking_data(subject, mask, mask_labels, binary_labels, do_norm):
         array_masked = array[:, mask]
         array_masked = array_masked[mask_labels]
         
-        # Add function for standard scaler z-score normalization 
-        # across each run
-        #scaler = StandardScaler.fit(array_masked[mask_labels])
-        #masked_norm_data = scaler.transform(array_masked[mask_labels])
-        
-        
-        #arr.append(masked_norm_data)
+        # Percent Signal Change normalization
         if do_norm:
             array_masked = clean(array_masked,standardize='psc')
         
@@ -233,7 +227,7 @@ def masked_data_n_labels(mask_type, label_type, path_dict, do_norm):
     for ind, val in tqdm.tqdm(enumerate(path_dict['subject_ID'])):
         sub_id = val
         sub_path = path_dict['subject_data'][ind]
-        subject = access_load_data(sub_path)
+        subject = access_load_data(sub_path, True)
         user_data_dict[sub_id], bi_lb = masking_data(subject, mask, mask_labels_indices, binary_labels, do_norm)
         user_data_dict[f"{sub_id}_{label_type}"] = bi_lb
 
