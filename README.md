@@ -23,8 +23,18 @@ docker run -p 80:80 -v ~/path/teambrainiac:/source test_container
 ### Install packages locally
 
 --RUN:
-- pip install boto3
-- pip install nibabel
+- pip install boto3 nibabel nilearn
+
+### Data in AWS:
+- all_data_dictionary.pkl     : whole brain masked, rt_label filtered, UNNORMALIZED 2d numpy data for all subjects
+- whole_brain_all_norm_2d.pkl : whole brain masked, rt_label filtered, NORMALIZED 2d numpy data for all subjects
+
+### All_subject_masked_labeled.ipynb
+
+- This is the pre-processing notebook
+- This notebook will perform masking and normalization as well as filtering by label for all matlab data with running one cell. 
+- Once the data is returned as masked, filtered and then normalized, check the shape/dims
+- Saves the data locally as pickle file
 
 ### Access_Load_Data.ipynb
 
