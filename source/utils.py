@@ -18,12 +18,6 @@ import numpy as np
 from collections import defaultdict
 import tqdm
 #from sklearn.preprocessing import StandardScaler
-import nitime
-#Import the time-series objects:
-from nitime.timeseries import TimeSeries
-#Import utility functions:
-from nitime.utils import percent_change
-from nitime.analysis import NormalizationAnalyzer
 from nilearn.signal import clean
 
 
@@ -76,12 +70,14 @@ def open_pickle(file_path):
 
 
 
-def access_load_data(dict_file):
+def access_load_data(dict_file, bool_mat):
     """
     :param dict_file: dictionary loaded from pickle containing storage data paths
     e.g. file_names_dict['subject_data'][0]
+    :param bool_mat, if true will run load_mat() and return .mat file else will 
+    return opened pickle file data
 
-    :return: matlab data
+    :return: matlab data if bool_mat == True, else return data from pickle file
     """
 
 
@@ -105,7 +101,11 @@ def access_load_data(dict_file):
 
     # Define
     client.download_file(bucket_, obj, temp.name)
-    data = load_mat(temp.name)
+    
+    if bool_mat == True:
+        data = load_mat(temp.name)
+    else:
+        data = open_pickle(temp.name)
     temp.close()
 
     return data
