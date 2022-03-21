@@ -26,6 +26,13 @@ docker run -p 80:80 -v ~/path/teambrainiac:/source test_container
 - pip install boto3
 - pip install nibabel
 
+### All_subject_masked_labeled.ipynb
+
+- This is the pre-processing notebook
+- This notebook will perform masking and normalization as well as filtering by label for all matlab data with running one cell. 
+- Once the data is returned as masked, filtered and then normalized, check the shape/dims
+- Saves the data locally as pickle file
+
 ### Access_Load_Data.ipynb
 
 - This is a demo notebook for how the function access_load_data() works in utils.py
