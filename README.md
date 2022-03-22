@@ -26,8 +26,9 @@ docker run -p 80:80 -v ~/path/teambrainiac:/source test_container
 - pip install boto3 nibabel nilearn
 
 ### Data in AWS:
-- all_data_dictionary.pkl     : whole brain masked, rt_label filtered, UNNORMALIZED 2d numpy data for all subjects
-- whole_brain_all_norm_2d.pkl : whole brain masked, rt_label filtered, NORMALIZED 2d numpy data for all subjects
+- all_data_dictionary.pkl         : whole brain masked, rt_label filtered, UNNORMALIZED 2d numpy data for all subjects
+- whole_brain_all_norm_2d.pkl     : whole brain masked, rt_label filtered, NORMALIZED 2d numpy data for all subjects
+- all_data_masksubACC_norm_2d.pkl : Nucleus Accumbens masked, rt_label filtered, NORMALIZED 2d numpy data for all subjects
 
 ### All_subject_masked_labeled.ipynb
 
