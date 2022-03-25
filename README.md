@@ -28,8 +28,10 @@ docker run -p 80:80 -v ~/path/teambrainiac:/source test_container
 ### Data in AWS:
 - all_data_dictionary.pkl         : whole brain masked, rt_label filtered, UNNORMALIZED 2d numpy data for all subjects
 - whole_brain_all_norm_2d.pkl     : whole brain masked, rt_label filtered, NORMALIZED 2d numpy data for all subjects
-- all_data_masksubACC_norm_2d.pkl : Sub Accumbens masked, rt_label filtered, NORMALIZED 2d numpy data for all subjects
+- all_data_masksubACC_norm_2d.pkl : subACC masked, rt_label filtered, NORMALIZED 2d numpy data for all subjects
 - all_data_masksubAI_norm_2d.pkl  : subAI masked, rt_label filtered, NORMALIZED 2d numpy data for all subjects
+- all_data_masksubNAcc_norm_2d.pkl: N.Accumbens masked, rt_label filtered, NORMALIZED 2d numpy data for all subjects
+- all_data_masksubmPFC_norm_2d.pkl: Prefrontal Cortex masked, rt_label filtered, NORMALIZED 2d numpy data for all subjects
 
 ### All_subject_masked_labeled.ipynb
 

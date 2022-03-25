@@ -8,7 +8,9 @@
 *whole_brain_all_norm_2d.pkl
 *all_data_masksubACC_norm_2d.pkl
 *all_data_masksubAI_norm_2d.pkl
-
+*all_data_masksubNAcc_norm_2d.pkl
+*all_data_masksubmPFC_norm_2d.pkl
+*w3rtprun_01.nii
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
