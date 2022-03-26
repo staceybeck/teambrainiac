@@ -32,6 +32,8 @@ docker run -p 80:80 -v ~/path/teambrainiac:/source test_container
 - all_data_masksubAI_norm_2d.pkl  : subAI masked, rt_label filtered, NORMALIZED 2d numpy data for all subjects
 - all_data_masksubNAcc_norm_2d.pkl: N.Accumbens masked, rt_label filtered, NORMALIZED 2d numpy data for all subjects
 - all_data_masksubmPFC_norm_2d.pkl: Prefrontal Cortex masked, rt_label filtered, NORMALIZED 2d numpy data for all subjects
+- single_subj_T1_resampled.nii    : NIFTI T1 Brain Image file of a single subject for Visualizations
+- w3rtprun_01.nii                 : Data Affine for maping voxel coordinates to Real World Coordinates for Visualizations
 
 ### All_subject_masked_labeled.ipynb
 
