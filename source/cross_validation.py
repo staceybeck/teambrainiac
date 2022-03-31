@@ -12,6 +12,7 @@
 
 
 from sklearn.svm import SVC
+import numpy as np
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import TimeSeriesSplit
 from sklearn.exceptions import ConvergenceWarning
