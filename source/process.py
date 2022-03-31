@@ -193,7 +193,7 @@ def scale_data(data, sub_ids, run, train_run, norm):
             scaler.fit(data[id_][train_run]) # we want our data to be fit on the training data
             x = scaler.transform(data[id_][run]) #transform on the actual data
             X.append(x)
-            y.append(data[f"{id_}_rt_labels"][run])
+        y.append(data[f"{id_}_rt_labels"][run])
 
     return X, y
 
