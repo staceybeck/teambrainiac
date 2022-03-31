@@ -64,7 +64,7 @@ def data_for_cv(data, group_sub_ids, runs_train, runs_test, norm):
         y.append(data[f"{id_}_rt_labels"][runs_train])
         yt.append(data[f"{id_}_rt_labels"][runs_test])
 
-    X_c, y_c, X_t, y_t = concat_data((X, y), (Xt, yt))
+    X_c, y_c, X_t, y_t = concat_data((X, y), False, (Xt, yt))
 
     X_full = np.concatenate((X_c, X_t))
     y_full = np.concatenate((y_c, y_t))
