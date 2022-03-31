@@ -59,6 +59,10 @@ def data_for_cv(data, group_sub_ids, runs_train, runs_test, norm):
 
             tst = scalar.transform(data[id_][runs_test])
             Xt.append(tst)
+            
+        else:
+            X.append(data[id_][runs_train])
+            Xt.append(data[id_][runs_test])
 
         # Get y labels from dictioanry
         y.append(data[f"{id_}_rt_labels"][runs_train])
