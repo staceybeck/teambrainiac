@@ -14,11 +14,14 @@ import pickle
 from path_config import mat_path
 import boto3
 import tempfile
-import numpy as np
 from collections import defaultdict
 import tqdm
 #from sklearn.preprocessing import StandardScaler
 from nilearn.signal import clean
+from botocore.exceptions import ClientError
+from utils import *
+import numpy as np
+
 
 
 
@@ -109,6 +112,51 @@ def access_load_data(dict_file, bool_mat):
     temp.close()
 
     return data
+
+
+
+
+
+
+def s3_upload(data, object_name, data_type):
+    """Upload a file to an S3 bucket
+
+    :param data_file: File to upload
+    :param bucket: Bucket to upload to
+    :param object_name: S3 object name. If not specified then data_file is used
+    :return: True if file was uploaded, else False
+    """
+
+    # Upload the file
+    # Connect to AWS client
+    pubkey = mat_path['ACCESS_KEY']
+    seckey = mat_path['SECRET_KEY']
+    client = boto3.client('s3', aws_access_key_id=pubkey, aws_secret_access_key=seckey)
+    s3 = boto3.resource('s3', aws_access_key_id=pubkey, aws_secret_access_key=seckey)
+
+    # Grab bucket name
+    bucket = s3.Bucket('teambrainiac')
+    bucket_name = bucket.name  # 'teambrainiac'
+    try:
+
+        with tempfile.NamedTemporaryFile(delete=False) as temp:
+            if data_type == "pickle":
+                pickle.dump(data, temp)
+
+            elif data_type == "numpy":
+                np.save(temp, data)
+                _ = temp.seek(0)
+
+        client.upload_file(temp.name, bucket_name, object_name)
+        temp.close()
+        print(f"upload complete for {object_name}")
+
+    except ClientError as e:
+        logging.error(e)
+        return False
+
+    return True
+
 
 
 

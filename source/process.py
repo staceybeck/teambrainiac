@@ -126,11 +126,12 @@ def concat_data(train, val, test):
 
 
 
-def transform_data(data, group_sub_ids, runs_train, runs_test, norm):
+def transform_data(data, group_sub_ids, runs_train, runs_val, runs_test, norm):
     """
     data.        : (52 subject data, keys as subject ID for frmi data or labels)
     group_sub_ids: (list of string ID names)
-    runs_train.  : int , (which run are we using for the training data)
+    runs_train   : int , (which run are we using for the training data)
+    runs_val     : int, which run to use for validation data prediction
     runs_test    : int, (which run are we using for the test data)
     norm         : string, ("RUNS": normalizing separately on each run;
                             "SUBJECT": Normalizing separately by each subject,
@@ -144,14 +145,14 @@ def transform_data(data, group_sub_ids, runs_train, runs_test, norm):
     print(f"Normalizing Each based on {norm}...")
     if norm == "RUNS":
         X, y   = scale_data(data, train_id, runs_train, False, norm)
-        Xv, yv = scale_data(data, val_id, runs_train, False, norm)
+        Xv, yv = scale_data(data, val_id, runs_val, False, norm)
         Xt, yt = scale_data(data, test_id, runs_test, False, norm)
 
     elif norm == "SUBJECT":
         print("In order to use SUBJECT NORMALIZATION, be sure Train, Val, Test sets")
         print("All have the same subject IDs, and are using data from separate runs.")
         X, y   = scale_data(data, train_id, runs_train, runs_train, norm)
-        Xv, yv = scale_data(data, val_id, runs_train, runs_train, norm)
+        Xv, yv = scale_data(data, val_id, runs_val, runs_train, norm)
         Xt, yt = scale_data(data, test_id, runs_test, runs_train, norm)
 
     X_c , y_c, X_v, y_v, X_t, y_t = concat_data((X, y), (Xv, yv), (Xt, yt))
