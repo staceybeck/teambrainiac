@@ -162,15 +162,17 @@ def s3_upload(data, object_name, data_type):
 
             elif data_type == "csv":
                 data.to_csv(temp, index=False)
-
-            elif data_type == "nifti":
-                temp_f = 'data/upload_temp.nii'
-                nib.save(data, temp_f)
-
-        client.upload_file(temp_f, bucket_name, object_name)
-        temp.close()
-        print(f"upload complete for {object_name}")
-
+                
+            client.upload_file(temp.name, bucket_name, object_name)
+            temp.close()
+            print(f"upload complete for {object_name}")
+                
+        if data_type == "nifti":
+            tempf = 'data/upload_temp.nii'
+            nib.save(data, tempf)
+            client.upload_file(tempf, bucket_name, object_name)
+            print(f"upload complete for {object_name}")
+            
     except ClientError as e:
         logging.error(e)
         return False
