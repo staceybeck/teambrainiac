@@ -113,6 +113,9 @@ def access_load_data(dict_file, bool_mat):
             data = open_pickle(temp.name)
         elif '.csv' in dict_file:
             data = pd.read_csv(temp.name)
+        elif '.nii':
+            data = data_to_nib(temp.name)
+
 
     temp.close()
 
@@ -125,10 +128,9 @@ def access_load_data(dict_file, bool_mat):
 
 def s3_upload(data, object_name, data_type):
     """Upload a file to an S3 bucket
-
-    :param data_file: File to upload
-    :param bucket: Bucket to upload to
-    :param object_name: S3 object name. If not specified then data_file is used
+    :param data: our data to upload
+    :param data_type: type of data file we are creating
+    :param object_name: S3 object name. If not specified then name of temp.name is used
     :return: True if file was uploaded, else False
     """
 
@@ -154,6 +156,9 @@ def s3_upload(data, object_name, data_type):
 
             elif data_type == "csv":
                 data.to_csv(temp, index=False)
+
+            elif data_type == "nifti":
+                nib.save(data, temp)
 
         client.upload_file(temp.name, bucket_name, object_name)
         temp.close()
