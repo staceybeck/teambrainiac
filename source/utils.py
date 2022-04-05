@@ -108,7 +108,11 @@ def access_load_data(dict_file, bool_mat):
     if bool_mat == True:
         data = load_mat(temp.name)
     else:
-        data = open_pickle(temp.name)
+        if '.pkl' in dict_file:
+            data = open_pickle(temp.name)
+        elif '.csv' in dict_file:
+            data = pd.read_csv(temp.name)
+
     temp.close()
 
     return data
@@ -146,6 +150,9 @@ def s3_upload(data, object_name, data_type):
             elif data_type == "numpy":
                 np.save(temp, data)
                 _ = temp.seek(0)
+
+            elif data_type == "csv":
+                data.to_csv(temp, index=False)
 
         client.upload_file(temp.name, bucket_name, object_name)
         temp.close()
