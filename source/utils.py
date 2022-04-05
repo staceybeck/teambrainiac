@@ -74,14 +74,19 @@ def open_pickle(file_path):
 
 
 
-def access_load_data(dict_file, bool_mat):
+def access_load_data(data_file, bool_mat):
     """
-    :param dict_file: dictionary loaded from pickle containing storage data paths
-    e.g. file_names_dict['subject_data'][0]
-    :param bool_mat, if true will run load_mat() and return .mat file else will 
-    return opened pickle file data
+    :param data_file: file path to data. For example can be pickle file containing a dictionary 
+                      or csv file path to load as a dataframe, e.g. file_names_dict['subject_data'][0]
+                      or nifti file path to load as nifti object
+                      or load a matlab file if bool_mat == TRUE
+    
+    :param bool_mat:  if true will run load_mat() and return .mat file 
 
-    :return: matlab data if bool_mat == True, else return data from pickle file
+    :return        :  will open matlab data if bool_mat == True, 
+                      pickle file
+                      csv file as a dataframe
+                      nifti file
     """
 
 
@@ -101,7 +106,7 @@ def access_load_data(dict_file, bool_mat):
     bucket_ = bucket.name  # 'teambrainiac'
 
     # Define object that we want to get in bucket
-    obj = dict_file
+    obj = data_file
 
     # Define
     client.download_file(bucket_, obj, temp.name)
@@ -109,14 +114,15 @@ def access_load_data(dict_file, bool_mat):
     if bool_mat == True:
         data = load_mat(temp.name)
     else:
-        if '.pkl' in dict_file:
+        if '.pkl' in data_file:
             data = open_pickle(temp.name)
-        elif '.csv' in dict_file:
+        elif '.csv' in data_file:
             data = pd.read_csv(temp.name)
-        elif '.nii':
-            data = data_to_nib(temp.name)
-
-
+        elif '.nii' in data_file:
+            temp_f = 'data/temp.nii'
+            client.download_file(bucket_, obj, temp_f)
+            data = data_to_nib(temp_f)
+            
     temp.close()
 
     return data
@@ -158,9 +164,10 @@ def s3_upload(data, object_name, data_type):
                 data.to_csv(temp, index=False)
 
             elif data_type == "nifti":
-                nib.save(data, temp)
+                temp_f = 'data/upload_temp.nii'
+                nib.save(data, temp_f)
 
-        client.upload_file(temp.name, bucket_name, object_name)
+        client.upload_file(temp_f, bucket_name, object_name)
         temp.close()
         print(f"upload complete for {object_name}")
 
