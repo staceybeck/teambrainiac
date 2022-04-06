@@ -98,24 +98,16 @@ def concat_data(train, val, test):
         x, y = train
         X_c = np.concatenate(np.array(x))
         y_c = np.concatenate(np.array(y))
-        print("X train data shape after concantenation", X_c.shape)
-        print("y train data shape after concantenation", y_c.shape)
 
     if test:
         xtest, ytest = test
         X_t = np.concatenate(np.array(xtest))
         y_t = np.concatenate(np.array(ytest))
 
-        print("X test data shape after concantenation", X_t.shape)
-        print("y test data shape after concantenation", y_t.shape)
-
     if val:
         xval, yval = val
         X_v = np.concatenate(np.array(xval))
         y_v = np.concatenate(np.array(yval))
-
-        print("X val data shape after concantenation", X_v.shape)
-        print("y val data shape after concantenation", y_v.shape)
 
         return X_c, y_c, X_v, y_v, X_t, y_t
 
@@ -191,14 +183,21 @@ def scale_data(data, sub_ids, run, train_run, norm):
 
     for id_ in sub_ids:
         if norm == "RUNS":
-            x = scaler.fit_transform(data[id_][run])
-            X.append(x)
+            if len(run) > 0:
+                for runs in run:
+                    x = scaler.fit_transform(data[id_][runs])
+                    X.append(x)
+                    y.append(data[f"{id_}_rt_labels"][runs])
+            else:
+                x = scaler.fit_transform(data[id_][run])
+                X.append(x)
+                y.append(data[f"{id_}_rt_labels"][run])
 
         elif norm == "SUBJECT":
-            scaler.fit(data[id_][train_run]) # we want our data to be fit on the training data
-            x = scaler.transform(data[id_][run]) #transform on the actual data
+            scaler.fit(data[id_][train_run])  # we want our data to be fit on the training data
+            x = scaler.transform(data[id_][run])  # transform on the actual data
             X.append(x)
-        y.append(data[f"{id_}_rt_labels"][run])
+            y.append(data[f"{id_}_rt_labels"][run])
 
     return X, y
 
