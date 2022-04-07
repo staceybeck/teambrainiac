@@ -114,3 +114,27 @@ def plot_dist_first_subject(data, num_bins, data_norm):
 
   #plt.savefig(f'data/single_sub{subject}_vox_hist_{data_norm}.png')
   fig.tight_layout(rect=[0, 0.03, 1, 0.95])
+
+
+
+
+
+
+
+def plot_alphas(alphas, alpha_labels, title):
+  """
+
+  :param alphas:
+  :param alpha_labels:
+  :param title:
+  :return:
+  """
+  fig, ax = plt.subplots(1, 1, figsize=(15, 5))
+  ax.plot(alphas, lw=3, label='scaled voxel tc')
+  ax.plot(alpha_labels, lw=3, label='predictor tc')
+  # ax.set_xlim(0, acq_num-1)
+  ax.set_xlabel('time [volumes]', fontsize=20)
+  ax.tick_params(labelsize=12)
+  ax.set_title(title)
+  ax.legend()
+  plt.show()
