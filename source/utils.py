@@ -212,7 +212,7 @@ def create_mask(mask_data_filepath, mask_type = 'mask'):
     """
     mask_type_dict = access_load_data(mask_data_filepath, True)
     np_array_mask = mask_type_dict[mask_type]
-    np_compatible_mask = np.ma.make_mask(np_array_mask).reshape(79*95*79)
+    np_compatible_mask = np.ma.make_mask(np_array_mask).reshape(79*95*79, order='F')
     
     return np_compatible_mask
 
