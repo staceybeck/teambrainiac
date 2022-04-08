@@ -46,10 +46,11 @@ def create_bmaps(clf, X, indices_mask, image):
 
     # Grab the areas not masked out of the brain to recreate the brain using highlighted areas
     bmap2 = np.zeros((79,95,79))
-    bmap2 = bmap2.reshape(79*95*79, order = "F")
+    bmap2 = bmap2.reshape(79*95*79)
     bmap2[indices_mask] = bmap
+    bmap2_3 = bmap2.reshape(79,95,79, order = "F")
 
-    bmap3 = nib.Nifti1Image(bmap2, affine = image.affine, header = image.header)
+    bmap3 = nib.Nifti1Image(bmap2_3, affine = image.affine, header = image.header)
 
     return bmap3
 
