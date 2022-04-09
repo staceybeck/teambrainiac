@@ -143,7 +143,7 @@ def plot_alphas(alphas,alpha_labels, time, title):
 
 
 
-def plot_stat_map(bmap3, bg_im, title):
+def plot_brain_map(bmap3, bg_im, title):
   """
 
   :param bmap3:

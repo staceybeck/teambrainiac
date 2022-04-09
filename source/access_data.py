@@ -236,8 +236,9 @@ def load_mask_indices(data_paths, mask_type, m_path_ind):
     mask_type_dict = access_load_data(mask_data_path, True)
     np_array_mask = mask_type_dict[mask_type]
     print("mask shape:", np_array_mask.shape)
+    np_compatible_mask = np.ma.make_mask(np_array_mask).reshape(79 * 95 * 79, order='F')
     indices_mask = np.where(
-        np_array_mask == 1)  # gets the indices where the mask is 1, the brain region for x, y, z planes
+        np_compatible_mask == 1)  # gets the indices where the mask is 1, the brain region for x, y, z planes
 
     return indices_mask
 
