@@ -9,7 +9,7 @@
 
 
 
-from .access_data import access_load_data
+from access_data import access_load_data
 import tqdm
 from nilearn.signal import clean
 from sklearn.preprocessing import StandardScaler

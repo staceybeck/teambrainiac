@@ -12,11 +12,11 @@
 
 
 
-from .access_data import s3_upload
-from .process import transform_data
+from access_data import s3_upload
+from process import transform_data
 from sklearn.svm import SVC
 from collections import defaultdict
-from .analysis import metrics
+from analysis import metrics
 
 
 
