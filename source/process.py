@@ -41,34 +41,39 @@ def data_for_cv(data, group_sub_ids, runs_train, runs_test, norm):
     yt = []
 
     print(f"Normalizing Each based on {norm}...")
-    # Get X data from dictionary
-    for id_ in group_sub_ids:
+    if len(runs_train) > 0:
+        if len(group_sub_ids) == 2:
+            X, y = scale_data(data, group_sub_ids[0], runs_train, runs_train, norm)
+            Xt, yt = scale_data(data, group_sub_ids[1], runs_train, runs_train, norm)
+    else:
+        # Get X data from dictionary
+        for id_ in group_sub_ids:
 
-        if norm == "RUNS":
-            scalar = StandardScaler()
-            tr = scalar.fit_transform(data[id_][runs_train])
-            X.append(tr)
+            if norm == "RUNS":
+                scalar = StandardScaler()
+                tr = scalar.fit_transform(data[id_][runs_train])
+                X.append(tr)
 
-            scalarT = StandardScaler()
-            tst = scalarT.fit_transform(data[id_][runs_test])
-            Xt.append(tst)
+                scalarT = StandardScaler()
+                tst = scalarT.fit_transform(data[id_][runs_test])
+                Xt.append(tst)
 
-        elif norm == "SUBJECT":
-            print(f"Normalizing Each Subject Data for group {group_sub_ids}")
-            scalar = StandardScaler().fit(data[id_][runs_train])
-            tr = scalar.transform(data[id_][runs_train])
-            X.append(tr)
+            elif norm == "SUBJECT":
+                print(f"Normalizing Each Subject Data for group {group_sub_ids}")
+                scalar = StandardScaler().fit(data[id_][runs_train])
+                tr = scalar.transform(data[id_][runs_train])
+                X.append(tr)
 
-            tst = scalar.transform(data[id_][runs_test])
-            Xt.append(tst)
-            
-        else:
-            X.append(data[id_][runs_train])
-            Xt.append(data[id_][runs_test])
+                tst = scalar.transform(data[id_][runs_test])
+                Xt.append(tst)
 
-        # Get y labels from dictioanry
-        y.append(data[f"{id_}_rt_labels"][runs_train])
-        yt.append(data[f"{id_}_rt_labels"][runs_test])
+            else:
+                X.append(data[id_][runs_train])
+                Xt.append(data[id_][runs_test])
+
+            # Get y labels from dictioanry
+            y.append(data[f"{id_}_rt_labels"][runs_train])
+            yt.append(data[f"{id_}_rt_labels"][runs_test])
 
     X_c, y_c, X_t, y_t = concat_data((X, y), False, (Xt, yt))
 
