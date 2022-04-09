@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 # @Project:     teambrainiac
-# @Filename:    train.py.py
+# @Filename:    train.py
 # @Author:      staceyrivet
 # @Time:        4/6/22 7:30 PM
 # @IDE:         PyCharm
@@ -12,14 +12,11 @@
 
 
 
-from utils import *
-from process import *
-from cross_validation import *
+from access_data import s3_upload
+from process import transform_data
 from sklearn.svm import SVC
-from sklearn.metrics import accuracy_score
-import pandas as pd
 from collections import defaultdict
-from sklearn.metrics import classification_report
+from analysis import metrics
 
 
 
@@ -27,7 +24,7 @@ from sklearn.metrics import classification_report
 
 
 
-def run_grp_svm_model(data, mask_type, group_sub_ids, runs_train, runs_val, runs_test, norm, svm_type):
+def run_grp_svm_model(data, mask_type, group_sub_ids, runs_train, runs_val, runs_test, norm, data_type):
     """
 
     :param data:
@@ -46,7 +43,7 @@ def run_grp_svm_model(data, mask_type, group_sub_ids, runs_train, runs_val, runs
     runs_id = [i + 1 for i in runs_train]
     model_dict = defaultdict(list)
 
-    model_name = f"{svm_type}_{runs_id}_{mask_type}_X_y_model"
+    model_name = f"{data_type}_{runs_id}_{mask_type}_X_y_model"
     clf = SVC(C=5.0, class_weight='balanced', max_iter=1000, random_state=42)  # probability = True
     print(f"Fitting the model for {mask_type}...")
     clf.fit(X, y)
@@ -54,38 +51,11 @@ def run_grp_svm_model(data, mask_type, group_sub_ids, runs_train, runs_val, runs
     model_dict['X_train'].append(X)
     model_dict["y_train"].append(y)
 
+    # Save model
     s3_upload(model_dict, "models/group/%s.pkl" % model_name, 'pickle')
 
-    print("Predicting on Validation set...")
-    yval_pred = clf.predict(X_v)
-    val_acc = accuracy_score(y_v, yval_pred)
-    print("Validation Accuracy:", val_acc)
-
-    print("Predicting on Test set...")
-    ytest_pred = clf.predict(X_t)
-    test_acc = accuracy_score(y_t, ytest_pred)
-    print("Test Accuracy:", test_acc)
-
-    # Save metrics for individual masks
-    type_report = ['validation_classreport', 'test_classreport']
-    for report in type_report:
-        if report == 'validation_classreport':
-            class_report = classification_report(y_v, yval_pred, output_dict=True)
-            class_report.update({"accuracy": {"precision": None, "recall": None,
-                                              "f1-score": class_report["accuracy"],
-                                              "support": class_report['macro avg']['support']}})
-            df = pd.DataFrame(class_report).T
-
-        elif report == 'test_classreport':
-            class_report = classification_report(y_t, ytest_pred, output_dict=True)
-            class_report.update({"accuracy": {"precision": None, "recall": None,
-                                              "f1-score": class_report["accuracy"],
-                                              "support": class_report['macro avg']['support']}})
-            df = pd.DataFrame(class_report).T
-
-        s3_upload(df, f"metrics/group_svm/{svm_type}_{runs_id}_{mask_type}_{report}.csv", "csv")
-        print(f"Classification report for {mask_type} {report}")
-        print(classification_report(y_v, yval_pred))
+    # Calculate metrics
+    metrics(clf, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type)
 
     # Return X train and clf for visualization
     return model_dict

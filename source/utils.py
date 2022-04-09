@@ -212,7 +212,7 @@ def create_mask(mask_data_filepath, mask_type = 'mask'):
     """
     mask_type_dict = access_load_data(mask_data_filepath, True)
     np_array_mask = mask_type_dict[mask_type]
-    np_compatible_mask = np.ma.make_mask(np_array_mask).reshape(79*95*79)
+    np_compatible_mask = np.ma.make_mask(np_array_mask).reshape(79*95*79,order='F')
     
     return np_compatible_mask
 
@@ -271,23 +271,26 @@ def masking_data(subject, mask, mask_labels, binary_labels, do_norm):
 
 
 
-def masked_data_n_labels(mask_type, label_type, path_dict, do_norm):
+def masked_data_n_labels(mask_type, label_type, path_dict, do_norm, m_path_ind, l_path_ind):
     """
     mask_type: String for type of mask we want
     label_type: String for which labels we want
     path_dict: dictionary that contains all the paths for data in AWS
+    norm: To normalize on PSC True or False
+    m_path_ind: the index to get either masks.mat or roi_masks.mat , 0 or 1 respectively
+    l_path_ind: index to get the data from labels in dictionary
     Returns: a dictionary of subject masked data and the cleaned labels
     """
     # Define variable to return
     user_data_dict = defaultdict(list)
     
     # Mask path from S3
-    mask_data_filepath = path_dict['mask_data'][0]
+    mask_data_filepath = path_dict['mask_data'][m_path_ind]
     mask_type = mask_type #'mask'
     mask = create_mask(mask_data_filepath, mask_type)
     
     # Label path from S3
-    label_data_path = path_dict['labels'][0]
+    label_data_path = path_dict['labels'][l_path_ind]
     label_type = label_type #"rt_labels"
     
     # Returns two values, mask_labels_indices and binary_labels

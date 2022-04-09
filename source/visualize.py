@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-# @Filename:    explore.py
+# @Filename:    visualize.py
 # @Author:      staceyrivet
 # @Time:        3/30/22 10:09 PM
 
@@ -8,10 +8,10 @@
 
 
 
-from utils import *
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
+from nilearn import plotting
 
 
 
@@ -67,7 +67,7 @@ def plot_dist_across_subjects(data, run, num_bins, sub_ids, data_norm, n_sub):
       axs[indx].hist(arr, num_bins, facecolor='blue', log = True) #, width = 1500)
 
 
-  #plt.savefig(f'data/five_sub_run{run + 1}_vox_hist_{data_norm}.png')
+  plt.savefig(f'data/five_sub_run{run + 1}_vox_hist_{data_norm}.png')
   fig.tight_layout(rect=[0, 0.03, 1, 0.95])
 
 
@@ -106,13 +106,12 @@ def plot_dist_first_subject(data, num_bins, data_norm):
   fig.suptitle(f'{data_norm} Voxel Histogram for subject: {subject} across {len(single_4run_norm)} runs')
 
   for indx, matrix in enumerate(single_4run_norm):
-    #print(matrix[44:45,:][0])
     if (data_norm == "PSC_ZNORM") or (data_norm == "Percent Signal Change"):
       axs[indx].hist(matrix[44:45,:][0], num_bins, facecolor='blue', log = True, range = (-200, 200)) # removed outliers
     else:
       axs[indx].hist(matrix[44:45,:][0], num_bins, facecolor='blue', log = True)
 
-  #plt.savefig(f'data/single_sub{subject}_vox_hist_{data_norm}.png')
+  plt.savefig(f'data/single_sub{subject}_vox_hist_{data_norm}.png')
   fig.tight_layout(rect=[0, 0.03, 1, 0.95])
 
 
@@ -121,20 +120,38 @@ def plot_dist_first_subject(data, num_bins, data_norm):
 
 
 
-def plot_alphas(alphas, alpha_labels, title):
+def plot_alphas(alphas,alpha_labels, time, title):
   """
 
   :param alphas:
   :param alpha_labels:
+  :param time:
   :param title:
   :return:
   """
-  fig, ax = plt.subplots(1, 1, figsize=(15, 5))
-  ax.plot(alphas, lw=3, label='scaled voxel tc')
-  ax.plot(alpha_labels, lw=3, label='predictor tc')
-  # ax.set_xlim(0, acq_num-1)
+  fig, ax = plt.subplots(1,1,figsize=(15, 5))
+  ax.plot(alphas, label='scaled voxel tc')
+  ax.plot(alpha_labels,  label='predictor tc')
   ax.set_xlabel('time [volumes]', fontsize=20)
   ax.tick_params(labelsize=12)
-  ax.set_title(title)
-  ax.legend()
+  ax.set_title(f"Alpha signal for {title} {time} time points")
+  ax.legend(loc = 'upper right')
   plt.show()
+
+
+
+
+
+
+def plot_stat_map(bmap3, bg_im, title):
+  """
+
+  :param bmap3:
+  :param bg_im:
+  :param title:
+  :return:
+  """
+  display = plotting.plot_stat_map(bmap3, bg_img = bg_im,
+                                   colorbar=True, cmap='hot', display_mode='z',
+                                   title=f"{title}")
+  return display

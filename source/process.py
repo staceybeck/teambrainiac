@@ -9,10 +9,12 @@
 
 
 
-
-from utils import *
-import numpy as np
+from access_data import access_load_data
+import tqdm
+from nilearn.signal import clean
 from sklearn.preprocessing import StandardScaler
+import numpy as np
+from collections import defaultdict
 
 
 
@@ -205,3 +207,104 @@ def scale_data(data, sub_ids, run, train_run, norm):
 
 
 
+def create_mask(mask_data_filepath, mask_type='mask'):
+    """
+    mask_data_filepath: Takes in filepaths
+    mask_type: and mask type
+    returns: a numpy-compatible mask
+
+    """
+    mask_type_dict = access_load_data(mask_data_filepath, True)
+    np_array_mask = mask_type_dict[mask_type]
+    np_compatible_mask = np.ma.make_mask(np_array_mask).reshape(79 * 95 * 79, order='F')
+
+    return np_compatible_mask
+
+
+
+
+
+
+def labels_mask_binary(label_data_path, label_type='rt_labels'):
+    """
+
+    """
+    # Get Mask data
+    label_data_dict = access_load_data(label_data_path, True)
+    labels = label_data_dict[label_type]
+    mask_labels_indices = np.where(labels != 9999)
+    mask_labels_indices = mask_labels_indices[0]
+
+    # Get Binary Labels
+    label_mask = np.all(labels != 9999, axis=1)
+    binary_labels = labels.reshape(-1)[label_mask]
+
+    return mask_labels_indices, binary_labels
+
+
+
+
+
+
+def masking_data(subject, mask, mask_labels, binary_labels, do_norm):
+    """
+
+
+    """
+
+    arr = []
+    label_arr = []
+    for i in tqdm.tqdm(range(4)):
+        user_key = 'run_0' + str(i + 1) + '_vec'
+        array = subject[user_key]
+        array_masked = array[:, mask]
+        array_masked = array_masked[mask_labels]
+
+        # Percent Signal Change normalization
+        if do_norm:
+            array_masked = clean(array_masked, standardize='psc')
+
+        arr.append(array_masked)
+        label_arr.append(binary_labels)
+
+    return arr, label_arr
+
+
+
+
+
+
+def masked_data_n_labels(mask_type, label_type, path_dict, do_norm, m_path_ind, l_path_ind):
+    """
+    mask_type: String for type of mask we want
+    label_type: String for which labels we want
+    path_dict: dictionary that contains all the paths for data in AWS
+    norm: To normalize on PSC True or False
+    m_path_ind: the index to get either masks.mat or roi_masks.mat , 0 or 1 respectively
+    l_path_ind: index to get the data from labels in dictionary
+    Returns: a dictionary of subject masked data and the cleaned labels
+    """
+    # Define variable to return
+    user_data_dict = defaultdict(list)
+
+    # Mask path from S3
+    mask_data_filepath = path_dict['mask_data'][m_path_ind]
+    mask_type = mask_type  # 'mask'
+    mask = create_mask(mask_data_filepath, mask_type)
+
+    # Label path from S3
+    label_data_path = path_dict['labels'][l_path_ind]
+    label_type = label_type  # "rt_labels"
+
+    # Returns two values, mask_labels_indices and binary_labels
+    mask_labels_indices, binary_labels = labels_mask_binary(label_data_path, label_type)
+
+    # Loop through all subjects
+    for ind, val in tqdm.tqdm(enumerate(path_dict['subject_ID'])):
+        sub_id = val
+        sub_path = path_dict['subject_data'][ind]
+        subject = access_load_data(sub_path, True)
+        user_data_dict[sub_id], bi_lb = masking_data(subject, mask, mask_labels_indices, binary_labels, do_norm)
+        user_data_dict[f"{sub_id}_{label_type}"] = bi_lb
+
+    return user_data_dict
