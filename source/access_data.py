@@ -38,10 +38,11 @@ def access_aws():
     seckey = mat_path['SECRET_KEY']
     client = boto3.client('s3', aws_access_key_id = pubkey, aws_secret_access_key = seckey)
     s3 = boto3.resource('s3', aws_access_key_id = pubkey, aws_secret_access_key = seckey)
-    bucket = s3.Bucket('teambrainiac').name
+    bucket = s3.Bucket('teambrainiac')
+    bucket_ = bucket.name
     obj_name = list(bucket.objects.all())
 
-    return obj_name, bucket, client
+    return obj_name, bucket_, client
 
 
 
