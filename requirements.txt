@@ -8,4 +8,5 @@ nibabel
 scipy
 boto3
 nitime
+nilearn
 

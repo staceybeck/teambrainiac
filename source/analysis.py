@@ -11,9 +11,7 @@
 
 
 
-
-
-from access_data import s3_upload
+from .access_data import s3_upload
 import numpy as np
 import pandas as pd
 import nibabel as nib

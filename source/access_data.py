@@ -12,15 +12,14 @@
 import re
 import scipy.io
 import os
-import scipy.io
 import pickle
-from path_config import mat_path
-import boto3
-import tempfile
-from botocore.exceptions import ClientError
 import numpy as np
 import nibabel as nib
 import pandas as pd
+from .path_config import mat_path
+import boto3
+import tempfile
+from botocore.exceptions import ClientError
 from collections import defaultdict
 
 
