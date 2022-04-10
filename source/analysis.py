@@ -117,7 +117,7 @@ def metrics(clf, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type):
 
     model_name = f"{data_type}_{runs_id}_{mask_type}_metrics"
     # Save metrics
-    s3_upload(model_dict, "models/group/%s.pkl" % model_name, 'pickle')
+    s3_upload(metrics_dict, f"metrics/group_svm/{mask_type}/%s.pkl" % model_name, 'pickle')
 
 
     # Save metrics for individual masks
@@ -137,7 +137,7 @@ def metrics(clf, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type):
                                               "support": class_report['macro avg']['support']}})
             df = pd.DataFrame(class_report).T
 
-        s3_upload(df, f"metrics/group_svm/{data_type}_model_{runs_id}_{mask_type}_{report}.csv", "csv")
+        s3_upload(df, f"metrics/group_svm/{mask_type}/{data_type}_model_{runs_id}_{mask_type}_{report}.csv", "csv")
         print(f"Classification report for {mask_type} {report}")
         print(classification_report(y_v, yval_pred))
 
