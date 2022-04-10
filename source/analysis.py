@@ -112,6 +112,9 @@ def metrics(clf, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type):
     metrics_dict['test_preds'].append(ytest_pred)
     metrics_dict['test_probs'].append(ytest_probs)
     metrics_dict['test_acc'].append(test_acc)
+    metrics_dict['y_v'].append(y_v)
+    metrics_dict['y_t'].append(y_t)
+
     model_name = f"{data_type}_{runs_id}_{mask_type}_metrics"
     # Save metrics
     s3_upload(model_dict, "models/group/%s.pkl" % model_name, 'pickle')
