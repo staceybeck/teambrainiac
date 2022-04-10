@@ -19,7 +19,7 @@ from sklearn.model_selection import TimeSeriesSplit, HalvingGridSearchCV
 from sklearn.exceptions import ConvergenceWarning
 import warnings
 import tqdm
-from access_data import *
+from access_data import s3_upload
 
 
 
@@ -49,7 +49,8 @@ def time_series_cv(X, y, max_train, test_size, splits, gd_srch, param_dict, file
                                    param_grid = param_search)
         grid.fit(X, y)
         print("Uploading gridsearch results to cloud...")
-        s3_upload(grid.cv_results_, file_name, 'csv')
+        grid_dict = grid.cv_results_
+        s3_upload(grid_dict, file_name, 'pickle')
         print("Best parameters: ", grid.best_params_)
         print('Best estimator: ', grid.best_estimator_)
         print("Best score: ", grid.best_score_)
