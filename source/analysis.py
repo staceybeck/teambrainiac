@@ -14,6 +14,11 @@ import nibabel as nib
 from nilearn.image import threshold_img
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
+from collections import defaultdict
+
+
+
+
 
 
 def create_bmaps(clf, X, indices_mask, image):
@@ -44,6 +49,10 @@ def create_bmaps(clf, X, indices_mask, image):
     return bmap3, bmap2_3, alphas1
 
 
+
+
+
+
 def get_threshold_image(bmap3, score_percentile, image_intensity):
     """
 
@@ -62,6 +71,10 @@ def get_threshold_image(bmap3, score_percentile, image_intensity):
     return threshold_percentile_img, threshold_value_img
 
 
+
+
+
+
 def metrics(clf, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type):
     """
 
@@ -76,17 +89,33 @@ def metrics(clf, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type):
     :param model_type:
     :return:
     """
-    model_type = 0
+    metrics_dict = defaultdict(list)
 
+    # Validation metrics
     print("Predicting on Validation set...")
     yval_pred = clf.predict(X_v)
+    yval_probs = clf.predict_proba(X_v)[:, 1]
     val_acc = accuracy_score(y_v, yval_pred)
     print("Validation Accuracy:", val_acc)
 
+    # Test Metrics
     print("Predicting on Test set...")
     ytest_pred = clf.predict(X_t)
+    ytest_probs = clf.predict_proba(X_t)[:, 1]
     test_acc = accuracy_score(y_t, ytest_pred)
     print("Test Accuracy:", test_acc)
+
+    #Store metrics in dictionary
+    metrics_dict['val_preds'].append(yval_pred)
+    metrics_dict['val_probs'].append(yval_probs)
+    metrics_dict['val_acc'].append(val_acc)
+    metrics_dict['test_preds'].append(ytest_pred)
+    metrics_dict['test_probs'].append(ytest_probs)
+    metrics_dict['test_acc'].append(test_acc)
+    model_name = f"{data_type}_{runs_id}_{mask_type}_metrics"
+    # Save metrics
+    s3_upload(model_dict, "models/group/%s.pkl" % model_name, 'pickle')
+
 
     # Save metrics for individual masks
     type_report = ['validation_classreport', 'test_classreport']
