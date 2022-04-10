@@ -42,7 +42,7 @@ def time_series_cv(X, y, max_train, test_size, splits, gd_srch, param_dict, file
     it = 0
 
     if gd_srch == True:
-        clf = SVC(random_state = 42, max_iter = 1000, class_weight = 'balanced')
+        clf = SVC(random_state = 42, class_weight = 'balanced')
         param_search = param_dict
         grid = HalvingGridSearchCV(estimator= clf,
                                    cv = tscv,
