@@ -1,7 +1,7 @@
 # File for preprocessing steps
 
 import pickle
-from path_cofig import mat_path
+from path_config import mat_path
 import boto3
 import scipy
 import pandas as pd
