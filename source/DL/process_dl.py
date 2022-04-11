@@ -1,3 +1,17 @@
+# File for preprocessing steps
+
+import pickle
+from path_cofig import mat_path
+import boto3
+import scipy
+import pandas as pd
+import nibabel as nib
+
+from utils_dl import *
+import numpy as np
+import tqdm
+
+
 def get_mask(mask_type,data_path_dict,mask_ind):
   """
     Function to return the mask of what brain voxels we want to include in analysis
@@ -48,6 +62,8 @@ def load_subjects_chronologically(data_path_dict, n_subjects, image_label_mask, 
   subject_ids = data_path_dict['subject_ID'][:n_subjects]
   subjects = {}
 
+  print('Subject ids loaded.\nAdding subjects to dictionary.')
+  
   for path,id in tqdm.tqdm(zip(subject_paths, subject_ids)):
     subject_dict = {}
     data = access_load_data(path,True)
