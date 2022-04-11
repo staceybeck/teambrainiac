@@ -6,6 +6,7 @@ import boto3
 import scipy
 import pandas as pd
 import nibabel as nib
+import tempfile
 
 
 def open_pickle(file_path):
