@@ -1,5 +1,13 @@
 # General utility functions
 
+import pickle
+from path_cofig import mat_path
+import boto3
+import scipy
+import pandas as pd
+import nibabel as nib
+
+
 def open_pickle(file_path):
     """
     :param file path for dictionary
@@ -11,8 +19,34 @@ def open_pickle(file_path):
 
     return dictionary
   
-  
+    
+    
+    
+def data_to_nib(path):
+    """
+    using Nibabel open NiFTI files
+    :param nifti data path:
+    :return loads nifti data:
+    """
+
+    filename = os.path.join(path)
+    return nib.load(filename)
  
+    
+    
+    
+def load_mat(path):
+    """
+    :param .mat data path
+    uses scipy to convert access to mat file in python
+    :return mat data
+    """
+    mat_file = scipy.io.loadmat(path)
+    return mat_file
+  
+  
+  
+      
 def access_aws():
     """
     :return:
@@ -32,20 +66,7 @@ def access_aws():
   
   
   
-def load_mat(path):
-    """
-    :param .mat data path
-    uses scipy to convert access to mat file in python
-    :return mat data
-    """
-    mat_file = scipy.io.loadmat(path)
-    return mat_file
-  
-  
-  
-  
-  
-  
+
 def access_load_data(obj, bool_mat):
     """
     :param data_file: file path to data. For example can be pickle file containing a dictionary
