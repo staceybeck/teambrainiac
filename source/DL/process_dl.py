@@ -11,6 +11,9 @@ from utils_dl import *
 import numpy as np
 import tqdm
 
+from sklearn.preprocessing import StandardScaler
+
+
 
 def get_mask(mask_type,data_path_dict,mask_ind):
   """
@@ -77,3 +80,63 @@ def load_subjects_chronologically(data_path_dict, n_subjects, image_label_mask, 
     subjects[id] = subject_dict
   
   return subjects
+
+
+
+
+
+
+def mask_normalize_runs_reshape_3d(chron_subject_dict, mask, scaler):
+    """
+    chron_subject_dict : (subject data returned from load_subjects_chronologically function, keys are subject IDs)
+    mask               : The mask meant to be applied to each image, typically a whole brain mask
+    scaler             : Scaler from sklearn used to normalize the data
+
+    returns            : X and y data normalized based on across all runs for a subject or per subject for a single run
+    """
+
+    runs_normalized_subjects = {}
+    for i,sub_id in enumerate(chron_subject_dict.keys()):
+      temp_subject = {}
+      for key in chron_subject_dict[sub_id].keys():
+        if key == 'image_labels':
+          # Labels for the images
+          temp_subject['image_labels'] = chron_subject_dict[sub_id]['image_labels']
+        
+        else:
+          # Subject Runs
+          temp_run_unmasked = []
+          temp_run = chron_subject_dict[sub_id][key]
+
+          if scaler == 'standard':
+            temp_scaler = StandardScaler()
+          else:
+            print('Please import required scaler and update function')
+            break
+          
+          temp_run_masked = temp_run[:,mask]
+          temp_run_masked_norm =  temp_scaler.fit_transform(subject_brain)
+
+          temp_run_masked_norm_index = 0
+          for t_or_f in mask:
+            if t_or_f == True:
+              temp_run_unmasked.append(temp_run_masked_norm[:,temp_run_masked_norm_index])
+              temp_run_masked_norm_index += 1
+            elif t_or_f == False:
+              temp_run_unmasked.append(np.zeros(len(temp_run_masked_norm[:,0])))
+            else:
+              print('Error')
+              break
+        
+          temp_run_unmasked = np.array(temp_run_unmasked).T
+          temp_run_unmasked_3d = []
+          for image in temp_run_unmasked:
+            temp_run_unmasked_3d.append(image.reshape(79 * 95 * 79, order='F'))
+          temp_run_unmasked_3d = np.array(temp_run_unmasked_3d)
+          temp_subject[key] = temp_run_unmasked_3d
+
+      runs_normalized_subjects[sub_id] = temp_subject
+      
+      print('Completed Subject', i)
+
+    return runs_normalized_subjects
