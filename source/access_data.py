@@ -195,7 +195,7 @@ def s3_upload(data, object_name, data_type):
 
         with tempfile.NamedTemporaryFile(delete=False) as temp:
             if data_type == "pickle":
-                pickle.dump(data, temp, protocol=2)
+                pickle.dump(data, temp, protocol = pickle.HIGHEST_PROTOCOL)
 
             elif data_type == "numpy":
                 np.save(temp, data)
