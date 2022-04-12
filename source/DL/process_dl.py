@@ -140,3 +140,50 @@ def mask_normalize_runs_reshape_3d(chron_subject_dict, mask, scaler):
       print('Completed Subject', i)
 
     return runs_normalized_subjects
+  
+  
+  
+  
+  def train_test_aggregation(single_subject, train_runs=[2], test_runs=[3,4]):
+  """
+    This function aggregates a single subjects runs into a training and test set
+    split up by the desired runs, prepared for dataloader object
+
+    single_subject     : A single subject's data from dictionary returned from mask_normalize_runs_reshape_3d
+    train_runs         : List of Runs used in training set for a subject
+    test_run           : List of Runs used in testing set for a subject
+    
+    returns            : train and test images and their labels ready for dataloader
+  """
+  # Training Data
+  train = {}
+  train_images = []
+  train_labels = []
+
+  for train_run in train_runs:
+    run_key = 'run_'+str(train_run)
+    for image in single_subject[run_key]:
+      train_images.append(image)
+    train_labels.extend(list(single_subject['image_labels']))
+
+  train['images'] = np.array(train_images)
+  train['labels'] = np.array(train_labels)
+  print('Train Runs Done')
+
+
+  # Testing Data
+  test = {}
+  test_images = []
+  test_labels = []
+
+  for test_run in test_runs:
+    run_key = 'run_'+str(test_run)
+    for image in single_subject[run_key]:
+      test_images.append(image)
+    test_labels.extend(list(single_subject['image_labels']))
+
+  test['images'] = np.array(test_images)
+  test['labels'] = np.array(test_labels)
+  print('Test Runs Done')
+
+  return train, test
