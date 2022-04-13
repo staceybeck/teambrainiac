@@ -144,7 +144,7 @@ def mask_normalize_runs_reshape_3d(chron_subject_dict, mask, scaler):
   
   
   
-  def train_test_aggregation(single_subject, train_runs=[2], test_runs=[3,4]):
+def train_test_aggregation(single_subject, train_runs=[2], test_runs=[3,4]):
   """
     This function aggregates a single subjects runs into a training and test set
     split up by the desired runs, prepared for dataloader object
