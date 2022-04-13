@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 # @Project:     teambrainiac
 # @Filename:    access_data.py
-# @Author:      staceyrivet
+# @Author:      staceyrivet, benmerrill, marysoules
 # @Time:        4/8/22 1:51 PM
 # @IDE:         PyCharm
 
