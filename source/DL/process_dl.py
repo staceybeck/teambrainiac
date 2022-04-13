@@ -91,7 +91,7 @@ def mask_normalize_runs_reshape_3d(chron_subject_dict, mask, scaler):
     chron_subject_dict : (subject data returned from load_subjects_chronologically function, keys are subject IDs)
     mask               : The mask meant to be applied to each image, typically a whole brain mask
     scaler             : Scaler from sklearn used to normalize the data
-
+    
     returns            : X and y data normalized based on across all runs for a subject or per subject for a single run
     """
 
@@ -115,7 +115,7 @@ def mask_normalize_runs_reshape_3d(chron_subject_dict, mask, scaler):
             break
           
           temp_run_masked = temp_run[:,mask]
-          temp_run_masked_norm =  temp_scaler.fit_transform(subject_brain)
+          temp_run_masked_norm =  temp_scaler.fit_transform(temp_run_masked)
 
           temp_run_masked_norm_index = 0
           for t_or_f in mask:
@@ -131,7 +131,7 @@ def mask_normalize_runs_reshape_3d(chron_subject_dict, mask, scaler):
           temp_run_unmasked = np.array(temp_run_unmasked).T
           temp_run_unmasked_3d = []
           for image in temp_run_unmasked:
-            temp_run_unmasked_3d.append(image.reshape(79 * 95 * 79, order='F'))
+            temp_run_unmasked_3d.append(image.reshape((79,95,79), order='F'))
           temp_run_unmasked_3d = np.array(temp_run_unmasked_3d)
           temp_subject[key] = temp_run_unmasked_3d
 
