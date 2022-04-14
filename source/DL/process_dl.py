@@ -140,6 +140,7 @@ def mask_normalize_runs_reshape_4d(chron_subject_dict, mask, scaler):
           temp_subject[key] = temp_run_unmasked_4d
 
       runs_normalized_subjects[sub_id] = temp_subject
+      chron_subject_dict[sub_id] = None
       
       print('Completed Subject', str(i+1))
 
@@ -245,19 +246,4 @@ def train_test_aggregation_group(subjects_dict, runs, train_val_test_ids):
 
   return train_val_test_dict
 
-  # Testing Data
-  test = {}
-  test_images = []
-  test_labels = []
 
-  for test_run in test_runs:
-    run_key = 'run_'+str(test_run)
-    for image in single_subject[run_key]:
-      test_images.append(image)
-    test_labels.extend(list(single_subject['image_labels']))
-
-  test['images'] = np.array(test_images)
-  test['labels'] = np.array(test_labels)
-  print('Test Runs Done')
-
-  return train, test
