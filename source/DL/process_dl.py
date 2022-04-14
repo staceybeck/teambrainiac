@@ -8,7 +8,7 @@ import pandas as pd
 import nibabel as nib
 import random
 
-from utils_dl import *
+from access_data_dl import *
 import numpy as np
 import tqdm
 
