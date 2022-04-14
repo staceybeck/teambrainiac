@@ -239,11 +239,10 @@ def train_test_aggregation_group(subjects_dict, runs, train_val_test_ids):
         for image in subject_images:
           images.append(image)
         labels.extend(list(subjects_dict[subject_id]['image_labels']))
+      train_val_test_ids[subject_id] = None
     
     train_or_val_or_test['images'] = torch.from_numpy(np.array(images).astype(float))
     train_or_val_or_test['labels'] = torch.from_numpy(np.array(labels).astype(float)).long()
     train_val_test_dict[key] = train_or_val_or_test
 
   return train_val_test_dict
-
-
