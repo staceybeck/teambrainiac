@@ -86,13 +86,14 @@ def load_subjects_chronologically(data_path_dict, n_subjects, image_label_mask, 
 
 
 
-def mask_normalize_runs_reshape_3d(chron_subject_dict, mask, scaler):
+def mask_normalize_runs_reshape_4d(chron_subject_dict, mask, scaler):
     """
     chron_subject_dict : (subject data returned from load_subjects_chronologically function, keys are subject IDs)
     mask               : The mask meant to be applied to each image, typically a whole brain mask
     scaler             : Scaler from sklearn used to normalize the data
     
-    returns            : X and y data normalized based on across all runs for a subject or per subject for a single run
+    returns            : dictionary with fully normalized subjects and labels
+                         each subject's run is in 5d - n_images x n_color_layers(i.e. 1 because images are black and white) x length x width x height
     """
 
     runs_normalized_subjects = {}
@@ -129,11 +130,13 @@ def mask_normalize_runs_reshape_3d(chron_subject_dict, mask, scaler):
               break
         
           temp_run_unmasked = np.array(temp_run_unmasked).T
-          temp_run_unmasked_3d = []
+          temp_run_unmasked_4d = []
           for image in temp_run_unmasked:
-            temp_run_unmasked_3d.append(image.reshape((79,95,79), order='F'))
-          temp_run_unmasked_3d = np.array(temp_run_unmasked_3d)
-          temp_subject[key] = temp_run_unmasked_3d
+            image_3d = image.reshape((79,95,79), order='F')
+            image_4d = np.array([image_3d])
+            temp_run_unmasked_4d.append(image_4d)
+          temp_run_unmasked_4d = np.array(temp_run_unmasked_4d)
+          temp_subject[key] = temp_run_unmasked_4d
 
       runs_normalized_subjects[sub_id] = temp_subject
       
