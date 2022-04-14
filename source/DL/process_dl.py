@@ -6,6 +6,7 @@ import boto3
 import scipy
 import pandas as pd
 import nibabel as nib
+import random
 
 from utils_dl import *
 import numpy as np
@@ -140,18 +141,34 @@ def mask_normalize_runs_reshape_4d(chron_subject_dict, mask, scaler):
 
       runs_normalized_subjects[sub_id] = temp_subject
       
-      print('Completed Subject', i)
+      print('Completed Subject', str(i+1))
 
     return runs_normalized_subjects
   
   
   
+ 
+
+def generate_train_val_test_dict(subject_id_partition, train_val_test_proportion=[0.7,0.8,1]):
+  train_val_test_dict = {}
+  shuffled_ids = subject_id_partition.copy()
+  random.shuffle(shuffled_ids)
+  train_index = int(train_val_test_proportion[0]*len(subject_id_partition))
+  val_index = int(train_val_test_proportion[1]*len(subject_id_partition))
   
-def train_test_aggregation(single_subject, train_runs=[2], test_runs=[3,4]):
+  train_val_test_dict['train'] = shuffled_ids[:train_index]
+  train_val_test_dict['val'] = shuffled_ids[train_index:val_index]
+  train_val_test_dict['test'] = shuffled_ids[val_index:]
+  
+  return train_val_test_dict
+  
+  
+
+  
+def train_test_aggregation_individual(single_subject, train_runs=[2], test_runs=[3,4]):
   """
     This function aggregates a single subjects runs into a training and test set
     split up by the desired runs, prepared for dataloader object
-
     single_subject     : A single subject's data from dictionary returned from mask_normalize_runs_reshape_3d
     train_runs         : List of Runs used in training set for a subject
     test_run           : List of Runs used in testing set for a subject
@@ -169,10 +186,64 @@ def train_test_aggregation(single_subject, train_runs=[2], test_runs=[3,4]):
       train_images.append(image)
     train_labels.extend(list(single_subject['image_labels']))
 
-  train['images'] = np.array(train_images)
-  train['labels'] = np.array(train_labels)
+  train['images'] = torch.from_numpy(np.array(train_images).astype(float))
+  train['labels'] = torch.from_numpy(np.array(train_labels).astype(float)).long()
   print('Train Runs Done')
 
+
+  # Testing Data
+  test = {}
+  test_images = []
+  test_labels = []
+
+  for test_run in test_runs:
+    run_key = 'run_'+str(test_run)
+    for image in single_subject[run_key]:
+      test_images.append(image)
+    test_labels.extend(list(single_subject['image_labels']))
+
+  test['images'] = torch.from_numpy(np.array(test_images).astype(float))
+  test['labels'] = torch.from_numpy(np.array(test_labels).astype(float)).long()
+  print('Test Runs Done')
+
+  return train, test
+
+
+
+
+
+
+
+def train_test_aggregation_group(subjects_dict, runs, train_val_test_ids):
+  """
+    This function aggregates a group of subjects' runs into a training and test set
+    split up by the desired proportion
+    subjects_dict       : A dictionary of subject images with ids as keys 
+    runs                : List of Runs to use from subject dict
+    train_val_test_dict : dictionary of subject ids for train, validation, and test 
+    
+    returns            : train and test images and their labels ready for dataloader or to save on AWS s3
+  """
+  train_val_test_dict = {}
+
+  for key in train_val_test_ids.keys():
+    train_or_val_or_test = {}
+    images = []
+    labels = []
+    temp_ids = train_val_test_ids[key]
+    for subject_id in temp_ids:
+      for run in runs:
+        run_key = 'run_'+str(run)
+        subject_images = subjects_dict[subject_id][run_key]
+        for image in subject_images:
+          images.append(image)
+        labels.extend(list(subjects_dict[subject_id]['image_labels']))
+    
+    train_or_val_or_test['images'] = torch.from_numpy(np.array(images).astype(float))
+    train_or_val_or_test['labels'] = torch.from_numpy(np.array(labels).astype(float)).long()
+    train_val_test_dict[key] = train_or_val_or_test
+
+  return train_val_test_dict
 
   # Testing Data
   test = {}
