@@ -105,3 +105,49 @@ def access_load_data(obj, bool_mat):
     temp.close()
 
     return data
+
+
+
+
+
+
+def s3_upload(data, object_name, data_type):
+    """Upload a file to an S3 bucket
+    :param data: our data to upload
+    :param data_type: type of data file we are creating
+    :param object_name: S3 object name. If not specified then name of temp.name is used
+    :return: True if file was uploaded, else False
+    """
+
+    # Upload the file
+    # Connect to AWS client
+    _, bucket_name, client = access_aws()
+
+    try:
+
+        with tempfile.NamedTemporaryFile(delete=False) as temp:
+            if data_type == "pickle":
+                pickle.dump(data, temp, protocol = pickle.HIGHEST_PROTOCOL)
+
+            elif data_type == "numpy":
+                np.save(temp, data)
+                _ = temp.seek(0)
+
+            elif data_type == "csv":
+                data.to_csv(temp, index=False)
+
+            client.upload_file(temp.name, bucket_name, object_name)
+            temp.close()
+            print(f"upload complete for {object_name}")
+
+        if data_type == "nifti":
+            tempf = 'data/upload_temp.nii'
+            nib.save(data, tempf)
+            client.upload_file(tempf, bucket_name, object_name)
+            print(f"upload complete for {object_name}")
+
+    except ClientError as e:
+        logging.error(e)
+        return False
+
+    return True
