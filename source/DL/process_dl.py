@@ -87,28 +87,28 @@ def load_subjects_chronologically(data_path_dict, n_subjects, image_label_mask, 
 
 
 
-def mask_normalize_runs_reshape_4d(chron_subject_dict, mask, scaler):
+def mask_normalize_runs_reshape_4d(subject_dict, mask, scaler='standard'):
     """
-    chron_subject_dict : (subject data returned from load_subjects_chronologically function, keys are subject IDs)
+    subject_dict : subject data returned from load_subjects_chronologically or load_subjects_by_id function, keys are subject IDs)
     mask               : The mask meant to be applied to each image, typically a whole brain mask
-    scaler             : Scaler from sklearn used to normalize the data
+    scaler             : Scaler from sklearn used to normalize the data, typically 'standard'
     
     returns            : dictionary with fully normalized subjects and labels
                          each subject's run is in 5d - n_images x n_color_layers(i.e. 1 because images are black and white) x length x width x height
     """
 
     runs_normalized_subjects = {}
-    for i,sub_id in enumerate(chron_subject_dict.keys()):
+    for i,sub_id in enumerate(subject_dict.keys()):
       temp_subject = {}
-      for key in chron_subject_dict[sub_id].keys():
+      for key in subject_dict[sub_id].keys():
         if key == 'image_labels':
           # Labels for the images
-          temp_subject['image_labels'] = chron_subject_dict[sub_id]['image_labels']
+          temp_subject['image_labels'] = subject_dict[sub_id]['image_labels']
         
         else:
           # Subject Runs
           temp_run_unmasked = []
-          temp_run = chron_subject_dict[sub_id][key]
+          temp_run = subject_dict[sub_id][key]
 
           if scaler == 'standard':
             temp_scaler = StandardScaler()
@@ -140,7 +140,7 @@ def mask_normalize_runs_reshape_4d(chron_subject_dict, mask, scaler):
           temp_subject[key] = temp_run_unmasked_4d
 
       runs_normalized_subjects[sub_id] = temp_subject
-      chron_subject_dict[sub_id] = None
+      subject_dict[sub_id] = None
       
       print('Completed Subject', str(i+1))
 
@@ -221,28 +221,23 @@ def train_test_aggregation_group(subjects_dict, runs, train_val_test_ids):
     split up by the desired proportion
     subjects_dict       : A dictionary of subject images with ids as keys 
     runs                : List of Runs to use from subject dict
-    train_val_test_dict : dictionary of subject ids for train, validation, and test 
+    train_val_test_ids : dictionary of subject ids for train, validation, and test 
     
     returns            : train and test images and their labels ready for dataloader or to save on AWS s3
   """
-  train_val_test_dict = {}
-
-  for key in train_val_test_ids.keys():
-    train_or_val_or_test = {}
-    images = []
-    labels = []
-    temp_ids = train_val_test_ids[key]
-    for subject_id in temp_ids:
-      for run in runs:
-        run_key = 'run_'+str(run)
-        subject_images = subjects_dict[subject_id][run_key]
-        for image in subject_images:
-          images.append(image)
-        labels.extend(list(subjects_dict[subject_id]['image_labels']))
-      train_val_test_ids[subject_id] = None
-    
-    train_or_val_or_test['images'] = torch.from_numpy(np.array(images).astype(float))
-    train_or_val_or_test['labels'] = torch.from_numpy(np.array(labels).astype(float)).long()
-    train_val_test_dict[key] = train_or_val_or_test
-
-  return train_val_test_dict
+  
+  partition = {}
+  images = []
+  labels = []
+  for subject_id in train_val_test_ids:
+    for run in runs:
+      run_key = 'run_'+str(run)
+      subject_images = subjects_dict[subject_id][run_key]
+      for image in subject_images:
+        images.append(image)
+      labels.extend(list(subjects_dict[subject_id]['image_labels']))
+  
+  partition['images'] = torch.from_numpy(np.array(images).astype(float))
+  partition['labels'] = torch.from_numpy(np.array(labels).astype(float)).long()
+  
+  return partition
