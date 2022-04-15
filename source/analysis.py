@@ -90,6 +90,8 @@ def metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type):
     :return:
     """
     metrics_dict = defaultdict(list)
+    model_dict = defaultdict(list)
+
     if X_v != False:
         # Validation metrics
         print("Predicting on Validation set...")
@@ -100,12 +102,12 @@ def metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type):
         print("Validation Accuracy:", val_acc)
 
         #Initialize dict w/ data
-        metrics_dict['model'].append(clf)
-        metrics_dict['X_train'].append(X)
+        model_dict['model'].append(clf)
+        model_dict['X_train'].append(X)
         metrics_dict["y_train"].append(y)
-        metrics_dict['val_dfnc'].append(yval_defunc)
+        metrics_dict['val_dfnc'].append(yval_defunc.astype(np.float32))
         metrics_dict['val_preds'].append(yval_pred)
-        metrics_dict['val_probs'].append(yval_probs)
+        metrics_dict['val_probs'].append(yval_probs.astype(np.float32))
         metrics_dict['val_acc'].append(val_acc)
         metrics_dict['y_v'].append(y_v)
 
@@ -118,18 +120,23 @@ def metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type):
     print("Test Accuracy:", test_acc)
 
     #Store metrics in dictionary
-    metrics_dict['model'].append(clf)
-    metrics_dict['X_train'].append(X)
+    model_dict['model'].append(clf)
+    model_dict['X_train'].append(X)
     metrics_dict["y_train"].append(y)
     metrics_dict['test_preds'].append(ytest_pred)
-    metrics_dict['test_probs'].append(ytest_probs)
+    metrics_dict['test_probs'].append(ytest_probs.astype(np.float32))
     metrics_dict['test_acc'].append(test_acc)
-    metrics_dict['test_dfunc'].append(ytest_defunc)
+    metrics_dict['test_dfunc'].append(ytest_defunc.astype(np.float32))
     metrics_dict['y_t'].append(y_t)
 
-    model_name = f"{data_type}_{runs_id}_{mask_type}_model_metrics"
+    # File paths
+    metrics_name = f"{data_type}_{runs_id}_{mask_type}_metrics"
+    model_name = f"{data_type}_{runs_id}_{mask_type}_X_model"
+
     # Save metrics and model
-    s3_upload(metrics_dict, f"metrics/group_svm/{mask_type}/%s.pkl" % model_name, 'pickle')
+    s3_upload(metrics_dict, f"metrics/group_svm/{mask_type}/%s.pkl" % metrics_name, 'pickle')
+    # Save model
+    s3_upload(model_dict, "models/group/%s.pkl" % model_name, 'pickle')
 
 
     # Save metrics for individual masks
