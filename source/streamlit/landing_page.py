@@ -13,7 +13,7 @@ import streamlit as st
 st.title("Team Brainiacs conquer fMRI")
 
 PAGES = [
-    'Brain Images',
+    'Brain images',
     'Chart Metrics',
     'Tables'
 ]
@@ -26,7 +26,7 @@ st.sidebar.title('Explore Data')
 page = st.sidebar.radio('Navigation', PAGES)
 
 
-if page == 'Brain Images':
+if page == 'Brain images':
     st.sidebar.write("""
             ## About
             These images display the BOLD (Blood oxygen level dependent) voxel signal in the brain
