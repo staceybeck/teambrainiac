@@ -10,6 +10,7 @@ import random
 import numpy as np
 import tqdm
 import torch
+from nilearn.signal import clean
 
 from access_data_dl import *
 
@@ -130,7 +131,6 @@ def load_subjects_by_id(data_path_dict, subject_ids, image_label_mask, image_lab
 
 
 
-
 def mask_normalize_runs_reshape_4d(subject_dict, mask, scaler='standard'):
     """
     subject_dict : subject data returned from load_subjects_chronologically or load_subjects_by_id function, keys are subject IDs)
@@ -153,15 +153,9 @@ def mask_normalize_runs_reshape_4d(subject_dict, mask, scaler='standard'):
           # Subject Runs
           temp_run_unmasked = []
           temp_run = subject_dict[sub_id][key]
-
-          if scaler == 'standard':
-            temp_scaler = StandardScaler()
-          else:
-            print('Please import required scaler and update function')
-            break
           
           temp_run_masked = temp_run[:,mask]
-          temp_run_masked_norm =  temp_scaler.fit_transform(temp_run_masked)
+          temp_run_masked_norm = clean(temp_run_masked,standardize='zscore',detrend=True,filter=False,standardize_confounds=False)
 
           temp_run_masked_norm_index = 0
           for t_or_f in mask:
