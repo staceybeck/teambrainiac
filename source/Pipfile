@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+matplotlib = "*"
+numpy = "*"
+jupyter = "*"
+imageio = "*"
+scikit-learn = "*"
+tqdm = "*"
+nibabel = "*"
+scipy = "*"
+boto3 = "*"
+nitime = "*"
+nilearn = "*"
+streamlit = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.6"
