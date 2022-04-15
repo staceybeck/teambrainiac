@@ -7,10 +7,11 @@ import scipy
 import pandas as pd
 import nibabel as nib
 import random
-
-from access_data_dl import *
 import numpy as np
 import tqdm
+import torch
+
+from access_data_dl import *
 
 from sklearn.preprocessing import StandardScaler
 
