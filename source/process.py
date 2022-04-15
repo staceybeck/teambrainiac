@@ -70,6 +70,7 @@ def data_for_cv(data, group_sub_ids, runs_train, runs_test, norm):
             else:
                 X.append(data[id_][runs_train])
                 Xt.append(data[id_][runs_test])
+                print("No extra normalization...")
 
             # Get y labels from dictioanry
             y.append(data[f"{id_}_rt_labels"][runs_train])
@@ -140,38 +141,73 @@ def transform_data(data, group_sub_ids, runs_train, runs_val, runs_test, norm):
     """
 
     train_id, val_id, test_id = group_sub_ids
-
-    print(f"Normalizing Each based on {norm}...")
     if norm == "RUNS":
-        X, y   = scale_data(data, train_id, runs_train, False, norm)
-        Xv, yv = scale_data(data, val_id, runs_val, False, norm)
-        Xt, yt = scale_data(data, test_id, runs_test, False, norm)
+        print(f"Normalizing Each based on {norm}...")
+    elif norm == "Detrend_Znorm":
+        print("Data already detrended and znorm scaled by columns per run...")
 
-    elif norm == "SUBJECT":
-        print("In order to use SUBJECT NORMALIZATION, be sure Train, Val, Test sets")
-        print("All have the same subject IDs, and are using data from separate runs.")
-        X, y   = scale_data(data, train_id, runs_train, runs_train, norm)
-        Xv, yv = scale_data(data, val_id, runs_val, runs_train, norm)
-        Xt, yt = scale_data(data, test_id, runs_test, runs_train, norm)
+    if runs_val != False:
+        print(f"Running with a validation set...")
+        if norm == "RUNS":
+            X, y   = scale_data(data, train_id, runs_train, False, norm)
+            Xv, yv = scale_data(data, val_id, runs_val, False, norm)
+            Xt, yt = scale_data(data, test_id, runs_test, False, norm)
 
-    X_c , y_c, X_v, y_v, X_t, y_t = concat_data((X, y), (Xv, yv), (Xt, yt))
+        elif norm == "SUBJECT":
+            print("In order to use SUBJECT NORMALIZATION, be sure Train, Val, Test sets")
+            print("All have the same subject IDs, and are using data from separate runs.")
+            X, y   = scale_data(data, train_id, runs_train, runs_train, norm)
+            Xv, yv = scale_data(data, val_id, runs_val, runs_train, norm)
+            Xt, yt = scale_data(data, test_id, runs_test, runs_train, norm)
+
+        elif norm == 'Detrend_Znorm':
+            X, y   = scale_data(data, train_id, runs_train, runs_train, norm)
+            Xv, yv = scale_data(data, val_id, runs_val, runs_train, norm)
+            Xt, yt = scale_data(data, test_id, runs_test, runs_train, norm)
+
+        X_c, y_c, X_v, y_v, X_t, y_t = concat_data((X, y), (Xv, yv), (Xt, yt))
+
+        print("Final X Train data shape", X_c.shape)
+        print("Final y Train data shape ", y_c.shape)
+        print("Final X Val data shape", X_v.shape)
+        print("Final y Val data shape ", y_v.shape)
+        print("Final X Test data shape", X_t.shape)
+        print("Final y Test data shape ", y_t.shape)
+
+        return X_c, y_c, X_v, y_v, X_t, y_t  # Data ready for SVM
+
+    else:
+        print("Crossvalidation already completed, do not need validation set.")
+        if norm == "RUNS":
+            X, y   = scale_data(data, train_id, runs_train, False, norm)
+            Xt, yt = scale_data(data, test_id, runs_test, False, norm)
+
+        elif norm == "SUBJECT":
+            print("In order to use SUBJECT NORMALIZATION, be sure Train, Val, Test sets")
+            print("All have the same subject IDs, and are using data from separate runs.")
+            X, y   = scale_data(data, train_id, runs_train, runs_train, norm)
+            Xt, yt = scale_data(data, test_id, runs_test, runs_train, norm)
+
+        elif norm == 'Detrend_Znorm':
+            X, y   = scale_data(data, train_id, runs_train, runs_train, norm)
+            Xt, yt = scale_data(data, test_id, runs_test, runs_train, norm)
+
+        X_c, y_c, X_t, y_t = concat_data((X, y), False, (Xt, yt))
 
 
     print( "Final X Train data shape", X_c.shape)
     print( "Final y Train data shape ", y_c.shape)
-    print( "Final X Val data shape", X_v.shape)
-    print( "Final y Val data shape ", y_v.shape)
     print( "Final X Test data shape", X_t.shape)
     print( "Final y Test data shape ", y_t.shape)
 
-    return X_c , y_c, X_v, y_v, X_t, y_t # Data ready for SVM
+    return X_c , y_c, X_t, y_t # Data ready for SVM
 
 
 
 
 
 
-def scale_data(data, sub_ids, run, train_run, norm):
+def scale_data(data, sub_ids, runs, train_run, norm):
     """
     data      : (52 subject data, keys as subject ID for frmi data or labels)
     sub_ids   : (list of string ID names)
@@ -190,21 +226,47 @@ def scale_data(data, sub_ids, run, train_run, norm):
 
     for id_ in sub_ids:
         if norm == "RUNS":
-            if len(run) > 0:
-                for runs in run:
-                    x = scaler.fit_transform(data[id_][runs])
+            if len(runs) > 0:
+                print("znormalizing the data using standard scaler...")
+                for run in runs:
+                    x = scaler.fit_transform(data[id_][run])
                     X.append(x)
-                    y.append(data[f"{id_}_rt_labels"][runs])
+                    y.append(data[f"{id_}_rt_labels"][run])
             else:
-                x = scaler.fit_transform(data[id_][run])
+                x = scaler.fit_transform(data[id_][runs])
                 X.append(x)
-                y.append(data[f"{id_}_rt_labels"][run])
+                y.append(data[f"{id_}_rt_labels"][runs])
 
         elif norm == "SUBJECT":
             scaler.fit(data[id_][train_run])  # we want our data to be fit on the training data
-            x = scaler.transform(data[id_][run])  # transform on the actual data
+            x = scaler.transform(data[id_][runs])  # transform on the actual data
             X.append(x)
-            y.append(data[f"{id_}_rt_labels"][run])
+            y.append(data[f"{id_}_rt_labels"][runs])
+
+        elif norm == 'Detrend_Znorm':
+            if len(runs) > 0:
+                print("Detrending and znormalizing the data...")
+                for run in runs:
+                    x = clean(data[id_][run],
+                              standardize='zscore',
+                              detrend=True,
+                              filter=False,
+                              standardize_confounds=False
+                              )
+                    X.append(x)
+                    y.append(data[f"{id_}_rt_labels"][run])
+
+            else:
+                clean(data[id_][runs],
+                      standardize='zscore',
+                      detrend=True,
+                      filter=False,
+                      standardize_confounds=False
+                      )
+                X.append(x)
+                y.append(data[f"{id_}_rt_labels"][runs])
+
+
 
     return X, y
 
@@ -251,7 +313,7 @@ def labels_mask_binary(label_data_path, label_type='rt_labels'):
 
 
 
-def masking_data(subject, mask, mask_labels, binary_labels, do_norm):
+def masking_data(subject, mask, mask_labels, binary_labels):
     """
 
 
@@ -264,10 +326,6 @@ def masking_data(subject, mask, mask_labels, binary_labels, do_norm):
         array = subject[user_key]
         array_masked = array[:, mask]
         array_masked = array_masked[mask_labels]
-
-        # Percent Signal Change normalization
-        if do_norm:
-            array_masked = clean(array_masked, standardize='psc')
 
         arr.append(array_masked)
         label_arr.append(binary_labels)

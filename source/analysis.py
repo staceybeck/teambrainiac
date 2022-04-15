@@ -75,7 +75,7 @@ def get_threshold_image(bmap3, score_percentile, image_intensity):
 
 
 
-def metrics(clf, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type):
+def metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type):
     """
 
     :param clf:
@@ -90,33 +90,45 @@ def metrics(clf, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type):
     :return:
     """
     metrics_dict = defaultdict(list)
+    if X_v != False:
+        # Validation metrics
+        print("Predicting on Validation set...")
+        yval_pred = clf.predict(X_v)
+        yval_probs = clf.predict_proba(X_v)[:, 1]
+        val_acc = accuracy_score(y_v, yval_pred)
+        yval_defunc = clf.decision_function(X_v)
+        print("Validation Accuracy:", val_acc)
 
-    # Validation metrics
-    print("Predicting on Validation set...")
-    yval_pred = clf.predict(X_v)
-    yval_probs = clf.predict_proba(X_v)[:, 1]
-    val_acc = accuracy_score(y_v, yval_pred)
-    print("Validation Accuracy:", val_acc)
+        #Initialize dict w/ data
+        metrics_dict['model'].append(clf)
+        metrics_dict['X_train'].append(X)
+        metrics_dict["y_train"].append(y)
+        metrics_dict['val_dfnc'].append(yval_defunc)
+        metrics_dict['val_preds'].append(yval_pred)
+        metrics_dict['val_probs'].append(yval_probs)
+        metrics_dict['val_acc'].append(val_acc)
+        metrics_dict['y_v'].append(y_v)
 
     # Test Metrics
     print("Predicting on Test set...")
     ytest_pred = clf.predict(X_t)
     ytest_probs = clf.predict_proba(X_t)[:, 1]
+    ytest_defunc = clf.decision_function(X_t)
     test_acc = accuracy_score(y_t, ytest_pred)
     print("Test Accuracy:", test_acc)
 
     #Store metrics in dictionary
-    metrics_dict['val_preds'].append(yval_pred)
-    metrics_dict['val_probs'].append(yval_probs)
-    metrics_dict['val_acc'].append(val_acc)
+    metrics_dict['model'].append(clf)
+    metrics_dict['X_train'].append(X)
+    metrics_dict["y_train"].append(y)
     metrics_dict['test_preds'].append(ytest_pred)
     metrics_dict['test_probs'].append(ytest_probs)
     metrics_dict['test_acc'].append(test_acc)
-    metrics_dict['y_v'].append(y_v)
+    metrics_dict['test_dfunc'].append(ytest_defunc)
     metrics_dict['y_t'].append(y_t)
 
-    model_name = f"{data_type}_{runs_id}_{mask_type}_metrics"
-    # Save metrics
+    model_name = f"{data_type}_{runs_id}_{mask_type}_model_metrics"
+    # Save metrics and model
     s3_upload(metrics_dict, f"metrics/group_svm/{mask_type}/%s.pkl" % model_name, 'pickle')
 
 
@@ -141,4 +153,4 @@ def metrics(clf, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type):
         print(f"Classification report for {mask_type} {report}")
         print(classification_report(y_v, yval_pred))
 
-    return True
+    return metrics_dict

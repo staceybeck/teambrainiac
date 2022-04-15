@@ -20,6 +20,7 @@ from sklearn.exceptions import ConvergenceWarning
 import warnings
 import tqdm
 from access_data import s3_upload
+from collections import defaultdict
 
 
 
@@ -42,18 +43,25 @@ def time_series_cv(X, y, max_train, test_size, splits, gd_srch, param_dict, file
     it = 0
 
     if gd_srch == True:
-        clf = SVC(random_state = 42, class_weight = 'balanced')
-        param_search = param_dict
-        grid = HalvingGridSearchCV(estimator= clf,
-                                   cv = tscv,
-                                   param_grid = param_search)
-        grid.fit(X, y)
-        print("Uploading gridsearch results to cloud...")
-        grid_dict = grid.cv_results_
-        s3_upload(grid_dict, file_name, 'pickle')
-        print("Best parameters: ", grid.best_params_)
-        print('Best estimator: ', grid.best_estimator_)
-        print("Best score: ", grid.best_score_)
+        grid_dict = defaultdict(list)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=ConvergenceWarning)
+            clf = SVC(random_state = 42,
+                      class_weight = 'balanced'
+                      )
+
+            param_search = param_dict
+            grid = HalvingGridSearchCV(estimator= clf,
+                                       cv = tscv,
+                                       param_grid = param_search)
+            grid.fit(X, y)
+            print("Uploading gridsearch results to cloud...")
+            grid_dict['grid_search'].append(grid.cv_results_)
+            s3_upload(grid_dict, file_name, 'pickle')
+            print("Best parameters: ", grid.best_params_)
+            print('Best estimator: ', grid.best_estimator_)
+            print("Best score: ", grid.best_score_)
+            print("CV results: ", grid.cv_results_)
 
     else:
 
