@@ -44,7 +44,7 @@ def data_for_cv(data, group_sub_ids, runs_train, runs_test, norm):
     if len(runs_train) > 0:
         if len(group_sub_ids) == 2:
             X, y = scale_data(data, group_sub_ids[0], runs_train, runs_train, norm)
-            Xt, yt = scale_data(data, group_sub_ids[1], runs_train, runs_train, norm)
+            Xt, yt = scale_data(data, group_sub_ids[1], runs_test, runs_test, norm)
     else:
         # Get X data from dictionary
         for id_ in group_sub_ids:
@@ -66,6 +66,23 @@ def data_for_cv(data, group_sub_ids, runs_train, runs_test, norm):
 
                 tst = scalar.transform(data[id_][runs_test])
                 Xt.append(tst)
+
+            elif norm == 'Detrend_Znorm':
+                x = clean(data[id_][runs_train],
+                          standardize='zscore',
+                          detrend=True,
+                          filter=False,
+                          standardize_confounds=False
+                          )
+
+                xt = clean(data[id_][runs_test],
+                          standardize='zscore',
+                          detrend=True,
+                          filter=False,
+                          standardize_confounds=False
+                          )
+                X.append(x)
+                Xt.append(xt)
 
             else:
                 X.append(data[id_][runs_train])
