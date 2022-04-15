@@ -85,6 +85,49 @@ def load_subjects_chronologically(data_path_dict, n_subjects, image_label_mask, 
 
 
 
+def load_subjects_by_id(data_path_dict, subject_ids, image_label_mask, image_labels, label_type='rt_labels', runs=[2, 3]):
+  '''
+    Function to load subject data. This deletes images with no labels and returns only the runs of interest for each subject.
+    Params:
+      data_path_dict  : dictionary containing information on how to access data
+      subject_ids     : list of subjects to load by ids
+      image_label_mask: a mask indicating whether a binary label exists for each image in a run
+      image_labels    : binary labels indicating whether a subject was up or down regulating 
+      label_type      : the type of label to return from the labels file in AWS 
+      runs            : a list of runs to return from each subject
+    returns: dictionary of users and their runs
+  '''
+  # Load subject Ids
+  path_indicies = []
+  for id in subject_ids:
+    for i,path in enumerate(data_path_dict['subject_data']):
+      if id in path.split('/'):
+        path_indicies.append(i)
+  
+  subject_paths = []
+  for index in path_indicies:
+    subject_paths.append(data_path_dict['subject_data'][index])
+  subjects = {}
+
+  print('Subject ids loaded.\nAdding subjects to dictionary.')
+  
+  for path,id in tqdm.tqdm(zip(subject_paths, subject_ids)):
+    subject_dict = {}
+    data = access_load_data(path,True)
+    subject_dict['image_labels'] = image_labels
+
+    for run in runs:
+      run_key = 'run_0' + str(run) + '_vec'
+      run_masked = data[run_key][image_label_mask]
+      subject_dict['run_'+str(run)] = run_masked
+    
+    subjects[id] = subject_dict
+  
+  return subjects
+
+
+
+
 
 
 def mask_normalize_runs_reshape_4d(subject_dict, mask, scaler='standard'):
