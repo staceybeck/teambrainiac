@@ -13,17 +13,20 @@ Authors:
 
 ### Connect to Dockerfile 
 #### build 
-docker build -t test_container .
+    docker build -t test_container .
 
 #### run
-docker run -p 80:80 -v ~/path/teambrainiac:/source test_container
+    docker run -p 80:80 -v ~/path/teambrainiac:/source test_container
 
 * specify your path where 'path'
 
 ### Install packages locally
 
---RUN:
-- pip install boto3 nibabel nilearn
+#### run:
+    !pip install boto3 nibabel nilearn
+    
+#### For Streamlit app
+    
 
 ### Data in AWS:
 - all_data_dictionary.pkl         : whole brain masked, rt_label filtered, UNNORMALIZED 2d numpy data for all subjects
