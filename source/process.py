@@ -337,7 +337,7 @@ def masking_data(subject, mask, mask_labels, binary_labels):
 
 
 
-def masked_data_n_labels(mask_type, label_type, path_dict, do_norm, m_path_ind, l_path_ind):
+def masked_data_n_labels(mask_type, label_type, path_dict, m_path_ind, l_path_ind):
     """
     mask_type: String for type of mask we want
     label_type: String for which labels we want
@@ -367,7 +367,7 @@ def masked_data_n_labels(mask_type, label_type, path_dict, do_norm, m_path_ind, 
         sub_id = val
         sub_path = path_dict['subject_data'][ind]
         subject = access_load_data(sub_path, True)
-        user_data_dict[sub_id], bi_lb = masking_data(subject, mask, mask_labels_indices, binary_labels, do_norm)
+        user_data_dict[sub_id], bi_lb = masking_data(subject, mask, mask_labels_indices, binary_labels)
         user_data_dict[f"{sub_id}_{label_type}"] = bi_lb
 
     return user_data_dict
