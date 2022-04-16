@@ -152,6 +152,8 @@ def metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type):
                                               "f1-score": class_report["accuracy"],
                                               "support": class_report['macro avg']['support']}})
             df = pd.DataFrame(class_report).T
+            print(f"Classification report for {mask_type} {report}")
+            print(classification_report(y_v, yval_pred))
 
         elif report == 'test_classreport':
             class_report = classification_report(y_t, ytest_pred, output_dict=True)
@@ -159,9 +161,9 @@ def metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type):
                                               "f1-score": class_report["accuracy"],
                                               "support": class_report['macro avg']['support']}})
             df = pd.DataFrame(class_report).T
+            print(f"Classification report for {mask_type} {report}")
+            print(classification_report(y_t, ytest_pred))
 
         s3_upload(df, f"metrics/group_svm/{mask_type}/{data_type}_model_{runs_id}_{mask_type}_{report}.csv", "csv")
-        print(f"Classification report for {mask_type} {report}")
-        print(classification_report(y_v, yval_pred))
 
     return metrics_dict
