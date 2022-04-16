@@ -42,7 +42,13 @@ def run_grp_svm_model(data, mask_type, group_sub_ids, runs_train, runs_val, runs
 
         runs_id = [i + 1 for i in runs_train]
 
-        clf = SVC(C=10.0, class_weight='balanced', max_iter=1000, random_state=42, probability = True)
+        clf = SVC(C=10.0,
+                  class_weight='balanced',
+                  max_iter=1000,
+                  random_state=42,
+                  probability = True,
+                  gamma = 'auto'
+                  )
         print(f"Fitting the model for {mask_type}...")
         clf.fit(X, y)
 
@@ -53,7 +59,13 @@ def run_grp_svm_model(data, mask_type, group_sub_ids, runs_train, runs_val, runs
 
         runs_id = [i + 1 for i in runs_train]
 
-        clf = SVC(C=10.0, class_weight='balanced', max_iter=1000, random_state=42, probability=True)
+        clf = SVC(C=10.0,
+                  class_weight='balanced',
+                  max_iter=1000,
+                  random_state=42,
+                  probability=True,
+                  gamma = 'auto'
+                  )
         print(f"Fitting the model for {mask_type}...")
         clf.fit(X, y)
 
