@@ -161,7 +161,7 @@ def transform_data(data, group_sub_ids, runs_train, runs_val, runs_test, norm):
     if norm == "RUNS":
         print(f"Normalizing Each based on {norm}...")
     elif norm == "Detrend_Znorm":
-        print("Data already detrended and znorm scaled by columns per run...")
+        print("Data will be detrended and znorm scaled by columns per run...")
 
     if runs_val != False:
         print(f"Running with a validation set...")
