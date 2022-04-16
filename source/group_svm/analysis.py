@@ -140,7 +140,11 @@ def metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type):
 
 
     # Save metrics for individual masks
-    type_report = ['validation_classreport', 'test_classreport']
+    if X_v != False:
+        type_report = ['validation_classreport', 'test_classreport']
+    else:
+        type_report = ['test_classreport']
+
     for report in type_report:
         if report == 'validation_classreport':
             class_report = classification_report(y_v, yval_pred, output_dict=True)
