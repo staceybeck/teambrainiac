@@ -86,7 +86,7 @@ def make_mask(np_array_mask):
   mask = np.ma.make_mask(np_array_mask).reshape(79*95*79,order='F')
   return mask
 
-def mask_data(data,mask,mask_labels_indices):
+def mask_subject_data(data,mask,mask_labels_indices):
   """
     Function to mask user data to mask out voxels we don't want
     Params:
