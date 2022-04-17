@@ -173,7 +173,7 @@ def get_predicts(clf,data,runs_test):
                                                   
   return predictions_dict
 
-def run_single_subject_svm(data,runs_train,train_labels,svc_kernel='rbf',svc_c=1,do_cv=False,params={}):
+def run_single_subject_svm(data,runs_train,train_labels,svc_kernel='rbf',svc_gamma='scale',svc_c=1,do_cv=False,params={}):
   """
     Function to run cross-validation or single subject SVM
     Params:
@@ -209,7 +209,7 @@ def run_single_subject_svm(data,runs_train,train_labels,svc_kernel='rbf',svc_c=1
     clf.fit(X_train,y_train)
     return clf
   else:
-    clf = SVC(C=svc_c,kernel=svc_kernel,probability=True)
+    clf = SVC(C=svc_c,kernel=svc_kernel,gamma=svc_gamma,probability=True)
     clf.fit(X_train,y_train)
   return clf,X_train,y_train
 
