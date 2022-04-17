@@ -59,7 +59,7 @@ def run_grp_svm_model(data, mask_type, group_sub_ids, runs_train, runs_val, runs
 
         runs_id = [i + 1 for i in runs_train]
 
-        clf = SVC(C = 0.03, #C=10.0,
+        clf = SVC(C=10.0,
                   class_weight='balanced',
                   max_iter=1000,
                   random_state=42,
