@@ -97,7 +97,7 @@ def mask_subject_data(data,mask,mask_labels_indices):
   """
   user_data_dict = {} #create empty dict
   arr = []
-  for i in tqdm.tqdm(range(4)):
+  for i in range(4):
       user_key = 'run_0' + str(i+1) + '_vec'
       array = data[user_key]
       array_masked = array[:, mask]
