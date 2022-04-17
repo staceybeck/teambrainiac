@@ -7,7 +7,6 @@
 # @IDE:         PyCharm
 
 # Import libraries
-!pip install boto3 nilearn nibabel
 #to load data
 import pickle
 #common packages we need
