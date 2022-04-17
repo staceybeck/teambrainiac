@@ -6,6 +6,30 @@ Authors:
 - Benjamin Merrill
 - Mary Soules
 
+## Repository Organization
+    ├── Dockerfile          <- Details to build and run docker
+    ├── requirements.txt    <- Details of installed dependencies
+    ├── README.md           <- This README file
+    ├── .gitignore          <- Specifies files ignored by git
+    |
+    └── source/
+    |    ├── streamlit/
+    |    |    └──                        <- Contains landing_page.py app
+    |    ├── helper/
+    |    |    └──                        <- Contains modules and Jupyter Notebooks from early project exploration
+    |    ├── group_svm/                  <- Also includes notebooks to demonstrate directory modules
+    |    |    └── access_data.py         <- Connect to AWS, uploads and downloads data
+    |    |    └── analysis.py            <- Collects metrics from models and saves data, uploading to AWS
+    |    |    └── cross_validation.py    <- Partitions data using TimeSeries package from Sklearn for cross validation and gridsearch
+    |    |    └── dataframes.py          <- May want to rid of this file
+    |    |    └── process.py             <- Processes the data from MATLAB further, organizes data for model training
+    |    |    └── train.py               <- Training file for SVM using Train, Validation, Test or Train and Test sets
+    |    |    └── visualize.py           <- Code to visualize certain plots using Nilearn as well as normalization exploration
+    |    └── data   
+    |    |    └──                        <- Contains data needed to be accessed within /source. Data dictionary, and T1 images for visualization 
+    |    ├── DL/
+    |    |    └──                        <- Deep Learning folder containing modules and notebook to run 3D-CNN from AWS to analysis
+ 
 ## Environment Set-up
 
 - requires path_config.py to access data from cloud storage
@@ -25,8 +49,29 @@ Authors:
 #### run:
     !pip install boto3 nibabel nilearn
     
-#### For Streamlit app
-    
+### For Streamlit app
+    Streamlit's prerequisites:
+        - IDE or text editor
+        - Python 3.7 - Python 3.9
+        - PIP
+        
+#### macOS/Linux:
+        sudo easy_install pip
+        
+        pip3 install pipenv
+        
+        pipenv shell
+        
+        pipenv install streamlit
+        
+#### Run app in repo:
+        pipenv shell
+        
+        streamlit run landing_page.py
+        
+#### To generally view the app in browser:
+        https://share.streamlit.io/[user name]/[repo name]
+        
 
 ### Data in AWS:
 - all_data_dictionary.pkl         : whole brain masked, rt_label filtered, UNNORMALIZED 2d numpy data for all subjects
