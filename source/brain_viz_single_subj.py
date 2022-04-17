@@ -83,7 +83,7 @@ def create_bmaps(data,indices_mask,image):
   bmap3 = nib.Nifti1Image(bmap2_3d,affine=image.affine,header=image.header) #save as nifti
   return bmap2,bmap3
 
-def plot_map(bmap3_nifti,norm_type,subject_type,out_fname=None,threshold=.0001):
+def plot_map(bmap3_nifti,norm_type,subject_type,out_fname=None,threshold=.0001,t_image=None):
   """
     Function to plot beta map images from SVM models will either display image or save it to destination
     Params:
@@ -94,6 +94,7 @@ def plot_map(bmap3_nifti,norm_type,subject_type,out_fname=None,threshold=.0001):
       threshold: str or float: threshold for images, if voxel is less than threshold, it will not be shown
                                if want to see whole-voxel activation set to very low number as above
                                Nilearn plot_img documentation: https://nilearn.github.io/modules/generated/nilearn.plotting.plot_img.html
+      t_image: nifti image to display in background, if none, displays none.
   """
   disp_image = None ##set image to nothing
   disp_image = bmap3_nifti ##set image to bmap3
@@ -101,9 +102,9 @@ def plot_map(bmap3_nifti,norm_type,subject_type,out_fname=None,threshold=.0001):
   
   if out_fname!=None: #if outfname specified
     output_file_name = f'{out_fname}{norm_type}_{subject_type}.png'
-    disply = plotting.plot_img(disp_image, bg_img = mni_image, display_mode='z', cut_coords=(-35,-20,0,20,35,50,65,70), threshold=threshold,
+    disply = plotting.plot_img(disp_image, bg_img = t_image, display_mode='z', cut_coords=(-35,-20,0,20,35,50,65,70), threshold=threshold,
                           output_file=output_file_name, colorbar=True,cmap='cold_white_hot',black_bg=False)
   else:
-    display = plotting.plot_img(disp_image, bg_img = mni_image, display_mode='z', cut_coords=(-35,-20,0,20,35,50,65,70),threshold=threshold,
+    display = plotting.plot_img(disp_image, bg_img = t_image, display_mode='z', cut_coords=(-35,-20,0,20,35,50,65,70),threshold=threshold,
                            colorbar=True,cmap='cold_white_hot',black_bg=False)
     display.title(title_str, x=0.01, y=0.99, size=15, color='w', bgcolor='black')
