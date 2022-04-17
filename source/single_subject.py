@@ -24,11 +24,11 @@ import pandas as pd
 #import nilearn clean for processing data
 from nilearn.signal import clean
 
-def get_data_dict(path):
+def get_data_dict(path='data/data_path_dictionary.pkl'):
   """
     Function to get data path dict
       params:
-        path : str: path to data path dictionary
+        path : str: path to data path dictionary set default to our data path dictionary
       returns: dictionary of data paths
   """
   data_path_dict = open_pickle(path)
@@ -97,7 +97,7 @@ def mask_subject_data(data,mask,mask_labels_indices):
   """
   user_data_dict = {} #create empty dict
   arr = []
-  for i in tqdm.tqdm(range(4)):
+  for i in range(4):
       user_key = 'run_0' + str(i+1) + '_vec'
       array = data[user_key]
       array_masked = array[:, mask]
@@ -105,26 +105,25 @@ def mask_subject_data(data,mask,mask_labels_indices):
       arr.append(array_masked)
   user_data_dict['data'] = arr
   return user_data_dict
-def scale_data_single_subj(sub_data,train_runs,test_runs,norm='none'):
+
+
+def scale_data_single_subj(sub_data,runs_list,norm='none'):
   """
     Function to scale data.
     Params:
       sub_data     : (1 subject data, keys as subject ID for frmi data or labels)
-      sub_id       : subject id  of subject we are normalizing for
-      runs_test    : tuple, (which run are we using for the test data)
-      norm         : list, ("RUNS": normalizing separately on each run;
-                              "SUBJECT": Normalizing separately by each subject)
+      runs_list    : list, (which runs are we normalizing on)
+      norm         : list, (which type of normalization)
     returns      : dictionary of nd.arrays, Concatenated X data of (time points, x*y*z) x = 79, y = 95, z = 75
-                    and Concatenated y labels of (time points,)
+                  
     """
   ##run standardization
   ##initialize empty dictionary
   normalized_runs = {}
-  #iterate over runs and perform cleaning
   for run in runs_list:
     run_name = user_key = 'run_0' + str(run) 
     run_data = sub_data['data'][run-1]
-    if norm=='none': #if none, don't standardize
+    if norm=='none':
       normalized_runs[run_name] = clean(run_data,detrend=True,standardize=False,filter=False,standardize_confounds=False)
     else:
       normalized_runs[run_name] = clean(run_data,detrend=True,standardize=norm,filter=False,standardize_confounds=False)
