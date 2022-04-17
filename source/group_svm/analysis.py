@@ -7,7 +7,8 @@
 # @IDE:         PyCharm
 
 
-from access_data import s3_upload, open_pickle
+#from access_data import s3_upload, open_pickle, load_mask_indices, access_load_data
+from access_data import *
 import numpy as np
 import pandas as pd
 import nibabel as nib
