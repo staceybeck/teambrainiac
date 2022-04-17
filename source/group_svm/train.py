@@ -24,7 +24,7 @@ from analysis import metrics
 
 
 
-def run_grp_svm_model(data, mask_type, group_sub_ids, runs_train, runs_val, runs_test, norm, data_type):
+def run_grp_svm_model(data, mask_type, group_sub_ids, runs_train, runs_val, runs_test, norm, data_type, m_path_ind):
     """
 
     :param data:
@@ -53,7 +53,7 @@ def run_grp_svm_model(data, mask_type, group_sub_ids, runs_train, runs_val, runs
         clf.fit(X, y)
 
         # Calculate metrics
-        metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type)
+        metrics_data = metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type, m_path_ind)
     else:
         X, y, X_t, y_t = transform_data(data, group_sub_ids, runs_train, runs_val, runs_test, norm)
 
@@ -71,8 +71,8 @@ def run_grp_svm_model(data, mask_type, group_sub_ids, runs_train, runs_val, runs
         clf.fit(X, y)
 
         # Calculate metrics
-        metrics(clf, X, y, False, False, X_t, y_t, data_type, runs_id, mask_type)
+        metrics_data = metrics(clf, X, y, False, False, X_t, y_t, data_type, runs_id, mask_type, m_path_ind)
 
 
-    # Return X train and clf for visualization
-    return True
+    # Return metrics data
+    return metrics_data

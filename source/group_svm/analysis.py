@@ -7,7 +7,7 @@
 # @IDE:         PyCharm
 
 
-from access_data import s3_upload
+from access_data import s3_upload, open_pickle
 import numpy as np
 import pandas as pd
 import nibabel as nib
@@ -46,7 +46,7 @@ def create_bmaps(clf, X, indices_mask, image):
 
     bmap3 = nib.Nifti1Image(bmap2_3, affine=image.affine, header=image.header)
 
-    return bmap3, bmap2_3, alphas1
+    return bmap3, bmap2_3, alphas1, bmap
 
 
 
@@ -75,7 +75,7 @@ def get_threshold_image(bmap3, score_percentile, image_intensity):
 
 
 
-def metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type):
+def metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type, m_path_ind):
     """
 
     :param clf:
@@ -119,9 +119,28 @@ def metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type):
     test_acc = accuracy_score(y_t, ytest_pred)
     print("Test Accuracy:", test_acc)
 
+    # Get Bmaps
+    # Load in the mask indices to create bmaps
+    # open path dictionary file to get subject ids
+    print("opening data dictionary to make bmaps...")
+    dict_path = "data/data_path_dictionary.pkl"
+    data_path_dict = open_pickle(dict_path)
+    indices_mask = load_mask_indices(data_path_dict, mask_type, m_path_ind)
+
+    print("creating bmaps...")
+    affine_image = access_load_data('w3rtprun_01.nii', False)
+    bmap3, bmap2_3, alphas1, bmap = create_bmaps(clf, X, indices_mask, affine_image)
+
+
     #Store metrics in dictionary
     model_dict['model'].append(clf)
     model_dict['X_train'].append(X)
+
+    metrics_dict["bmap3"].append(bmap3)
+    metrics_dict['bmap2_3'].append(bmap2_3)
+    metrics_dict['alphas1'].append(alphas1)
+    metrics_dict['bmap'].append(bmap)
+
     metrics_dict["y_train"].append(y)
     metrics_dict['test_preds'].append(ytest_pred)
     metrics_dict['test_probs'].append(ytest_probs.astype(np.float32))
@@ -131,12 +150,18 @@ def metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type):
 
     # File paths
     metrics_name = f"{data_type}_{runs_id}_{mask_type}_metrics"
-    model_name = f"{data_type}_{runs_id}_{mask_type}_X_model"
+    #model_name = f"{data_type}_{runs_id}_{mask_type}_X_model"
 
     # Save metrics and model
     s3_upload(metrics_dict, f"metrics/group_svm/{mask_type}/%s.pkl" % metrics_name, 'pickle')
     # Save model
-    s3_upload(model_dict, "models/group/%s.pkl" % model_name, 'pickle')
+    #s3_upload(model_dict, "models/group/%s.pkl" % model_name, 'pickle')
+
+    # Save locally
+    df = pd.DataFrame(metrics_name)
+    df.to_pickle(f'/content/gdrive/MyDrive/{data_type}_{mask_type}_df.pkl', protocol=4)
+    df = 0
+    print("Uploading to cloud and local computer complete")
 
 
     # Save metrics for individual masks
