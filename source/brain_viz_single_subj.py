@@ -18,7 +18,6 @@ from nilearn import plotting, image
 #for making graphs
 from ipywidgets import interact, interactive, IntSlider, ToggleButtons
 import matplotlib.pyplot as plt
-%matplotlib inline
 import seaborn as sns
 from nilearn.image import threshold_img
 #sklearn packages needed
