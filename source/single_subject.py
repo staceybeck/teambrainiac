@@ -24,11 +24,11 @@ import pandas as pd
 #import nilearn clean for processing data
 from nilearn.signal import clean
 
-def get_data_dict(path):
+def get_data_dict(path='data/data_path_dictionary.pkl'):
   """
     Function to get data path dict
       params:
-        path : str: path to data path dictionary
+        path : str: path to data path dictionary set default to our data path dictionary
       returns: dictionary of data paths
   """
   data_path_dict = open_pickle(path)
