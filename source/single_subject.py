@@ -168,8 +168,8 @@ def get_predicts(clf,data,runs_test):
   for runs in runs_test: 
     predictions_dict[runs] = {}
     predictions_dict[runs]['predicts'] = clf.predict(data[runs])
-    predictions_dict[runs]['proba'] = clf.proba(data[runs])
-    predictions_dict[runs]['decision_function'] = clf.decision_function[runs]
+    predictions_dict[runs]['proba'] = clf.predict_proba(data[runs])
+    predictions_dict[runs]['decision_function'] = clf.decision_function(data[runs])
 
                                                   
   return predictions_dict
