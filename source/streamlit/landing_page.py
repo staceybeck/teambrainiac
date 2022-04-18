@@ -62,7 +62,7 @@ if st.session_state.page_select == 'Brain Images':
             source_code = HtmlFile.read()
             print(source_code)
             components.html(source_code, height=250)
-            st.write("This is an interactive brain map showing the Medial Prefrontal Cortex (mPFC) - an area of the brain researchers"
+            st.write("This is an interactive brain map showing the Medial Prefrontal Cortex (mPFC) - an area of the brain researchers "
                      "know to be involved in the impulse-reward system. In our Young Adult model, we can see there are large areas"
                      "of the mPFC that are down-regulating, meaning an decrease in activation during the impulse-reward task that"
                      "the subjects are performing in while in the MR machine.")
@@ -74,7 +74,7 @@ if st.session_state.page_select == 'Brain Images':
             print(source_code)
             components.html(source_code, height=250)
             st.write(
-                "This is an interactive brain map showing the Nucleus Accumbens (NAcc)- an area of the brain researchers"
+                "This is an interactive brain map showing the Nucleus Accumbens (NAcc)- an area of the brain researchers "
                 "know to be involved in the impulse-reward system. In our Young Adult model, we can see there are large areas"
                 "of the NAcc that are up-regulating, meaning there is an increase in activation during the impulse-reward "
                 "task that the subjects are performing in while in the MR machine.")
