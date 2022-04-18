@@ -84,6 +84,7 @@ def make_mask(np_array_mask):
   #np_array_mask = mask_data[mask_type] #get the mask array
   #create a 1-D array for the mask. Important to use Fourier Transformation as we are working in brain space!
   mask = np.ma.make_mask(np_array_mask).reshape(79*95*79,order='F')
+  ind = np.where(mask==True)
   return mask
 
 def mask_subject_data(data,mask,mask_labels_indices):
