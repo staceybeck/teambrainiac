@@ -81,35 +81,35 @@ if st.session_state.page_select == 'Chart Metrics':
     def get_html(value):
         # print(value)
         if value == 0:
-            HtmlFile = open("YA_dtrnd_ZSCORE_normvid.html", 'r',
+            HtmlFile = open("/app/teambrainiac/source/streamlit/YA_dtrnd_ZSCORE_normvid.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
             components.html(source_code, height=500)
 
         if value == 1:
-            HtmlFile = open("YA_dtrnd_psc_normvid.html", 'r',
+            HtmlFile = open("/app/teambrainiac/source/streamlit/YA_dtrnd_psc_normvid.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
             components.html(source_code, height=500)
 
         if value == 2:
-            HtmlFile = open("YA_dtrnd_Unorm_mvid.html", 'r',
+            HtmlFile = open("/app/teambrainiac/source/streamlit/YA_dtrnd_Unorm_mvid.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
             components.html(source_code, height=500)
 
         if value == 3:
-            HtmlFile = open("ADdtrnd_ZSCORE_normvid.html", 'r',
+            HtmlFile = open("/app/teambrainiac/source/streamlit/ADdtrnd_ZSCORE_normvid.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
             components.html(source_code, height=500)
 
         if value == 4:
-            HtmlFile = open("ADdtrndpscnormvid.html", 'r',
+            HtmlFile = open("/app/teambrainiac/source/streamlit/ADdtrndpscnormvid.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
