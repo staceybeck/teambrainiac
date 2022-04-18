@@ -16,7 +16,7 @@ boto3 = "*"
 nitime = "*"
 nilearn = "*"
 streamlit = "*"
-importlib-resources = {version = "*", markers = "python_version < '3.7'"}
+importlib-resources = {version = "*", markers = "python_version >= '3.7'"}
 [dev-packages]
 
 [requires]
