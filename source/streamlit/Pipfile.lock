@@ -373,6 +373,14 @@
             "markers": "python_version >= '3.7'",
             "version": "==4.11.3"
         },
+        "importlib-resources":{
+            "hashes": [
+                "sha256:b6062987dfc51f0fcb809187cffbd60f35df7acb4589091f154214af6d0d49d3",
+                "sha256:e447dc01619b1e951286f3929be820029d48c75eb25d265c28b92a16548212b8"
+            ],
+            "markers": "python_version >= '3.7'",
+            "version": "==5.7.1"
+        }
         "ipykernel": {
             "hashes": [
                 "sha256:0e28273e290858393e86e152b104e5506a79c13d25b951ac6eca220051b4be60",
