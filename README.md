@@ -70,7 +70,7 @@ Authors:
         streamlit run landing_page.py
         
 #### To generally view the app in browser:
-        https://share.streamlit.io/[user name]/[repo name]
+        https://share.streamlit.io/yecatstevir/teambrainiac/main/source/streamlit/landing_page.py
         
 
 ### Data in AWS:
