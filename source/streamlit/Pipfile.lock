@@ -380,7 +380,7 @@
             ],
             "markers": "python_version >= '3.7'",
             "version": "==5.7.1"
-        }
+        },
         "ipykernel": {
             "hashes": [
                 "sha256:0e28273e290858393e86e152b104e5506a79c13d25b951ac6eca220051b4be60",
