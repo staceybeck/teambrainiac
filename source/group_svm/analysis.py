@@ -159,10 +159,10 @@ def metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type, m_path
     #s3_upload(model_dict, "models/group/%s.pkl" % model_name, 'pickle')
 
     # Save locally
-    df = pd.DataFrame(metrics_name)
-    df.to_pickle(f'/content/gdrive/MyDrive/{data_type}_{mask_type}_df.pkl', protocol=4)
-    df = 0
-    print("Uploading to cloud and local computer complete")
+    #df = pd.DataFrame(metrics_name)
+    #df.to_pickle(f'/content/gdrive/MyDrive/{data_type}_{mask_type}_df.pkl', protocol=4)
+    #df = 0
+    #print("Uploading to cloud and local computer complete")
 
 
     # Save metrics for individual masks
