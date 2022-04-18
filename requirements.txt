@@ -9,4 +9,5 @@ scipy
 boto3
 nitime
 nilearn
-
+numpy==1.22.3
+scipy==1.8.0

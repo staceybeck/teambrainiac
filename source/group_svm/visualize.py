@@ -5,76 +5,127 @@
 # @Time:        3/30/22 10:09 PM
 
 
-
-
-
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.preprocessing import StandardScaler
 from nilearn import plotting
+from nilearn.signal import clean
+import matplotlib.animation as animation
 
 
 
 
 
 
-def plot_dist_across_subjects(data, run, num_bins, sub_ids, data_norm, n_sub):
+def five_sub_ani(data1, title, save_path, n_sub):
+
+  number_of_frames = n_sub
+  data2 = np.array(data1)
+  num_bins = 1000
+
+  def update_hist(num, data2):
+      plt.cla()
+      plt.hist(data2[num],1000, facecolor='lightblue', log = True, range = (-.0000001, .0000001))
+
+  fig, axs = plt.subplots()
+  fig.set_figheight(5)
+  fig.set_figwidth(8)
+  fig.suptitle(title)
+  hist = axs.hist(data2[0], 1000, facecolor='lightblue', log = True, range = (-.0000001, .0000001))
+
+  ani = animation.FuncAnimation(fig,
+                                update_hist,
+                                number_of_frames,
+                                interval=500,
+                                fargs=(data2, )
+                                )
+
+  with open(save_path, "w") as f:
+    print(ani.to_html5_video(), file=f)
+
+  return ani
+
+
+
+
+
+
+def plot_dist_across_subjects(data, run, num_bins, sub_ids, norm, n_sub, data_type, detrend, plot_img):
   """
 
   :param data     : (dict: keys: 'string', values: nd.array) 52 subject data stored in a dictionary
   :param run      : (int) which run is being represented (out of 4) per subject
   :param num_bins : (int) how many bins to create for histogram
   :param sub_ids  : (string) represents the subject id
-  :param data_norm: (string) how do we want to represent our data. Options: 'PSC_ZNORM', 'Z-Normalized',
+  :param norm: (string) how do we want to represent our data. Options: 'PSC_ZNORM', 'Z-Normalized',
                     'Unnormalized', 'Percent Signal Change'
   :param n_sub    : (int) how many subjects do we want to look at
   :return         : Plots n_sub subplots representing n_sub subjects for specified run and type of represented data
-                    as defined by data_norm.
+                    as defined by norm.
   """
   small_set = []
   hist_sub_ids = sub_ids[:n_sub]
 
   # Choose time point 45
   for id_ in hist_sub_ids:
-    #print(data[id_][run][44:45,:].shape)
-    if (data_norm == "PSC_ZNORM") or (data_norm == "Z-Normalized"):
-      print(f"Running {data_norm}...")
-      scaler = StandardScaler()
-      d = scaler.fit_transform(data[id_][run])
-      small_set.append(d[44:45,:])
-    else:
-      print("not running PSC_ZNORM or ZNROM ALONE...")
-      small_set.append(data[id_][run][44:45,:])
+    # print(data[id_][run][44:45,:].shape)
+    if norm == "Z-score":
+      print(f"Running {norm}...")
+      x = clean(data[id_][run],
+                standardize='zscore',
+                detrend=detrend,
+                filter=False,
+                standardize_confounds=False
+                )
+      small_set.append(np.array(np.mean(x, axis=0)))  # Average the timepoints #d[44:45,:])
+    elif norm == "Percent Signal Change":
+      print(f"Running {norm}...")
+      x = clean(data[id_][run],
+                standardize='psc',
+                detrend=detrend,
+                filter=False,
+                standardize_confounds=False
+                )
+      small_set.append(np.array(np.mean(x, axis=0)))
+    elif norm == 'Unnormalized':
+      print("No Normalization...")
+      x = clean(data[id_][run],
+                standardize=False,
+                detrend=detrend,
+                filter=False,
+                standardize_confounds=False
+                )
+      small_set.append(np.array(np.mean(x, axis=0)))
+
+  if plot_img == False:
+    return small_set
+  else:
+    # Create subplots
+    fig, axs = plt.subplots(len(small_set[:n_sub]))
+    fig.set_figheight(20)
+    fig.set_figwidth(10)
+    fig.suptitle(f'\n\n\n\n\nDetrended {norm} Voxel Histogram')
+
+    for indx, arr in enumerate(small_set[:n_sub]):
+      if norm == "Z-score":
+        axs[indx].title.set_text(f"{data_type} Subject {indx + 1} Averaged Across Run {run + 1} Timepoints")
+        axs[indx].hist(arr, num_bins, facecolor='lightblue', log=True, range=(-.0000001, .0000001))  # removed outliers
+      elif norm == "Percent Signal Change":
+        axs[indx].title.set_text(f"{data_type} Subject {indx + 1} Averaged Across Run {run + 1} Timepoints")
+        axs[indx].hist(arr, num_bins, facecolor='lightblue', log=True, range=(-.0000001, .0000001))  # removed outliers
+      elif norm == 'Unnormalized':
+        axs[indx].title.set_text(f"{data_type} Subject {indx + 1} Averaged Across Run {run + 1} Timepoints")
+        axs[indx].hist(arr, num_bins, facecolor='lightblue',
+                       log=True)  # , range = (-.0000001, .0000001))#, range = (-200, 200)) #, width = 1500)
+
+    plt.savefig(f'/content/gdrive/MyDrive/sub_norm/five_{data_type}_run{run + 1}_vox_hist_{norm}.png', dpi=200)
+    fig.tight_layout(rect=[0, 0.03, 1, 0.95])
 
 
-  small_set = np.concatenate(np.array(small_set))
-  print("sample 5 subject set size: ", small_set.shape)
-
-  # Create subplots
-  fig, axs = plt.subplots(len(small_set[:n_sub]))
-  fig.set_figheight(12)
-  fig.set_figwidth(10)
-  fig.suptitle(f'{data_norm} Voxel Histogram for {n_sub} subjects for run {run + 1} at time point 45')
-
-
-  for indx, arr in enumerate(small_set[:n_sub]):
-
-    if data_norm == "PSC_ZNORM":
-      axs[indx].hist(arr, num_bins, facecolor='blue', log = True, range = (-50, 50)) # removed outliers
-    elif data_norm == "Percent Signal Change":
-      axs[indx].hist(arr, num_bins, facecolor='blue', log = True, range = (-200, 200)) # removed outliers
-    else:
-      axs[indx].hist(arr, num_bins, facecolor='blue', log = True) #, width = 1500)
-
-
-  plt.savefig(f'data/five_sub_run{run + 1}_vox_hist_{data_norm}.png')
-  fig.tight_layout(rect=[0, 0.03, 1, 0.95])
 
 
 
 
-
-def plot_dist_first_subject(data, num_bins, data_norm):
+def plot_dist_first_subject(data, num_bins, data_norm, detrend, data_type, plot_img):
   """
 
   :param data     : (dict: keys: 'string', values: nd.array) 52 subject data stored in a dictionary
@@ -89,31 +140,61 @@ def plot_dist_first_subject(data, num_bins, data_norm):
   X_single_4run = data[subject]
   single_4run_norm = []
 
-  if (data_norm == "PSC_ZNORM") or (data_norm == "Z-Normalized"):
+  if data_norm == "Z-score":
     print(f"Running {data_norm}...")
-    scaler = StandardScaler().fit(X_single_4run[0])
     for ind_ in range(len(X_single_4run)):
-      d = scaler.transform(X_single_4run[ind_])
-      single_4run_norm.append(d)
+      x = clean(X_single_4run[ind_],
+                standardize='zscore',
+                detrend=detrend,
+                filter=False,
+                standardize_confounds=False
+                )
+      single_4run_norm.append(np.array(np.mean(x, axis=0)))
+  elif data_norm == "Percent Signal Change":
+    print(f"Running {data_norm}...")
+    for ind_ in range(len(X_single_4run)):
+      x = clean(X_single_4run[ind_],
+                standardize='psc',
+                detrend=detrend,
+                filter=False,
+                standardize_confounds=False
+                )
+      single_4run_norm.append(np.array(np.mean(x, axis=0)))
+  elif data_norm == "Unnormalized":
+    print("Unnormalized data...")
+    for ind_ in range(len(X_single_4run)):
+      x = clean(X_single_4run[ind_],
+                standardize=False,
+                detrend=detrend,
+                filter=False,
+                standardize_confounds=False
+                )
+      single_4run_norm.append(np.array(np.mean(x, axis=0)))
+
+  if plot_img == False:
+    return single_4run_norm
   else:
-    print("Not running PSC ZNORM...")
-    single_4run_norm = data[subject]
+    fig, axs = plt.subplots(len(single_4run_norm))
+    fig.set_figheight(20)
+    fig.set_figwidth(10)
+    fig.suptitle(
+      f'\n\n\n\nDetrended {data_norm} Voxel Histogram for {data_type} subject across {len(single_4run_norm)} runs')
 
+    for indx, matrix in enumerate(single_4run_norm):
+      if data_norm == "Z-score":
+        axs[indx].title.set_text(f"{data_type} Subject Averaged Across Run {indx + 1} Timepoints")
+        axs[indx].hist(matrix, num_bins, facecolor='lightblue', log=True,
+                       range=(-.0000001, .0000001))  # , range = (-200, 200)) # removed outliers
+      elif data_norm == "Percent Signal Change":
+        axs[indx].title.set_text(f"{data_type} Subject Averaged Across Run {indx + 1} Timepoints")
+        axs[indx].hist(matrix, num_bins, facecolor='lightblue', log=True,
+                       range=(-.0000001, .0000001))  # , range = (-200, 200)) # removed outliers
+      else:
+        axs[indx].title.set_text(f"{data_type} Subject Averaged Across Run {indx + 1} Timepoints")
+        axs[indx].hist(matrix, num_bins, facecolor='lightblue', log=True)  # range = (-.0000001, .0000001))
 
-  fig, axs = plt.subplots(len(single_4run_norm))
-  fig.set_figheight(12)
-  fig.set_figwidth(10)
-  fig.suptitle(f'{data_norm} Voxel Histogram for subject: {subject} across {len(single_4run_norm)} runs')
-
-  for indx, matrix in enumerate(single_4run_norm):
-    if (data_norm == "PSC_ZNORM") or (data_norm == "Percent Signal Change"):
-      axs[indx].hist(matrix[44:45,:][0], num_bins, facecolor='blue', log = True, range = (-200, 200)) # removed outliers
-    else:
-      axs[indx].hist(matrix[44:45,:][0], num_bins, facecolor='blue', log = True)
-
-  plt.savefig(f'data/single_sub{subject}_vox_hist_{data_norm}.png')
-  fig.tight_layout(rect=[0, 0.03, 1, 0.95])
-
+    plt.savefig(f'/content/gdrive/MyDrive/sub_norm/single_sub/{data_type}_vox_hist_{data_norm}.png', dpi=200)
+    fig.tight_layout(rect=[0, 0.03, 1, 0.95])
 
 
 
