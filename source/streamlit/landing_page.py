@@ -33,8 +33,8 @@ if st.session_state.page_select == 'Brain Images':
                 
             """)
     display = ('Young Adult Whole Brain',
-               'Young Adult without mPFC',
-               'Young Adult Prefrontal Cortex',
+               'Young Adult Medial Prefrontal Cortex',
+               'Young Adult Nucleus Accumbens',
                'Adolescent Whole Brain',
                'Adolescent Nucleus Accumbens',
                'Adolescent Prefrontal Cortex',
@@ -46,17 +46,38 @@ if st.session_state.page_select == 'Brain Images':
     def get_html(value):
         #print(value)
         if value == 0:
-            HtmlFile = open("/app/teambrainiac/source/streamlit/YA_YA_mask_1.html", 'r', encoding='utf-8')
+            HtmlFile = open("/app/teambrainiac/source/streamlit/YA_detrend_mask_1.html", 'r', encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
             components.html(source_code, height=250)
 
+            st.write("This is an interactive brain map. We trained a Support Vector Machine on Young Adult Brains"
+                     "to predict states of up-regulation and down-regulation - essentially an uptake in blood-oxygen "
+                     "volume or decrease in volume during an impulse-task. Areas that are white/yellow are active brain"
+                     "areas during this task and areas that are black/blue are areas where blood and oxygen levels are decreasing.")
+
         if value == 1:
-            HtmlFile = open("/app/teambrainiac/source/streamlit/YA_YA_masksubmPFC_1.html", 'r',
+            HtmlFile = open("/app/teambrainiac/source/streamlit/YA_detrend_mPFC_1.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
             components.html(source_code, height=250)
+            st.write("This is an interactive brain map showing the Medial Prefrontal Cortex (mPFC) - an area of the brain researchers"
+                     "know to be involved in the impulse-reward system. In our Young Adult model, we can see there are large areas"
+                     "of the mPFC that are down-regulating, meaning an decrease in activation during the impulse-reward task that"
+                     "the subjects are performing in while in the MR machine.")
+
+        if value == 2:
+            HtmlFile = open("/app/teambrainiac/source/streamlit/YA_detrend_nacc_aal_1.html", 'r',
+                            encoding='utf-8')
+            source_code = HtmlFile.read()
+            print(source_code)
+            components.html(source_code, height=250)
+            st.write(
+                "This is an interactive brain map showing the Nucleus Accumbens (NAcc)- an area of the brain researchers"
+                "know to be involved in the impulse-reward system. In our Young Adult model, we can see there are large areas"
+                "of the NAcc that are up-regulating, meaning there is an increase in activation during the impulse-reward "
+                "task that the subjects are performing in while in the MR machine.")
 
     value = st.selectbox("Choose the type of brain activations to view:", options, format_func=lambda x: display[x])
     get_html(value)

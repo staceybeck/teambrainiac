@@ -22,6 +22,30 @@ from collections import defaultdict
 
 
 
+def get_roi_bmaps(previous_bmap_data, indices_mask, affine_image):
+    """
+
+    :param previous_bmap_data:
+    :param indices_mask:
+    :param affine_image:
+    :return:
+    """
+    bmap2 = previous_bmap_data.reshape(79 * 95 * 79)
+    bmap2_3 = np.zeros((79, 95, 79))
+    bmap2_3 = bmap2_3.reshape(79 * 95 * 79)
+    bmap2_3[indices_mask] = bmap2[indices_mask]
+    bmap2_3d = bmap2_3.reshape(79, 95, 79, order='F')
+    bmap3d = nib.Nifti1Image(bmap2_3d,
+                             affine=affine_image.affine,
+                             header=affine_image.header
+                             )
+    return bmap3d
+
+
+
+
+
+
 def create_bmaps(clf, X, indices_mask, image):
     """
     :param clf:
