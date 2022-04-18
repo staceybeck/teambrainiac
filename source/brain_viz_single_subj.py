@@ -108,3 +108,27 @@ def plot_map(bmap3_nifti,norm_type,subject_type,out_fname=None,threshold=.0001,t
     display = plotting.plot_img(disp_image, bg_img = t_image, display_mode='z', cut_coords=(-35,-20,0,20,35,50,65,70),threshold=threshold,
                            colorbar=True,cmap='cold_white_hot',black_bg=False)
     display.title(title_str, x=0.01, y=0.99, size=15, color='w', bgcolor='black')
+    
+def plot_decision_scores(scores,labels,title_str,subject_type,run,outfname=None):
+  """
+    Function to plot decision function scores.
+    Params:
+      scores: list of decision function scores
+      labels: labels for data 0 = decrease, 1 = increase
+      title_str: how do we want the title to display
+      subject_type: is this a young adult or adolescent (added to title of visualization)
+      run: which run are scoring
+      outfname: if None, display, if str, save data as .png image and display
+  """
+
+  fig, ax = plt.subplots(1,1,figsize=(15, 2))
+  ax.plot(scores, lw=3, label='Predicted tc')
+  ax.plot(labels, lw=3, label='predictor tc')
+  #ax.set_xlim(0, acq_num-1)
+  ax.set_xlabel('time [volumes]', fontsize=10)
+  ax.tick_params(labelsize=12)
+  ax.set_title(f'{subject_type} Decision Function Scores for {title_str} on {run}')
+  ax.legend()
+  plt.show()
+  if outfname!=None:
+    plt.savefig(f'outfname{subject_type}_descf_{title_str}.png',dpi=200)
