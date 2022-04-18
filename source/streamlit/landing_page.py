@@ -69,6 +69,11 @@ if st.session_state.page_select == 'Chart Metrics':
             The charts on this page are metrics captured when running our models on single subjects or when grouping subjects
             by age. Adolescent are ages 16-19 years old and Young Adults are older than 19 years old. 
             """)
+    HtmlFile = open("ADdtrndpscnormvid.html", 'r',
+                    encoding='utf-8')
+    source_code = HtmlFile.read()
+    print(source_code)
+    components.html(source_code, height=600)
 
 if st.session_state.page_select == 'Tables':
     st.title("Tables")
