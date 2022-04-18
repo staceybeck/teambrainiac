@@ -25,6 +25,3 @@
 # train_ds = DatasetFmri(image_dictionary = train_dict)
 # test_ds = DatasetFmri(image_dictionary = test_dict)
 
-
-
-
