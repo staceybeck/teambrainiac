@@ -150,7 +150,7 @@ def plot_decision_scores(scores,labels,title_str,subject_type,run,outfname=None)
         ax.tick_params(labelsize=12)
         ax.set_title(f'{subject_type} Decision Function Scores for {title_str} on {run}')
         ax.legend()
-    if outfname!=None:
-      plt.savefig(f'outfname{subject_type}_descf_{title_str}.png',dpi=200)
-    plt.show()
+  if outfname!=None:
+    plt.savefig(f'outfname{subject_type}_descf_{title_str}.png',dpi=200)
+  plt.show()
   
