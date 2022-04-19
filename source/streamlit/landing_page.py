@@ -13,6 +13,7 @@ import streamlit.components.v1 as components
 
 PAGES = [
     'Brain Images',
+    'Exploration',
     'Chart Metrics',
     'Tables'
 ]
@@ -79,15 +80,30 @@ if st.session_state.page_select == 'Brain Images':
                 "of the NAcc that are up-regulating, meaning there is an increase in activation during the impulse-reward "
                 "task that the subjects are performing in while in the MR machine.")
 
-    value = st.selectbox("Choose the type of brain activations to view:", options, format_func=lambda x: display[x])
+    value = st.selectbox("Interactive Brain Visualization. Choose the type of brain activation to view and use your cursor to move the grid cross:", options, format_func=lambda x: display[x])
     get_html(value)
-
-if st.session_state.page_select == 'Chart Metrics':
+if st.session_state.page_select == "Chart Metrics":
     st.title("Chart Metrics")
     st.sidebar.write("""
             ## Chart Metrics
             The charts on this page are metrics captured when running our models on single subjects or when grouping subjects
             by age. Adolescent are ages 16-19 years old and Young Adults are older than 19 years old. 
+    """)
+
+    st.write ("Young Adult Whole Brain Mask Model Decision Scores")
+    st.image('YA_detrend_mask_dfunpred_1.png',
+             caption=None,
+             width=None,
+             use_column_width=None,
+             clamp=False,
+             channels="RGB",
+             output_format="auto")
+
+
+if st.session_state.page_select == 'Exploration':
+    st.title("Exploration")
+    st.sidebar.write("""
+            ## Exploration 
             """)
     display = ('Young Adult Z-score Normalization',
                'Young Adult Percent Signal Change',
@@ -102,15 +118,11 @@ if st.session_state.page_select == 'Chart Metrics':
     def get_html(value):
         # print(value)
         if value == 0:
-            st.image(open('/app/teambrainiac/source/streamlit/YA_detrend_mask_dfunpred_1.png'),
-                     caption=None, width=None, use_column_width=None, clamp=False, channels="RGB",
-                     output_format="auto")
-            #HtmlFile = open("/app/teambrainiac/source/streamlit/YA_dtrnd_ZSCORE_normvid.html", 'r',
-            #HtmlFile = open("/app/teambrainiac/source/streamlit/test.html", 'r',
-                           # encoding='utf-8')
-            #source_code = HtmlFile.read()
-            #print(source_code)
-            #components.html(source_code, height=500)
+            HtmlFile = open("/app/teambrainiac/source/streamlit/YA_dtrnd_ZSCORE_normvid.html", 'r',
+                            encoding='utf-8')
+            source_code = HtmlFile.read()
+            print(source_code)
+            components.html(source_code, height=500)
 
         if value == 1:
             HtmlFile = open("/app/teambrainiac/source/streamlit/YA_dtrnd_psc_normvid.html", 'r',
