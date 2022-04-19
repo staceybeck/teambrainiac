@@ -102,7 +102,8 @@ if st.session_state.page_select == 'Chart Metrics':
     def get_html(value):
         # print(value)
         if value == 0:
-            HtmlFile = open("/app/teambrainiac/source/streamlit/YA_dtrnd_ZSCORE_normvid.html", 'r',
+            #HtmlFile = open("/app/teambrainiac/source/streamlit/YA_dtrnd_ZSCORE_normvid.html", 'r',
+            HtmlFile = open("/app/teambrainiac/source/streamlit/test.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
