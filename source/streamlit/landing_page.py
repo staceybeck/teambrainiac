@@ -91,7 +91,7 @@ if st.session_state.page_select == "Chart Metrics":
     """)
 
     st.write ("Young Adult Whole Brain Mask Model Decision Scores")
-    st.image('YA_detrend_mask_dfunpred_1.png',
+    st.image('/app/teambrainiac/source/streamlit/YA_detrend_mask_dfunpred_1.png',
              caption=None,
              width=None,
              use_column_width=None,
