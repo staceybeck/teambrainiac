@@ -144,7 +144,7 @@ def plot_decision_scores(scores,labels,title_str,subject_type,run,outfname=None)
         ax.axhline(y=0,c='#787874',linestyle='--')
         y=[0]
         x=[tp]
-        ax.plot(decf_scores,c='k',lw=0.2,linestyle='-')
+        ax.plot(scores,c='k',lw=0.2,linestyle='-')
         ax.legend(['Increase','Decision Function Cutoff','Decision Scores','Decrease'],bbox_to_anchor=(1,1.04), loc="upper left")
         ax.set_xlabel('time [volumes]', fontsize=10)
         ax.tick_params(labelsize=12)
