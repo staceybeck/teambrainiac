@@ -7,28 +7,42 @@ Authors:
 - Mary Soules
 
 ## Repository Organization
-    ├── Dockerfile          <- Details to build and run docker
-    ├── requirements.txt    <- Details of installed dependencies
-    ├── README.md           <- This README file
-    ├── .gitignore          <- Specifies files ignored by git
+    ├── Dockerfile                                   <- Details to build and run docker
+    ├── requirements.txt                             <- Details of installed dependencies
+    ├── README.md                                    <- This README file
+    ├── .gitignore                                   <- Specifies files ignored by git
     |
     └── source/
     |    ├── streamlit/
-    |    |    └──                        <- Contains landing_page.py app
+    |    |    └──                                    <- Contains landing_page.py app
     |    ├── helper/
-    |    |    └──                        <- Contains modules and Jupyter Notebooks from early project exploration
-    |    ├── group_svm/                  <- Also includes notebooks to demonstrate directory modules
-    |    |    └── access_data.py         <- Connect to AWS, uploads and downloads data
-    |    |    └── analysis.py            <- Collects metrics from models and saves data, uploading to AWS
-    |    |    └── cross_validation.py    <- Partitions data using TimeSeries package from Sklearn for cross validation and gridsearch
-    |    |    └── dataframes.py          <- May want to rid of this file
-    |    |    └── process.py             <- Processes the data from MATLAB further, organizes data for model training
-    |    |    └── train.py               <- Training file for SVM using Train, Validation, Test or Train and Test sets
-    |    |    └── visualize.py           <- Code to visualize certain plots using Nilearn as well as normalization exploration
+    |    |    └──                                    <- Contains modules and Jupyter Notebooks from early project exploration
+    |    |__ SingleSubjectSVM.ipynb                  <-
+    |    |__ BuildSingleSubjectSVM_Models.ipynb      <-
+    |    |__ VisualizationsNotebook.ipynb            <-
+    |    |__ VisualizationPlayground.ipynb           <-
+    |    |__ single_subject.py                       <-
+    |    |__ brain_viz_single_subj.py                <-
+    |    ├── group_svm/                              <- Also includes notebooks to demonstrate directory modules
+    |    |__  |__ data/                              <-
+    |    |__  |__ images/                            <-
+    |    |__  |__ Adolescent_Group_SVM.ipynb         <-
+    |    |__  |__ Explore_data.ipynb                 <-
+    |    |__  |__ Young_Adult_Group_SVM.ipynb        <-
+    |    |__  |__ Timeseries_Cross_Validation.ipynb  <-
+    |    |__  |__ Group_charts.ipynb                 <-
+    |    |__  |__ Group_All_MASK_SVM.ipynb           <-
+    |    |    └── access_data.py                     <- Connect to AWS, uploads and downloads data
+    |    |    └── analysis.py                        <- Collects metrics from models and saves data, uploading to AWS
+    |    |    └── cross_validation.py                <- Partitions data using TimeSeries package from Sklearn for cross validation and gridsearch
+    |    |    └── dataframes.py                      <- May want to rid of this file
+    |    |    └── process.py                         <- Processes the data from MATLAB further, organizes data for model training
+    |    |    └── train.py                           <- Training file for SVM using Train, Validation, Test or Train and Test sets
+    |    |    └── visualize.py                       <- Code to visualize certain plots using Nilearn as well as normalization exploration
     |    └── data   
-    |    |    └──                        <- Contains data needed to be accessed within /source. Data dictionary, and T1 images for visualization 
+    |    |    └──                                    <- Contains data needed to be accessed within /source. Data dictionary, and T1 images for visualization 
     |    ├── DL/
-    |    |    └──                        <- Deep Learning folder containing modules and notebook to run 3D-CNN from AWS to analysis
+    |    |    └──                                    <- Deep Learning folder containing modules and notebook to run 3D-CNN from AWS to analysis
  
 ## Environment Set-up
 
