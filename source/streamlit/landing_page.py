@@ -49,33 +49,37 @@ if st.session_state.page_select == 'Brain Images':
     def get_html(value):
         #print(value)
         if value == 0:
-            st.write("Young Adult")
+            st.write("Signals thresholded at 95%")
             HtmlFile = open("/app/teambrainiac/source/streamlit/YA_detrend_mask_1.html", 'r', encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
             components.html(source_code, height=250)
 
-            st.write("Adolescent")
             HtmlFile = open("/app/teambrainiac/source/streamlit/AD_detrend_mask_1.html", 'r', encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
             components.html(source_code, height=250)
 
-            st.write("This is an interactive brain map. We trained a Support Vector Machine on Young Adult Brains"
-                     "to predict states of up-regulation and down-regulation - essentially an uptake in blood-oxygen "
-                     "volume or decrease in volume during an impulse-task. Areas that are white/yellow are active brain"
-                     "areas during this task and areas that are black/blue are areas where blood and oxygen levels are decreasing.")
+            st.write("This is an interactive brain map. We trained a Support Vector Machine on Young Adult Brains (aged 19 - 21) "
+                     "and Adolescent Brains (aged 16 - 19) to predict states of up-regulation and down-regulation - meaning "
+                     "an uptake in blood-oxygen volume or decrease in volume during an impulse-task. Areas that are yellow/red"
+                     " are active brain areas during this task and areas that are dark-blue/light-blue are areas where blood and "
+                     "oxygen levels are decreasing."
+                     ""
+                     "In our research, we have found that the Young Adult models predicted better than the Adolescent models, "
+                     "which is evident in the two visuals. You can see clear and distinct areas of increased voxel significance "
+                     "in the Young Adult model output with dark red and blue shades compared to the Adolescent model output, where "
+                     "the significant signals are scattered and are light blue and yellow. ")
 
         if value == 1:
 
-            st.write("Young Adult")
+            st.write("Signals thresholded at 95%")
             HtmlFile = open("/app/teambrainiac/source/streamlit/YA_detrend_mPFC_nocross.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
             components.html(source_code, height=250)
 
-            st.write("Adolescent")
             HtmlFile = open("/app/teambrainiac/source/streamlit/AD_detrend_mPFC_nocross.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
@@ -84,30 +88,38 @@ if st.session_state.page_select == 'Brain Images':
 
 
 
-            st.write("This is an interactive brain map showing the Medial Prefrontal Cortex (mPFC) - an area of the brain researchers "
-                     "know to be involved in the impulse-reward system. In our Young Adult model, we can see there are large areas"
-                     "of the mPFC that are down-regulating, meaning an decrease in activation during the impulse-reward task that"
-                     "the subjects are performing in while in the MR machine.")
+            st.write("These are interactive brain maps showing the Medial Prefrontal Cortex (mPFC) - an area of the brain researchers "
+                     "know to be involved in the impulse-reward system. Each interactive visual is set to the same cut coordinates. We removed"
+                     " the grid cross since these areas of the brain are small to visualize. "
+                     ""
+                     "In our Young Adult model, we can see there are large areas of the mPFC that are down-regulating, "
+                     "meaning an decrease in activation during the impulse-reward task that the subjects are performing while "
+                     " in the MR machine. "
+                     "In the Adolescent model, we are seeing more yellow, which implies increased up-regulation in this region.")
 
         if value == 2:
-            st.write("Young Adult")
+            st.write("Signals thresholded at 95%")
+
             HtmlFile = open("/app/teambrainiac/source/streamlit/YA_detrend_nacc_aal_nocross.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
             components.html(source_code, height=250)
 
-            st.write("Adolescent")
             HtmlFile = open("/app/teambrainiac/source/streamlit/AD_detrend_nacc_aal_nocross.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
             components.html(source_code, height=250)
             st.write(
-                "This is an interactive brain map showing the Nucleus Accumbens (NAcc)- an area of the brain researchers "
-                "know to be involved in the impulse-reward system. In our Young Adult model, we can see there are large areas"
-                "of the NAcc that are up-regulating, meaning there is an increase in activation during the impulse-reward "
-                "task that the subjects are performing in while in the MR machine.")
+                "These are interactive brain maps showing the Nucleus Accumbens (NAcc)- an area of the brain researchers "
+                "know to be involved in the impulse-reward system. Each interactive visual is set to the same cut coordinates. We removed"
+                     " the grid cross since these areas of the brain are small to visualize."
+                ""
+                "In our Young Adult model, we can see there are large areas of red voxels in the NAcc, which imply these "
+                " subjects are up-regulating; an increase in activation during the impulse-reward task that the subjects "
+                " are performing in while in the MR machine."
+                )
 
     value = st.selectbox("Interactive Brain Visualization. Choose the type of brain activation to view and use your cursor to move the grid cross:", options, format_func=lambda x: display[x])
     get_html(value)
