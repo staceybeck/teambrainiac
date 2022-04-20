@@ -121,14 +121,36 @@ def plot_decision_scores(scores,labels,title_str,subject_type,run,outfname=None)
       outfname: if None, display, if str, save data as .png image and display
   """
 
+#   fig, ax = plt.subplots(1,1,figsize=(15, 2))
+#   ax.plot(scores, lw=3, label='Predicted tc')
+#   ax.plot(labels, lw=3, label='predictor tc')
+#   #ax.set_xlim(0, acq_num-1)
+  x = [0]
+  y = [0]
+  decf_labels = np.append(labels,0)
   fig, ax = plt.subplots(1,1,figsize=(15, 2))
-  ax.plot(scores, lw=3, label='Predicted tc')
-  ax.plot(labels, lw=3, label='predictor tc')
-  #ax.set_xlim(0, acq_num-1)
-  ax.set_xlabel('time [volumes]', fontsize=10)
-  ax.tick_params(labelsize=12)
-  ax.set_title(f'{subject_type} Decision Function Scores for {title_str} on {run}')
-  ax.legend()
-  plt.show()
+  for tp in range(1,85): 
+      if decf_labels[tp-1] == decf_labels[tp]:
+        x.append(tp)
+        y.append(decf_labels[tp])
+      else:
+        y.append(0)
+        x.append(tp)
+        if y[1] == 1:
+          color = 'b'
+        else: 
+          color='y'      
+        ax.plot(x,y,c=color,lw=3)
+        ax.axhline(y=0,c='#787874',linestyle='--')
+        y=[0]
+        x=[tp]
+        ax.plot(scores,c='k',lw=0.2,linestyle='-')
+        ax.legend(['Increase','Decision Function Cutoff','Decision Scores','Decrease'],bbox_to_anchor=(1,1.04), loc="upper left")
+        ax.set_xlabel('time [volumes]', fontsize=10)
+        ax.tick_params(labelsize=12)
+        ax.set_title(f'{subject_type} Decision Function Scores for {title_str} on {run}')
+        ax.legend()
   if outfname!=None:
     plt.savefig(f'outfname{subject_type}_descf_{title_str}.png',dpi=200)
+  plt.show()
+  
