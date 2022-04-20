@@ -8,7 +8,7 @@
 
 import streamlit as st
 import streamlit.components.v1 as components
-from access_data import *
+#from access_data import *
 import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
@@ -196,6 +196,7 @@ if st.session_state.page_select == 'Tables':
             """)
     # Load model
     # open path dictionary file to get subject ids
+    """
     dict_path = "data/data_path_dictionary.pkl"
     data_path_dict = open_pickle(dict_path)
 
@@ -256,7 +257,7 @@ if st.session_state.page_select == 'Tables':
     #figure.write_html("/content/gdrive/MyDrive/YA_viz_notebook/file.html")
     #figure.show()
     # Plot!
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True)"""
 
 
 
