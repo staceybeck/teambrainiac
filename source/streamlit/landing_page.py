@@ -65,7 +65,7 @@ if st.session_state.page_select == 'Brain Images':
                      "an uptake in blood-oxygen volume or decrease in volume during an impulse-task. Areas that are yellow/red"
                      " are active brain areas during this task and areas that are dark-blue/light-blue are areas where blood and "
                      "oxygen levels are decreasing."
-                     ""
+                     "\n"
                      "In our research, we have found that the Young Adult models predicted better than the Adolescent models, "
                      "which is evident in the two visuals. You can see clear and distinct areas of increased voxel significance "
                      "in the Young Adult model output with dark red and blue shades compared to the Adolescent model output, where "
@@ -91,7 +91,7 @@ if st.session_state.page_select == 'Brain Images':
             st.write("These are interactive brain maps showing the Medial Prefrontal Cortex (mPFC) - an area of the brain researchers "
                      "know to be involved in the impulse-reward system. Each interactive visual is set to the same cut coordinates. We removed"
                      " the grid cross since these areas of the brain are small to visualize. "
-                     ""
+                     "\n"
                      "In our Young Adult model, we can see there are large areas of the mPFC that are down-regulating, "
                      "meaning an decrease in activation during the impulse-reward task that the subjects are performing while "
                      " in the MR machine. "
@@ -116,7 +116,8 @@ if st.session_state.page_select == 'Brain Images':
                 "know to be involved in the impulse-reward system. Each interactive visual is set to the same cut coordinates. We removed"
                      " the grid cross since these areas of the brain are small to visualize."
                 ""
-                "In our Young Adult model, we can see there are large areas of red voxels in the NAcc, which imply these "
+                "\n"
+                " In our Young Adult model, we can see there are large areas of red voxels in the NAcc, which imply these "
                 " subjects are up-regulating; an increase in activation during the impulse-reward task that the subjects "
                 " are performing in while in the MR machine."
                 )
@@ -206,70 +207,10 @@ if st.session_state.page_select == 'Tables':
             The tables on this page provide use with useful information about our decision choices for further
             preprocessing of our data. 
             """)
-    # Load model
-    # open path dictionary file to get subject ids
-    """
-    dict_path = "data/data_path_dictionary.pkl"
-    data_path_dict = open_pickle(dict_path)
-
-    mask_type = 'mask'  # 'mask', 'masksubACC', 'masksubAI', 'masksubNAcc', 'masksubmPFC'
-    data_type = "YA_detrend"
-    runs_train = [1, 2]
-    runs_id = [i + 1 for i in runs_train]
-    m_path_ind = 0  # get sub_mask data in mask_data key
-    metric_data = access_load_data(f'metrics/group_svm/{mask_type}/{data_type}_{runs_id}_{mask_type}_metrics.pkl',
-                                   False)
-    # Create a DataFrame from metrics of Whole Brain
-    decision_scores = metric_data['test_dfunc'][0]
-    y = metric_data['y_t'][0]
-
-    time = np.arange(0, len(decision_scores), 1)
-    d = {}
-    d['time'] = time
-    d['score'] = decision_scores
-    d['true'] = y
-    df = pd.DataFrame(d)
-
-    y_axis_frame = list(df['score'].values[:300])
-    y_axis = list(df['score'].values[:300])
-    y_ax = list(df['score'].values)
-    x_axis_framestart = np.arange(0, 300, 1)
-    x_axis_frame = np.arange(0, 300, 1)
-    framess = []
-    for frame in range(300, 673):
-        x_axis_frame = np.append(x_axis_frame, frame)
-        x_axis_frame = x_axis_frame[1:]
-
-        y_axis_frame = np.append(y_axis_frame, y_ax[frame - 1])
-        y_axis_frame = y_axis_frame[1:]
-        curr_frame = go.Frame(data=[go.Scatter(x=x_axis_frame, y=y_axis_frame, mode='lines')])
-        framess.append(curr_frame)
-
-    figure = go.Figure(
-        data=[go.Scatter(x=x_axis_framestart, y=y_axis, mode='lines')],
-        layout={"title": "Young Adult Decision Scores",
-                "updatemenus": [{"type": "buttons",
-                                 "buttons": [{"method": "animate",
-                                              "label": "play",
-                                              "args": [None, {"frame": {"duration": 10,
-                                                                        "redraw": True},
-                                                              "fromcurrent": False,
-                                                              "transition": {"duration": 10,
-                                                                             'easing': 'quadratic-in-out'}
-                                                              }
-                                                       ]
-                                              }]
-                                 }],
-                "xaxis": {"title": "Timepoints [volumes]"},
-                # "range":[0,len(df)+5]},
-                "yaxis": {"title": "Decision scores from SVM model",
-                          "range": [-2, 2]}
-                },
-        frames=framess)
-    #figure.write_html("/content/gdrive/MyDrive/YA_viz_notebook/file.html")
-    #figure.show()
-    # Plot!
-    st.plotly_chart(fig, use_container_width=True)"""
-
-
-
+    st.image("/app/teambrainiac/source/streamlit/newplot.png",
+             caption="Young Adult Model Scores",
+             width=None,
+             use_column_width=None,
+             clamp=False,
+             channels="RGB",
+             output_format="auto")
