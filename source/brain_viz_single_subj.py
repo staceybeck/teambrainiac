@@ -129,6 +129,7 @@ def plot_decision_scores(scores,labels,title_str,subject_type,run,outfname=None)
   y = [0]
   decf_labels = np.append(labels,0)
   fig, ax = plt.subplots(1,1,figsize=(15, 2))
+  plt.style.use('seaborn-darkgrid')
   for tp in range(1,85): 
       if decf_labels[tp-1] == decf_labels[tp]:
         x.append(tp)
@@ -137,15 +138,15 @@ def plot_decision_scores(scores,labels,title_str,subject_type,run,outfname=None)
         y.append(0)
         x.append(tp)
         if y[1] == 1:
-          color = 'b'
+          color = '#446CCF'
         else: 
-          color='y'      
+          color='#f58518'      
         ax.plot(x,y,c=color,lw=3)
-        ax.axhline(y=0,c='#787874',linestyle='--')
+        ax.axhline(y=0,c='r',linestyle='--')
         y=[0]
         x=[tp]
         ax.plot(scores,c='k',lw=0.2,linestyle='-')
-        ax.legend(['Increase','Decision Function Cutoff','Decision Scores','Decrease'],bbox_to_anchor=(1,1.04), loc="upper left")
+        plt.legend(['Increase','Decision Function Cutoff','Decision Scores','Decrease'],bbox_to_anchor=(1,1.04), loc="upper left")
         ax.set_xlabel('time [volumes]', fontsize=10)
         ax.tick_params(labelsize=12)
         ax.set_title(f'{subject_type} Decision Function Scores for {title_str} on {run}')
