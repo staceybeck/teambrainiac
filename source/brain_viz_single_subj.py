@@ -126,10 +126,12 @@ def plot_decision_scores(scores,labels,title_str,subject_type,run,outfname=None)
   ax.plot(labels, lw=3, c='#446CCF',label='True Labels')
   ax.axhline(y=0,c='r',linestyle='--',label='Decision Function Cutoff')
   ax.plot(scores,c='k',lw=0.2,linestyle='-')
-  print(f'Saving to {outfname}')
+  ax.set_title(f'{subject_type} Decision Function Scores for {title_str} on {run}')
   if outfname!=None:
+    print(f'Saving to {outfname}')
     fig.savefig(f'outfname{subject_type}_descf_{title_str}.png',dpi=200)
-  plt.show()
+  else:
+    plt.show()
     
 #   x = [0]
 #   y = [0]
