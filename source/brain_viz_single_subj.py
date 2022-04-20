@@ -121,15 +121,33 @@ def plot_decision_scores(scores,labels,title_str,subject_type,run,outfname=None)
       outfname: if None, display, if str, save data as .png image and display
   """
 
+def plot_decision_scores_local(scores,labels,title_str,subject_type,run,outfname=None):
+  """
+    Function to plot decision function scores.
+    Params:
+      scores: list of decision function scores
+      labels: labels for data 0 = decrease, 1 = increase
+      title_str: how do we want the title to display
+      subject_type: is this a young adult or adolescent (added to title of visualization)
+      run: which run are scoring
+      outfname: if None, display, if str, save data as .png image and display
+  """
+
   fig, ax = plt.subplots(1,1,figsize=(15, 2))
   plt.style.use('seaborn-darkgrid')
-  ax.plot(labels, lw=3, c='#446CCF',label='True Labels')
-  ax.axhline(y=0,c='r',linestyle='--',label='Decision Function Cutoff')
-  ax.plot(scores,c='k',lw=0.5,linestyle='-',label='Decision Function Scores')
+  ax.plot(labels, lw=3, c='#446CCF',label='True Labels\n')
+  ax.plot(scores,c='k',lw=0.5,linestyle='-',label='Decision Function Scores\n')
+  ax.axhline(y=0,c='r',linestyle='--',label='Decision Function Cutoff\n')
+  ax.set_xlabel('\ntime points [volumes]',
+                  fontsize=10
+                  )
   ax.set_title(f'{subject_type} Decision Function Scores for {title_str} on {run}')
+  lgd = ax.legend(loc=(1.01, 0.5))
   if outfname!=None:
-    print(f'Saving to {outfname}')
-    fig.savefig(f'outfname{subject_type}_descf_{title_str}.png',dpi=200)
+    file = f'{outfname}{subject_type}_descf_{title_str}.png'
+    print(file)
+    plt.savefig(f'{outfname}{subject_type}_descf_{title_str}_{run}.png',dpi=200,bbox_extra_artists=(lgd,),
+                bbox_inches='tight')
   else:
     plt.show()
     
