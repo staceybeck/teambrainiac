@@ -9,9 +9,9 @@
 import streamlit as st
 import streamlit.components.v1 as components
 #from access_data import *
-import plotly.graph_objects as go
-import pandas as pd
-import numpy as np
+#import plotly.graph_objects as go
+#import pandas as pd
+#import numpy as np
 
 
 
