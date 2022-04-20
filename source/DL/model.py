@@ -1,6 +1,32 @@
 
-## Add imports here
+import scipy.io
+import os
+import pickle
+import numpy as np
+import nibabel as nib
+import pandas as pd
+import boto3
+import tempfile
+import tqdm
+import random
+from path_config import mat_path
+from botocore.exceptions import ClientError
+from collections import defaultdict
+from sklearn.preprocessing import StandardScaler
 
+# Pytroch Libraries
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torchvision
+from torch.utils.data import TensorDataset
+
+#import torchvision.transforms as transforms
+from torch.nn import ReLU, CrossEntropyLoss, Conv3d, Module, Softmax, AdaptiveAvgPool3d
+from torch.optim import Adam, SGD
+
+#from torch.optim import lr_scheduler
+from torch.utils.data import Dataset, DataLoader
 
 
 class ConvNet(nn.Module):
@@ -82,6 +108,11 @@ def run_cnn(model, epochs, learning_rate, loss_func, opt, dl):
       loss_batch = loss_func(pred, yb)
       loss_list.append(loss_batch)
       accuracy_batch = accuracy(pred, yb)
+      if int(accuracy_batch) == 1:
+        print('Perfect Accuracy\nStopping early to avoid overfitting\n\n')
+        break
+
+
       accuracy_list.append(accuracy_batch)
 
       print('Batch Loss', loss_batch)
@@ -92,11 +123,6 @@ def run_cnn(model, epochs, learning_rate, loss_func, opt, dl):
       opt.zero_grad()
 
     model.eval()
-    
-    print('Saving model')
-    model_name = 'cnn_fmri_initial_model.pt'
-    path = F"/content/gdrive/My Drive/{model_name}" 
-    torch.save(model.state_dict(), path)
 
     metrics_dict['epoch_'+str(epoch)] = {'accuracy':accuracy_list, 'loss':loss_list}
 
@@ -112,3 +138,5 @@ def run_cnn(model, epochs, learning_rate, loss_func, opt, dl):
       pass
   
   return model, metrics_dict
+
+
