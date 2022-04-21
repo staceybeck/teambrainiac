@@ -121,36 +121,63 @@ def plot_decision_scores(scores,labels,title_str,subject_type,run,outfname=None)
       outfname: if None, display, if str, save data as .png image and display
   """
 
-#   fig, ax = plt.subplots(1,1,figsize=(15, 2))
-#   ax.plot(scores, lw=3, label='Predicted tc')
-#   ax.plot(labels, lw=3, label='predictor tc')
-#   #ax.set_xlim(0, acq_num-1)
-  x = [0]
-  y = [0]
-  decf_labels = np.append(labels,0)
+def plot_decision_scores_local(scores,labels,title_str,subject_type,run,outfname=None):
+  """
+    Function to plot decision function scores.
+    Params:
+      scores: list of decision function scores
+      labels: labels for data 0 = decrease, 1 = increase
+      title_str: how do we want the title to display
+      subject_type: is this a young adult or adolescent (added to title of visualization)
+      run: which run are scoring
+      outfname: if None, display, if str, save data as .png image and display
+  """
+
   fig, ax = plt.subplots(1,1,figsize=(15, 2))
-  for tp in range(1,85): 
-      if decf_labels[tp-1] == decf_labels[tp]:
-        x.append(tp)
-        y.append(decf_labels[tp])
-      else:
-        y.append(0)
-        x.append(tp)
-        if y[1] == 1:
-          color = 'b'
-        else: 
-          color='y'      
-        ax.plot(x,y,c=color,lw=3)
-        ax.axhline(y=0,c='#787874',linestyle='--')
-        y=[0]
-        x=[tp]
-        ax.plot(scores,c='k',lw=0.2,linestyle='-')
-        ax.legend(['Increase','Decision Function Cutoff','Decision Scores','Decrease'],bbox_to_anchor=(1,1.04), loc="upper left")
-        ax.set_xlabel('time [volumes]', fontsize=10)
-        ax.tick_params(labelsize=12)
-        ax.set_title(f'{subject_type} Decision Function Scores for {title_str} on {run}')
-        ax.legend()
+  plt.style.use('seaborn-darkgrid')
+  ax.plot(labels, lw=3, c='#446CCF',label='True Labels\n')
+  ax.plot(scores,c='k',lw=0.5,linestyle='-',label='Decision Function Scores\n')
+  ax.axhline(y=0,c='r',linestyle='--',label='Decision Function Cutoff\n')
+  ax.set_xlabel('\ntime points [volumes]',
+                  fontsize=10
+                  )
+  ax.set_title(f'{subject_type} Decision Function Scores for {title_str} on {run}')
+  lgd = ax.legend(loc=(1.01, 0.5))
   if outfname!=None:
-    plt.savefig(f'outfname{subject_type}_descf_{title_str}.png',dpi=200)
-  plt.show()
+    file = f'{outfname}{subject_type}_descf_{title_str}.png'
+    print(file)
+    plt.savefig(f'{outfname}{subject_type}_descf_{title_str}_{run}.png',dpi=200,bbox_extra_artists=(lgd,),
+                bbox_inches='tight')
+  else:
+    plt.show()
+    
+#   x = [0]
+#   y = [0]
+#   decf_labels = np.append(labels,0)
+#   fig, ax = plt.subplots(1,1,figsize=(15, 2))
+#   plt.style.use('seaborn-darkgrid')
+#   for tp in range(1,85): 
+#       if decf_labels[tp-1] == decf_labels[tp]:
+#         x.append(tp)
+#         y.append(decf_labels[tp])
+#       else:
+#         y.append(0)
+#         x.append(tp)
+#         if y[1] == 1:
+#           color = '#446CCF'
+#         else: 
+#           color='#f58518'      
+#         ax.plot(x,y,c=color,lw=3)
+#         ax.axhline(y=0,c='r',linestyle='--')
+#         y=[0]
+#         x=[tp]
+#         ax.plot(scores,c='k',lw=0.2,linestyle='-')
+#         #plt.legend(['Increase','Decision Function Cutoff','Decision Scores','Decrease'],bbox_to_anchor=(1,1.04), loc="upper left")
+#         ax.set_xlabel('time [volumes]', fontsize=10)
+#         ax.tick_params(labelsize=12)
+#         ax.set_title(f'{subject_type} Decision Function Scores for {title_str} on {run}')
+#         ax.legend()
+#   if outfname!=None:
+#     plt.savefig(f'outfname{subject_type}_descf_{title_str}.png',dpi=200)
+#   plt.show()
   
