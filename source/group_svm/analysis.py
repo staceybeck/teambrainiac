@@ -138,10 +138,10 @@ def metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type, m_path
 
     # Test Metrics
     print("Predicting on Test set...")
-    #ytest_pred = clf.predict(X_t)
+    ytest_pred = clf.predict(X_t)
     #ytest_probs = clf.predict_proba(X_t)[:, 1]
     #ytest_defunc = clf.decision_function(X_t)
-    #test_acc = accuracy_score(y_t, ytest_pred)
+    test_acc = accuracy_score(y_t, ytest_pred)
     #print("Test Accuracy:", test_acc)
 
     # Get Bmaps
@@ -182,9 +182,9 @@ def metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type, m_path
     metrics_dict['bmap2'].append(bmap2)
 
     #metrics_dict["y_train"].append(y)
-    #metrics_dict['test_preds'].append(ytest_pred)
+    metrics_dict['test_preds'].append(ytest_pred)
     #metrics_dict['test_probs'].append(ytest_probs.astype(np.float32))
-    #metrics_dict['test_acc'].append(test_acc)
+    metrics_dict['test_acc'].append(test_acc)
     #metrics_dict['test_dfunc'].append(ytest_defunc.astype(np.float32))
     #metrics_dict['y_t'].append(y_t)
 
