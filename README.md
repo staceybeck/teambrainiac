@@ -17,12 +17,12 @@ Authors:
     |    |    └──                                    <- Contains landing_page.py app
     |    ├── helper/
     |    |    └──                                    <- Contains modules and Jupyter Notebooks from early project exploration
-    |    |__ SingleSubjectSVM.ipynb                  <-
-    |    |__ BuildSingleSubjectSVM_Models.ipynb      <-
-    |    |__ VisualizationsNotebook.ipynb            <-
+|    |__    SingleSubjectSVM_Norm_CV.ipynb           <-Contains modules to test normalization strategies (no normalization, percent signal change,z-normalization) and to run a cv search on best strategy once chosen.
+    |    |__ BuildSingleSubjectSVM_Models.ipynb      <- Contains modules to run single subject SVM model. Output can be used inline or saved for future use.
+    |    |__ DataExplorationNotebook_SingleSubjectSVM.ipynb  <- Contains modules to explore normalization strategies we employed and to look at cross validation results. This notebook pulls in previously stored data after running the XXXX
     |    |__ VisualizationPlayground.ipynb           <-
-    |    |__ single_subject.py                       <-
-    |    |__ brain_viz_single_subj.py                <-
+    |    |__ single_subject.py                       <- Contains functions to access data, mask data, normalize data, run single subject model. The model will run on more than one turn for training, if desired. At this point testing is done on single runs only. This also contains functions for getting predictions to be stored for later use, accuracy scores for data exploration.
+    |    |__ brain_viz_single_subj.py                <- Contains functions to create bmaps for brain visualizations, functions for brain images, interactive brain images, and functions to display decision functions scores across the time-series
     |    ├── group_svm/                              <- Also includes notebooks to demonstrate directory modules
     |    |__  |__ data/                              <-
     |    |__  |__ images/                            <-
