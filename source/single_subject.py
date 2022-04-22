@@ -38,7 +38,7 @@ def get_subj_information(data_path_dict):
   """
     Function to get subject information.
       params:
-        data_path_dict  : dictionary containing paths to all data stored on AWS
+        data_path_dict  : dictionary: containing paths to all data stored on AWS
       returns:  subject_ids(list of subjects to run),subj_paths(paths to subject raw data)
   """
   subject_ids = data_path_dict['subject_ID'] #subject_ids
@@ -49,8 +49,8 @@ def get_labels(data_path_dict):
   """
     Function to get the labels for our data.
       params:
-        data_path_dict  : dictionary containing paths to all data stored on AWS
-      returns: mask_labels_indices(timepoints we want masked out),binary_labels(labels for our for our two brain states)
+        data_path_dict  : dictionary: containing paths to all data stored on AWS
+      returns: mask_labels_indices(timepoints we want masked out),binary_labels(labels forour two brain states)
                and label_type
   """
   
@@ -112,10 +112,10 @@ def scale_data_single_subj(sub_data,runs_list,norm='none'):
   """
     Function to scale data.
     Params:
-      sub_data     : (1 subject data, keys as subject ID for frmi data or labels)
-      runs_list    : list, (which runs are we normalizing on)
-      norm         : list, (which type of normalization)
-    returns      : dictionary of nd.arrays, Concatenated X data of (time points, x*y*z) x = 79, y = 95, z = 75
+      sub_data     : dictionary: contains subject run data, keys are run number for fmri data or labels)
+      runs_list    : list: which runs are we normalizing on
+      norm         : str: which type of normalization
+    returns      : dictionary of nd.arrays, containing scaled runs of subject
                   
     """
   ##run standardization
@@ -134,10 +134,13 @@ def get_accuracy_scores(clf,data,X_train,y_train,runs_test,y_labels):
   """
     Function to get accuracy scores for subject models.
     Params:
-      model_dict: contains subject model and training/test/val/data
-      subj: subject name 
-      normalization_type: options: 'PSC','ZNORM','none' what type of normalization
-    returns: subj_list, list of subject metrics
+      clf: model: contains subject model
+      data: contains subject test data to predict on
+      X_train: nd_array: run data we trained on
+      y_train: list: labels for x_train
+      runs_test: list: runs to make predictions on
+      y_labels: list: test labels (note in our paradigm all runs are the same so we only need one set)
+    returns: subj_list, list of subject metrics, df_columns to map to dataframe
   """
   accuracy_list = [] #initialize accuracy score list
   df_columns = ['train_acc'] #initialize column list
@@ -145,7 +148,7 @@ def get_accuracy_scores(clf,data,X_train,y_train,runs_test,y_labels):
   accuracy_list.append(accuracy_score(y_train,y_predicts)) #append scores
   #iterate over runs and predict
   for run in runs_test:
-    y_predicts = clf.predict(data[run])
+    y_predicts = clf.predict(data[run]) #get predicted values
     df_columns.append(run + '_acc') #append run to columns
     accuracy_list.append(accuracy_score(y_labels,y_predicts)) #append scores
     df_columns.append(run+'_f1_score') #append run to columns
@@ -154,22 +157,22 @@ def get_accuracy_scores(clf,data,X_train,y_train,runs_test,y_labels):
     
   return accuracy_list,df_columns
 
-#still need to test
 def get_predicts(clf,data,runs_test):
   """
-    Function to get accuracy scores for subject models.
+    Function to get predictions for subject models.
     Params:
-      model_dict: contains subject model and training/test/val/data
-      subj: subject name 
-    returns: y_val_predicts(if validation run),y_test_predicts
+      clf: model: SVC model of subject
+      data: dictionary: contains subject run information
+      runs_test: list: runs to get test data on
+    returns: dictionary of predictions we want to capture
   """
   predictions_dict = {} #initialize dictionary
   #iterate over runs and store data we want to save
   for runs in runs_test: 
-    predictions_dict[runs] = {}
-    predictions_dict[runs]['predicts'] = clf.predict(data[runs])
-    predictions_dict[runs]['proba'] = clf.predict_proba(data[runs])
-    predictions_dict[runs]['decision_function'] = clf.decision_function(data[runs])
+    predictions_dict[runs] = {} #initalize empty dataframe
+    predictions_dict[runs]['predicts'] = clf.predict(data[runs]) #get predicts
+    predictions_dict[runs]['proba'] = clf.predict_proba(data[runs]) #get probability scores
+    predictions_dict[runs]['decision_function'] = clf.decision_function(data[runs]) #get decision function scores
 
                                                   
   return predictions_dict
@@ -178,15 +181,16 @@ def run_single_subject_svm(data,runs_train,train_labels,svc_kernel='rbf',svc_gam
   """
     Function to run cross-validation or single subject SVM
     Params:
-      tuple: contains
-        X_train      : 2-d array of training data
-        y_train   : sub_labels to indicate which row of the sub_data belongs to increase/decrease state
-        svc_kernel : kernel for svc
-        svc_c: c value for svc
-      optionals:
-        do_cv: boolean: to decide if cross-validation gridsearch is requested: default=False
-        params: dictionary: dictionary containing params to grid search: default=empty dictionary
-    returns      : subject individual model,X_train and why train
+      data: dictionary: contains all subject runn data
+      runs_train: list: of runs we want to train on
+      train_labels: list: list of labels for training data
+    Optional Params:
+      svc_kernel: str: string of kernel we want to use
+      svc_gamma: str or float or int: of gamma we want to use
+      svc_c: int or float: of C value we want to use
+      do_cv: boolean: if true, run cross validation
+      params: dictionary of params we want to use in cross validation
+    returns: if do_cv, just the clf, if not cv, returns clf, X_train, y_train
   """ 
   
   X_train = [] #initialize X_train
@@ -204,7 +208,6 @@ def run_single_subject_svm(data,runs_train,train_labels,svc_kernel='rbf',svc_gam
     y_train = train_labels
   #run cv if do_cv = True, else run individual model SVM
   if do_cv:
-    #cv_params = {'C':[0.7, 1, 5, 10],'kernel':['linear', 'rbf']}
     svc = SVC()
     clf = GridSearchCV(svc, params)
     clf.fit(X_train,y_train)
