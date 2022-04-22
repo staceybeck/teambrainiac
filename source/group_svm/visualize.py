@@ -307,7 +307,10 @@ def plot_hist_decision(y_ng_dscore, y_ps_dscore, suptitle, savefile, if_save):
     plt.title("\n Class Separation at Decision Boundaries")
     if if_save == True:
         print(f"Saving {savefile}...")
-        plt.savefig(savefile, dpi=200, transparent=True)
+        plt.savefig(savefile,
+                    dpi=200,
+                    transparent=True
+                    )
     plt.show()
 
 

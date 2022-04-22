@@ -37,6 +37,8 @@ def run_grp_svm_model(data, mask_type, group_sub_ids, runs_train, runs_val, runs
     :param svm_type:
     :return:
     """
+    model_dict = defaultdict(list)
+
     if runs_val != False:
         X, y, X_v, y_v, X_t, y_t = transform_data(data, group_sub_ids, runs_train, runs_val, runs_test, norm)
 
@@ -51,6 +53,12 @@ def run_grp_svm_model(data, mask_type, group_sub_ids, runs_train, runs_val, runs
                   )
         print(f"Fitting the model for {mask_type}...")
         clf.fit(X, y)
+
+        model_dict['model'] = clf
+        full_path_name = f'/data/{data_type}_{mask_type}_{runs_id}_model.pkl'
+        filehandler = open(full_path_name, "wb")
+        pickle.dump(subj_mask_model, filehandler)
+        filehandler.close()
 
         # Calculate metrics
         metrics_data = metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type, m_path_ind)
@@ -69,6 +77,12 @@ def run_grp_svm_model(data, mask_type, group_sub_ids, runs_train, runs_val, runs
                   )
         print(f"Fitting the model for {mask_type} on Train and then will Test...")
         clf.fit(X, y)
+
+        model_dict['model'] = clf
+        full_path_name = f'/data/{data_type}_{mask_type}_{runs_id}_model.pkl'
+        filehandler = open(full_path_name, "wb")
+        pickle.dump(subj_mask_model, filehandler)
+        filehandler.close()
 
         # Calculate metrics
         metrics_data = metrics(clf, X, y, False, False, X_t, y_t, data_type, runs_id, mask_type, m_path_ind)

@@ -124,7 +124,6 @@ def metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type, m_path
     :return:
     """
     metrics_dict = defaultdict(list)
-    model_dict = defaultdict(list)
 
     if X_v != False:
         # Validation metrics
@@ -136,8 +135,6 @@ def metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type, m_path
         print("Validation Accuracy:", val_acc)
 
         #Initialize dict w/ data
-        model_dict['model'].append(clf)
-        model_dict['X_train'].append(X)
         metrics_dict["y_train"].append(y)
         metrics_dict['val_dfnc'].append(yval_defunc.astype(np.float32))
         metrics_dict['val_preds'].append(yval_pred)
@@ -182,8 +179,6 @@ def metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type, m_path
     
     
     #Store metrics in dictionary
-    model_dict['model'].append(clf)
-    model_dict['X_train'].append(X)
     metrics_dict["bmap3"].append(bmap3)
     metrics_dict['bmap2_3'].append(bmap2_3)
     metrics_dict['alphas1'].append(alphas1)
@@ -197,12 +192,9 @@ def metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type, m_path
 
     # File paths
     metrics_name = f"BMAP_{data_type}_{runs_id}_{mask_type}_metrics"
-    model_name = f"{data_type}_{runs_id}_{mask_type}_X_model"
 
     # Save metrics and model
     s3_upload(metrics_dict, f"metrics/group_svm/{mask_type}/%s.pkl" % metrics_name, 'pickle')
-    # Save model
-    s3_upload(model_dict, "models/group/%s.pkl" % model_name, 'pickle')
 
 
     # Save metrics for individual masks
