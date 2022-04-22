@@ -83,7 +83,7 @@ def create_bmaps(data,indices_mask,image):
   bmap3 = nib.Nifti1Image(bmap2_3d,affine=image.affine,header=image.header) #save as nifti
   return bmap2,bmap3
 
-def plot_map(bmap3_nifti,norm_type,subject_type,out_fname=None,threshold=.0001,t_image=None):
+def plot_map(bmap3_nifti,norm_type,subject_type,out_fname=None,threshold=.0001,t_image=None,display='z',cut_coord=(-35,-20,0,20,35,50,65,70)):
   """
     Function to plot beta map images from SVM models will either display image or save it to destination
     Params:
@@ -102,26 +102,15 @@ def plot_map(bmap3_nifti,norm_type,subject_type,out_fname=None,threshold=.0001,t
   
   if out_fname!=None: #if outfname specified
     output_file_name = f'{out_fname}{norm_type}_{subject_type}.png'
-    disply = plotting.plot_img(disp_image, bg_img = t_image, display_mode='z', cut_coords=(-35,-20,0,20,35,50,65,70), threshold=threshold,
+    disply = plotting.plot_img(disp_image, bg_img = t_image, display_mode=display, cut_coords=cut_coord, threshold=threshold,
                           output_file=output_file_name, colorbar=True,cmap='cold_white_hot',black_bg=False)
   else:
-    display = plotting.plot_img(disp_image, bg_img = t_image, display_mode='z', cut_coords=(-35,-20,0,20,35,50,65,70),threshold=threshold,
+    display = plotting.plot_img(disp_image, bg_img = t_image, display_mode=display, cut_coords=cut_coord,threshold=threshold,
                            colorbar=True,cmap='cold_white_hot',black_bg=False)
     display.title(title_str, x=0.01, y=0.99, size=15, color='w', bgcolor='black')
     
-def plot_decision_scores(scores,labels,title_str,subject_type,run,outfname=None):
-  """
-    Function to plot decision function scores.
-    Params:
-      scores: list of decision function scores
-      labels: labels for data 0 = decrease, 1 = increase
-      title_str: how do we want the title to display
-      subject_type: is this a young adult or adolescent (added to title of visualization)
-      run: which run are scoring
-      outfname: if None, display, if str, save data as .png image and display
-  """
 
-def plot_decision_scores_local(scores,labels,title_str,subject_type,run,outfname=None):
+def plot_decision_scores(scores,labels,title_str,subject_type,run,outfname=None):
   """
     Function to plot decision function scores.
     Params:
