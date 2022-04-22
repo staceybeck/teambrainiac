@@ -17,7 +17,7 @@ Authors:
     |    |    └──                                    <- Contains landing_page.py app
     |    ├── helper/
     |    |    └──                                    <- Contains modules and Jupyter Notebooks from early project exploration
-    |    |__    SingleSubjectSVM_Norm_CV.ipynb           <-Contains modules to test normalization strategies (no normalization, percent signal change,z-normalization) and to run a cv search on best strategy once chosen.
+    |    |__ SingleSubjectSVM_Norm_CV.ipynb           <-Contains modules to test normalization strategies (no normalization, percent signal change,z-normalization) and to run a cv search on best strategy once chosen.
     |    |__ BuildSingleSubjectSVM_Models.ipynb      <- Contains modules to run single subject SVM model. Output can be used inline or saved for future use.
     |    |__ DataExplorationNotebook_SingleSubjectSVM.ipynb  <- Contains modules to explore normalization strategies we employed and to look at cross validation results. This notebook pulls in previously stored data after running the XXXX
     |    |__ VisualizationPlayground.ipynb           <-
