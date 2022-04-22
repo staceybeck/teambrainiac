@@ -17,10 +17,8 @@ from sklearn.metrics import accuracy_score, f1_score
 #important utility functions for loading,masking,saving data
 #from utils import *
 from access_data import *
-from process import *
 #normal python packages we use
 import numpy as np
-import pandas as pd
 #import nilearn clean for processing data
 from nilearn.signal import clean
 
