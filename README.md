@@ -59,6 +59,7 @@ In our study, we used temporal 3D brain data from 52 healthy adolescents (14 - 1
     |    |__  |__ Timeseries_Cross_Validation.ipynb  <- Cross validation used to determine classifier parameters 
     |    |__  |__ Group_metrics.ipynb                <- Generates plots group-level metrics 
     |    |__  |__ Statistical_tests_Group.ipynb      <- Statistical tests for beta maps at group level
+    |    |    |__ Statistical_tests_Group.ipynb      <- Statistical tests for decision scores at group level
     |    |__  └── access_data.py                     <- Connect to AWS, uploads and downloads data
     |    |__  └── analysis.py                        <- Collects metrics from models and saves data, uploading to AWS
     |    |__  └── cross_validation.py                <- Partitions data using TimeSeries package from Sklearn for cross validation and gridsearch
