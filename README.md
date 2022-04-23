@@ -7,6 +7,24 @@ Authors:
 - Benjamin Merrill
 - Mary Soules
 
+
+This README contains the following sections:
+-   [Project Description](https://github.com/yecatstevir/teambrainiac#project-description)
+-	[Repository Organization](https://github.com/yecatstevir/teambrainiac#repository-organization)
+-	[Environment Requirements](https://github.com/yecatstevir/teambrainiac#environment-requirements)
+    - [Connect to Docker](https://github.com/yecatstevir/teambrainiac#connect-to-dockerfile)
+    - [Streamlit set-up](https://github.com/yecatstevir/teambrainiac#for-streamlit-app)
+-   [Single Subject](https://github.com/yecatstevir/teambrainiac#single-subject)
+-   [Adolescent and Young Adult](https://github.com/yecatstevir/teambrainiac#adolescent-and-young-adult)
+-   [Deep Learning](https://github.com/yecatstevir/teambrainiac#deep-learning)
+  
+
+## Project Description
+
+This project is part of an extension of research through the University of Michigan Medicine department that studies substance use disorders through real-time fMRI neurofeedback analyses. The study has recruited over 80 voluntary subjects to participate in the study. We are authorized to share our process and results from our study but unable to provide access to the data. All data has been de-identified and consent given to share results. Please contact the authors directly for a demonstration on how the code runs. 
+
+In our study, we used temporal 3D brain data from 52 healthy adolescents and young adults ranging from the ages of 16 years to 21 years old. We split out analyses up by subject as well as group for the SVM analyses and by group for the deep learning analyses.  
+
 ## Repository Organization
     ├── Dockerfile                                   <- Details to build and run Docker container
     ├── requirements.txt                             <- Installed dependencies by Docker
@@ -53,10 +71,10 @@ Authors:
     |    ├── DL/
     |    |    └──                                    <- Deep Learning folder containing modules and notebook to run 3D-CNN from AWS to analysis
  
-## Environment Set-up
+## Environment Requirements
 
 - requires path_config.py to access data from cloud storage
-- store path_config.py in ./source
+- store path_config.py in the directory from which you are running the notebooks and scripts
 
 ### Connect to Dockerfile 
 #### build 
@@ -69,7 +87,6 @@ Authors:
 
 ### Install packages locally
 
-#### run:
     !pip install boto3 nibabel nilearn
     
 ### For Streamlit app
@@ -96,33 +113,18 @@ Authors:
         https://share.streamlit.io/yecatstevir/teambrainiac/main/source/streamlit/landing_page.py
         
 
+### Single Subject
+
+
+### Adolescent and Young Adult
+
+
+### Deep Learning
+
+
+
 ### Data in AWS:
-- 
+- ADD THE subject folder descriptions
 - single_subj_T1_resampled.nii    : NIFTI T1 Brain Image file of a single subject for Visualizations
 - w3rtprun_01.nii                 : Data Affine for maping voxel coordinates to Real World Coordinates for Visualizations
-
-### All_subject_masked_labeled.ipynb
-
-- This is the pre-processing notebook
-- This notebook will perform masking and normalization as well as filtering by label for all matlab data with running one cell. 
-- Once the data is returned as masked, filtered and then normalized, check the shape/dims
-- Saves the data locally as pickle file
-
-### Access_Load_Data.ipynb
-
-- This is a demo notebook for how the function access_load_data() works in utils.py
-- Saves dictionary pickle file of data paths for subject .mat data, subject IDs, mask .mat data, and labels in ./source/data directory
-
-### Mat_to_Numpy.ipynb
-
-- This is a demonstration for how we can access our data from AWS using our data path dictionary pickle file and convert the .mat data to numpy arrays
-- Once we access the .mat data in AWS, it downloads locally to .source/data so we can access it and convert to numpy
-- Image data is 2d, but we are able to convert to 4d as long as we know the x, y, z components of the image before it was compressed.
-- Option to save the 2d, 4d, and label numpy array data in ./source/data directory
-
-### Visualize_Data.ipynb
-
-- Currently unable to run without 4d image data - awaiting original image shape information before this notebook is able to be executed without errors. 
-
-
 
