@@ -39,6 +39,10 @@ def get_mask(mask_type,data_path_dict,mask_ind):
 
 def labels_mask_binary(data_path_dict, label_type='rt_labels'):
     """
+    Function returns binary labels from any mask type in data_path_dict
+    Params:
+      data_path_dict  : dictionary containing paths to all data stored on AWS
+      label_type      : contains type of label to return, typically 'rt_labels'
     """
     label_path = data_path_dict['labels'][0]
     label_data_dict = access_load_data(label_path, True)
@@ -190,6 +194,13 @@ def mask_normalize_runs_reshape_4d(subject_dict, mask, scaler='standard'):
  
 
 def generate_train_val_test_dict(subject_id_partition, train_val_test_proportion=[0.7,0.8,1]):
+  '''
+  Function splits subject ids into random train, validation, and test sets in dictionary
+  Params:
+    subject_id_partition : list of subject ids to split into training validation and testing
+    train_val_test_proportion : list of proportions to split data into in the order [train, val+train, test+val+train]
+  '''
+  
   train_val_test_dict = {}
   shuffled_ids = subject_id_partition.copy()
   random.shuffle(shuffled_ids)
