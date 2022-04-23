@@ -1,4 +1,5 @@
-# University of Michigan Master of Applied Data Science Capstone Team Brainiac
+# University of Michigan Master of Applied Data Science Capstone 
+## Using Support Vector Machine and 3D Convolutional Neural Networks to Predict Brain States in Task-Based Functional Magnetic Resonance Imaging (fMRI)
 
 Authors:
 
@@ -7,8 +8,8 @@ Authors:
 - Mary Soules
 
 ## Repository Organization
-    ├── Dockerfile                                   <- Details to build and run docker
-    ├── requirements.txt                             <- Details of installed dependencies
+    ├── Dockerfile                                   <- Details to build and run Docker container
+    ├── requirements.txt                             <- Installed dependencies by Docker
     ├── README.md                                    <- This README file
     ├── .gitignore                                   <- Specifies files ignored by git
     |
@@ -17,30 +18,38 @@ Authors:
     |    |    └──                                    <- Contains landing_page.py app
     |    ├── helper/
     |    |    └──                                    <- Contains modules and Jupyter Notebooks from early project exploration
-    |    |__ SingleSubjectSVM_Norm_CV.ipynb           <-Contains modules to test normalization strategies (no normalization, percent signal change,z-normalization) and to run a cv search on best strategy once chosen.
-    |    |__ BuildSingleSubjectSVM_Models.ipynb      <- Contains modules to run single subject SVM model. Output can be used inline or saved for future use.
-    |    |__ DataExplorationNotebook_SingleSubjectSVM.ipynb  <- Contains modules to explore normalization strategies we employed and to look at cross validation results. This notebook pulls in previously stored data after running the XXXX
-    |    |__ VisualizationPlayground.ipynb           <-
-    |    |__ single_subject.py                       <- Contains functions to access data, mask data, normalize data, run single subject model. The model will run on more than one turn for training, if desired. At this point testing is done on single runs only. This also contains functions for getting predictions to be stored for later use, accuracy scores for data exploration.
-    |    |__ brain_viz_single_subj.py                <- Contains functions to create bmaps for brain visualizations, functions for brain images, interactive brain images, and functions to display decision functions scores across the time-series
-    |    ├── group_svm/                              <- Also includes notebooks to demonstrate directory modules
-    |    |__  |__ data/                              <-
-    |    |__  |__ images/                            <-
-    |    |__  |__ Adolescent_Group_SVM.ipynb         <-
-    |    |__  |__ Explore_data.ipynb                 <-
-    |    |__  |__ Young_Adult_Group_SVM.ipynb        <-
-    |    |__  |__ Timeseries_Cross_Validation.ipynb  <-
-    |    |__  |__ Group_charts.ipynb                 <-
-    |    |__  |__ Group_All_MASK_SVM.ipynb           <-
-    |    |    └── access_data.py                     <- Connect to AWS, uploads and downloads data
-    |    |    └── analysis.py                        <- Collects metrics from models and saves data, uploading to AWS
-    |    |    └── cross_validation.py                <- Partitions data using TimeSeries package from Sklearn for cross validation and gridsearch
-    |    |    └── dataframes.py                      <- May want to rid of this file
-    |    |    └── process.py                         <- Processes the data from MATLAB further, organizes data for model training
-    |    |    └── train.py                           <- Training file for SVM using Train, Validation, Test or Train and Test sets
-    |    |    └── visualize.py                       <- Code to visualize certain plots using Nilearn as well as normalization exploration
-    |    └── data   
-    |    |    └──                                    <- Contains data needed to be accessed within /source. Data dictionary, and T1 images for visualization 
+    |    |__ SingleSubjectSVM_Norm_CV.ipynb          <- Contains modules to test normalization strategies (no normalization, percent signal change,z
+    |    |                                              normalization) and to run a cv search on best strategy once chosen.
+    |    |__ BuildSingleSubjectSVM_Models.ipynb      <- Contains modules to run single subject SVM model. Output can be used inline or saved for future
+    |    |                                              use.
+    |    |__ DataExplorationNotebook_SingleSubjectSVM.ipynb  <- Contains modules to explore normalization strategies we employed and to look at cross
+    |    |                                                      validation results. This notebook pulls in previously stored data after running the XXXX
+    |    |__ VisualizationPlayground.ipynb           
+    |    |__ single_subject.py                       <- Contains functions to access data, mask data, normalize data, run single subject model. The model
+    |    |                                              will run on more than one turn for training, if desired. At this point testing is done on single
+    |    |                                              runs only. This also contains functions for getting predictions to be stored for later use,
+    |    |                                              accuracy scores for data exploration.
+    |    |__ brain_viz_single_subj.py                <- Contains functions to create bmaps for brain visualizations, functions for brain images,
+    |    |                                              interactive brain images, and functions to display decision functions scores across the
+    |    |                                              timeseries
+    |    ├── group_svm/                            
+    |    |__  |__ data/                           
+    |    |__  |__ images/                          
+    |    |__  |__ Adolescent_Group_SVM.ipynb         <- Adolescent model training, brain and decision score visualization
+    |    |__  |__ Explore_data.ipynb                 <- Normalization notebook plotting voxel histograms per subject
+    |    |__  |__ Young_Adult_Group_SVM.ipynb        <- Young Adult model training, brain and decision score visualization
+    |    |__  |__ Timeseries_Cross_Validation.ipynb  <- Cross validation used to determine classifier parameters 
+    |    |__  |__ Group_metrics.ipynb                <- Generates plots group-level metrics 
+    |    |__  |__ Statistical_tests_Group.ipynb      <- Statistical tests for beta maps at group level
+    |    |__  └── access_data.py                     <- Connect to AWS, uploads and downloads data
+    |    |__  └── analysis.py                        <- Collects metrics from models and saves data, uploading to AWS
+    |    |__  └── cross_validation.py                <- Partitions data using TimeSeries package from Sklearn for cross validation and gridsearch
+    |    |__  └── process.py                         <- Processes the data from MATLAB further, organizes data for model training
+    |    |__  └── train.py                           <- Training file for SVM using Train, Validation, Test or Train and Test sets
+    |    |__  └── visualize.py                       <- Code to visualize certain plots using Nilearn as well as normalization exploration
+    |    └── data/   
+    |    |    └──                                    <- Contains data needed to be accessed within /source. Data dictionary, and T1 images for
+    |    |                                              visualization 
     |    ├── DL/
     |    |    └──                                    <- Deep Learning folder containing modules and notebook to run 3D-CNN from AWS to analysis
  
@@ -83,17 +92,12 @@ Authors:
         
         streamlit run landing_page.py
         
-#### To generally view the app in browser:
+#### To view the app in browser:
         https://share.streamlit.io/yecatstevir/teambrainiac/main/source/streamlit/landing_page.py
         
 
 ### Data in AWS:
-- all_data_dictionary.pkl         : whole brain masked, rt_label filtered, UNNORMALIZED 2d numpy data for all subjects
-- whole_brain_all_norm_2d.pkl     : whole brain masked, rt_label filtered, NORMALIZED 2d numpy data for all subjects
-- all_data_masksubACC_norm_2d.pkl : subACC masked, rt_label filtered, NORMALIZED 2d numpy data for all subjects
-- all_data_masksubAI_norm_2d.pkl  : subAI masked, rt_label filtered, NORMALIZED 2d numpy data for all subjects
-- all_data_masksubNAcc_norm_2d.pkl: N.Accumbens masked, rt_label filtered, NORMALIZED 2d numpy data for all subjects
-- all_data_masksubmPFC_norm_2d.pkl: Prefrontal Cortex masked, rt_label filtered, NORMALIZED 2d numpy data for all subjects
+- 
 - single_subj_T1_resampled.nii    : NIFTI T1 Brain Image file of a single subject for Visualizations
 - w3rtprun_01.nii                 : Data Affine for maping voxel coordinates to Real World Coordinates for Visualizations
 
