@@ -130,8 +130,9 @@ if st.session_state.page_select == "Chart Metrics":
     st.sidebar.write("""
             ## Chart Metrics
             The charts on this page are metrics captured when running our models on single subjects or when grouping subjects
-            by age. Adolescent are ages 16-19 years old and Young Adults are older than 19 years old. 
+            by age. Adolescents range from 14 - 16 years old and Young Adults range from 25 - 27 years old. 
     """)
+
 
     st.write ("Young Adult Whole Brain Mask Model Decision Scores")
     st.image('/app/teambrainiac/source/streamlit/YA_detrend_mask_dfunpred_1.png',
