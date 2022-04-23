@@ -41,7 +41,7 @@ def find_best_worst_index(test):
 
 def process_predictions(test, prediction_index):
   '''
-  Creates predictions dataframe from test dictionary
+  Creates predictions dataframe from test dictionary; useful for wrangling metric outputs from Group3DCNN.ipynb
   '''
   preds_df = pd.DataFrame(test['preds_'+str(prediction_index)], columns=['Down Regulation', 'Up Regulation'])
 
@@ -72,12 +72,15 @@ def process_predictions(test, prediction_index):
 
 def plot_decisions(ds, labels, time, title, run):
     """
-    :param ds:
-    :param labels:
-    :param time:
-    :param title:
-    :param run:
-    :return:
+    Plots model prediction vs. true label of up and down regulation
+    as seen in the visualizations folder
+    Params:
+      ds     : model predictions
+      labels : true labels
+      time   : time period or index of images in prediction
+      title  : plot title
+      run    : which subject run the data is for i.e. 1, 2, 3, or 4
+    return: plot
     """
     plt.style.use('seaborn-darkgrid')
     fig, ax = plt.subplots(1, 1, figsize=(15, 5))
