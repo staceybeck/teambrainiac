@@ -24,7 +24,7 @@ This README contains the following sections:
 
 This project is part of an extension of research through the University of Michigan Medicine department that studies substance use disorders through real-time fMRI neurofeedback analyses. The study has recruited over 80 voluntary subjects to participate in the study. We are authorized to share our process and results from our study but unable to provide access to the data. All data has been de-identified and consent given to share results. Please contact the authors directly for a demonstration on how the code runs. 
 
-In our study, we used temporal 3D brain data from 52 healthy adolescents and young adults ranging from the ages of 16 years to 21 years old. We split out analyses up by subject as well as group for the SVM analyses and by group for the deep learning analyses.  
+In our study, we used temporal 3D brain data from 52 healthy adolescents (14 - 16 years old) and young adults (25 - 27 years old). We split out analyses up by subject as well as group for the SVM analyses and by group for the deep learning analyses.  
 
 ## Repository Organization
     ├── Dockerfile                                   <- Details to build and run Docker container
@@ -35,8 +35,6 @@ In our study, we used temporal 3D brain data from 52 healthy adolescents and you
     └── source/
     |    ├── streamlit/
     |    |    └──                                    <- Contains landing_page.py app
-    |    ├── helper/
-    |    |    └──                                    <- Contains modules and Jupyter Notebooks from early project exploration
     |    |__ SingleSubjectSVM_Norm_CV.ipynb          <- Contains modules to test normalization strategies (no normalization, percent signal change,z
     |    |                                              normalization) and to run a cv search on best strategy once chosen.
     |    |__ BuildSingleSubjectSVM_Models.ipynb      <- Contains modules to run single subject SVM model. Output can be used inline or saved for future
@@ -44,7 +42,8 @@ In our study, we used temporal 3D brain data from 52 healthy adolescents and you
     |    |__ DataExplorationNotebook_SingleSubjectSVM.ipynb  <- Contains modules to explore normalization strategies we employed and to look at cross
     |    |                                                      validation results. This notebook pulls in previously stored data after running the XXXX
     |    |__ VisualizationPlayground.ipynb           
-    |    |__ single_subject.py                       <- Contains functions to access data, mask data, normalize data, run single subject model. The model
+    |    |__ single_subject.py                       <- Contains functions to access data, mask data, normalize data, run single subject model. The
+    |    |                                              model
     |    |                                              will run on more than one turn for training, if desired. At this point testing is done on single
     |    |                                              runs only. This also contains functions for getting predictions to be stored for later use,
     |    |                                              accuracy scores for data exploration.
@@ -110,14 +109,13 @@ In our study, we used temporal 3D brain data from 52 healthy adolescents and you
 
 
 ### Adolescent and Young Adult
+The group analysis approach aims to explore differences within groups and between groups in regulating the reward circuitry in the Nucleus Accumbens and to see if other regions of interest are involved in this regulation. Below are the two notebooks that split each analyses. Due to the length of training for each notebook, in order to train on the whole brain, 5 submasks and 4 regions of interests, each model training is run one at a time. The notebook is able to access the data in cloud storage, process the data (masking, filtering by label, split and concatenate the data) and train/ save the model locally, save the metrics to the cloud and visualize the brain mask as well as a few key regions of interest, visualize the decision function scores and histogram. 
+[Adolescent Notebook](source/group_svm/Adolescent_Group_SVM.ipynb)
+[Young Adult Notebook](source/group_svm/Young_Adult_Group_SVM.ipynb)
+
+Other notebooks in this directory used as a part of these analyses include normalization exploration, cross-validation, metrics analysis, and statistical analyses of beta maps as well as decision function scores. Each notebook defines the variables of interest to run (such as group type, mask type, runs to train and test, normalization to apply) and uses function calls to various modules stored in this directory for a more clean presentation. 
 
 
 ### Deep Learning
 The deep-learning approach to group level analysis is an attempt to see if we can provide better predictions to brain-states than Support Vector Machines. The preprocessing, model building and training, and visualizations can be found in the DL folder in source. It is split into three main notebooks. PreprocessToAws.ipynb outlines the preprocessing, data normalization, and formatting for the Pytorch dataloader. Group3DCNN.ipynb creates the model and has scripts for training, validation, and testing. VisualizationCreation.ipynb is in the metrics folder and uses metrics returned by the model and creates meaningful insights from the neural network. All .py files contain helper functions for these three notebooks, and the metrics folder contains some csv metric files, a few trained CNN models, and visualizations.
-
-
-### Data in AWS:
-- ADD THE subject folder descriptions
-- single_subj_T1_resampled.nii    : NIFTI T1 Brain Image file of a single subject for Visualizations
-- w3rtprun_01.nii                 : Data Affine for maping voxel coordinates to Real World Coordinates for Visualizations
 
