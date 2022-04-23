@@ -68,9 +68,13 @@ In our study, we used temporal 3D brain data from 52 healthy adolescents and you
     |    └── data/   
     |    |    └──                                    <- Contains data needed to be accessed within /source. Data dictionary, and T1 images for
     |    |                                              visualization 
-    |    ├── DL/
-    |    |    └──                                    <- Deep Learning folder containing modules and notebook to run 3D-CNN from AWS to analysis
- 
+    |    ├── DL/                                     <- Deep Learning folder containing 3 main scripts to run 3D-CNN from AWS to analysis
+    |    |    └── PreprocessToAws.ipynb              <- From Matlab inputs to pytorch-compatible tensor files
+    |    |    └── Group3DCNN.ipynb                   <- Loads tensor training, validation, and testing for model building
+    |    |    ├── metrics/
+    |    |    |    └── VisualizationCreation.ipynb   <- Analyzes metrics from Group3DCNN.ipynb file
+
+
 ## Environment Requirements
 
 - requires path_config.py to access data from cloud storage
@@ -120,7 +124,7 @@ In our study, we used temporal 3D brain data from 52 healthy adolescents and you
 
 
 ### Deep Learning
-
+The deep-learning approach to group level analysis is an attempt to see if we can provide better predictions to brain-states than Support Vector Machines. The preprocessing, model building and training, and visualizations can be found in the DL folder in source. It is split into three main notebooks. PreprocessToAws.ipynb outlines the preprocessing, data normalization, and formatting for the Pytorch dataloader. Group3DCNN.ipynb creates the model and has scripts for training, validation, and testing. VisualizationCreation.ipynb is in the metrics folder and uses metrics returned by the model and creates meaningful insights from the neural network. All .py files contain helper functions for these three notebooks, and the metrics folder contains some csv metric files, a few trained CNN models, and visualizations.
 
 
 ### Data in AWS:
