@@ -82,8 +82,14 @@ class ConvNet(nn.Module):
   
   
 def accuracy(out, yb):
-    preds = torch.argmax(out, dim=1)
-    return (preds == yb).float().mean()
+  '''
+  Function returns the accuracy of a pytorch prediction
+  Params:
+    out : the output of a forward pass through the network
+    yb  : true labels
+  '''
+  preds = torch.argmax(out, dim=1)
+  return (preds == yb).float().mean()
   
   
   
@@ -91,6 +97,16 @@ def accuracy(out, yb):
   
   
 def run_cnn(model, epochs, learning_rate, loss_func, opt, dl):
+  '''
+  Function takes a pytorch model and dataloader and runs it
+  Params:
+    model          : Pytorch CNN, trained or untrained
+    epochs         : number of epochs to run the data through the model
+    learning_rate  : the learning rate for the CNN
+    loss_func      : function to measure loss for each batch prediction
+    opt            : function optimizer
+    dl             : Pytorch dataloader object with training data already input
+  '''
   metrics_dict = {}
   # Run Model
   for epoch in range(1, 1+epochs):
