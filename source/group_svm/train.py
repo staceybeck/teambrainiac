@@ -12,7 +12,6 @@
 
 
 
-from access_data import s3_upload
 from process import transform_data
 from sklearn.svm import SVC
 from collections import defaultdict
@@ -45,7 +44,8 @@ def run_grp_svm_model(data, mask_type, group_sub_ids, runs_train, runs_val, runs
         runs_id = [i + 1 for i in runs_train]
 
         if data_type == "AD_detrend":
-            clf = SVC(C=5.0 #10
+            print(f"Train on {data_type}")
+            clf = SVC(C=5.0, #10
                       class_weight='balanced',
                       max_iter=1000,
                       random_state=42,
@@ -53,6 +53,7 @@ def run_grp_svm_model(data, mask_type, group_sub_ids, runs_train, runs_val, runs
                       gamma='scale' #For adolescent
                       )
         else:
+            print(f"Train on {data_type}")
             clf = SVC(C=10.0,
                       class_weight='balanced',
                       max_iter=1000,
@@ -73,7 +74,8 @@ def run_grp_svm_model(data, mask_type, group_sub_ids, runs_train, runs_val, runs
         runs_id = [i + 1 for i in runs_train]
 
         if data_type == "AD_detrend":
-            clf = SVC(C=5.0 #10
+            print(f"Train on {data_type}")
+            clf = SVC(C=5.0, #10
                       class_weight='balanced',
                       max_iter=1000,
                       random_state=42,
@@ -81,6 +83,7 @@ def run_grp_svm_model(data, mask_type, group_sub_ids, runs_train, runs_val, runs
                       gamma='scale' #For adolescent
                       )
         else:
+            print(f"Train on {data_type}")
             clf = SVC(C=10.0,
                       class_weight='balanced',
                       max_iter=1000,
