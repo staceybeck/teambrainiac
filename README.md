@@ -1,5 +1,6 @@
-# University of Michigan Master of Applied Data Science Capstone 
-## Using Support Vector Machine and 3D Convolutional Neural Networks to Predict Brain States in Task-Based Functional Magnetic Resonance Imaging (fMRI)
+
+# Using Support Vector Machine and 3D Convolutional Neural Networks to Predict Brain States in Task-Based Functional Magnetic Resonance Imaging (fMRI)
+## University of Michigan Master of Applied Data Science Capstone 
 
 Authors:
 
@@ -80,19 +81,7 @@ In our study, we used temporal 3D brain data from 52 healthy adolescents and you
 - requires path_config.py to access data from cloud storage
 - store path_config.py in the directory from which you are running the notebooks and scripts
 
-### Connect to Dockerfile 
-#### build 
-    docker build -t test_container .
 
-#### run
-    docker run -p 80:80 -v ~/path/teambrainiac:/source test_container
-
-* specify your path where 'path'
-
-### Install packages locally
-
-    !pip install boto3 nibabel nilearn
-    
 ### For Streamlit app
     Streamlit's prerequisites:
         - IDE or text editor
