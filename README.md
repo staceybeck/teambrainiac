@@ -59,8 +59,8 @@ In our study, we used temporal 3D brain data from 52 healthy adolescents (14 - 1
     |    |__  |__ Young_Adult_Group_SVM.ipynb        <- Young Adult model training, brain and decision score visualization
     |    |__  |__ Timeseries_Cross_Validation.ipynb  <- Cross validation used to determine classifier parameters 
     |    |__  |__ Group_metrics.ipynb                <- Generates plots group-level metrics 
-    |    |__  |__ Statistical_tests_Group.ipynb      <- Statistical tests for beta maps at group level
-    |    |    |__ Statistical_tests_Group.ipynb      <- Statistical tests for decision scores at group level
+    |    |__  |__ Statistical_tests_Beta_maps.ipynb      <- Statistical tests for beta maps at group level
+    |    |__  |__ Statistical_tests_decisions.ipynb      <- Statistical tests for decision scores at group level
     |    |__  └── access_data.py                     <- Connect to AWS, uploads and downloads data
     |    |__  └── analysis.py                        <- Collects metrics from models and saves data, uploading to AWS
     |    |__  └── cross_validation.py                <- Partitions data using TimeSeries package from Sklearn for cross validation and gridsearch
@@ -71,10 +71,10 @@ In our study, we used temporal 3D brain data from 52 healthy adolescents (14 - 1
     |    |    └──                                    <- Contains data needed to be accessed within /source. Data dictionary, and T1 images for
     |    |                                              visualization 
     |    ├── DL/                                     <- Deep Learning folder containing 3 main scripts to run 3D-CNN from AWS to analysis
-    |    |    └── PreprocessToAws.ipynb              <- From Matlab inputs to pytorch-compatible tensor files
-    |    |    └── Group3DCNN.ipynb                   <- Loads tensor training, validation, and testing for model building
-    |    |    ├── metrics/
-    |    |    |    └── VisualizationCreation.ipynb   <- Analyzes metrics from Group3DCNN.ipynb file
+    |    |__  └── PreprocessToAws.ipynb              <- From Matlab inputs to pytorch-compatible tensor files
+    |    |__  └── Group3DCNN.ipynb                   <- Loads tensor training, validation, and testing for model building
+    |    |__  ├── metrics/
+    |    |__  |    └── VisualizationCreation.ipynb   <- Analyzes metrics from Group3DCNN.ipynb file
 
 
 ## Environment Requirements
@@ -113,7 +113,9 @@ The single subject analysis approach aims to explore whether SVM can be used to 
 
 ### Adolescent and Young Adult
 The group analysis approach aims to explore differences within groups and between groups in regulating the reward circuitry in the Nucleus Accumbens and to see if other regions of interest are involved in this regulation. Below are the two notebooks that split each analyses. Due to the length of training for each notebook, in order to train on the whole brain, 5 submasks and 4 regions of interests, each model training is run one at a time. The notebook is able to access the data in cloud storage, process the data (masking, filtering by label, split and concatenate the data) and train/ save the model locally, save the metrics to the cloud and visualize the brain mask as well as a few key regions of interest, visualize the decision function scores and histogram. 
+
 [Adolescent Notebook](source/group_svm/Adolescent_Group_SVM.ipynb)
+
 [Young Adult Notebook](source/group_svm/Young_Adult_Group_SVM.ipynb)
 
 Other notebooks in this directory used as a part of these analyses include normalization exploration, cross-validation, metrics analysis, and statistical analyses of beta maps as well as decision function scores. Each notebook defines the variables of interest to run (such as group type, mask type, runs to train and test, normalization to apply) and uses function calls to various modules stored in this directory for a more clean presentation. 
