@@ -22,9 +22,14 @@ This README contains the following sections:
 
 ## Project Description
 
-This project is part of an extension of research through the University of Michigan Medicine department that studies substance use disorders through real-time fMRI neurofeedback analyses. The study has recruited over 80 voluntary subjects to participate in the study. We are authorized to share our process and results from our study but unable to provide access to the data. All data has been de-identified and consent given to share results. Please contact the authors directly for a demonstration on how the code runs. 
+We are collaborating with the University of Michigan Medicine Psychology Research Department under the research of Principal Investigator Dr. Meghan Martz, PhD. This opportunity was presented to us by one of our authors, Mary Soules, who works as an Application Programming Analyst Senior in the UM research lab processing and analyzing brain images captured through Dr. Martz' study of substance use disorders through real-time fMRI neurofeedback analyses. The study has recruited over 80 voluntary subjects to participate in the study. We are authorized to share our process and results from our study but unable to provide access to the data. All data has been de-identified and consent given to share results. Please contact the authors directly for a demonstration on how the code runs. 
 
-In our study, we used temporal 3D brain data from 52 healthy adolescents (14 - 16 years old) and young adults (25 - 27 years old). We split out analyses up by subject as well as group for the SVM analyses and by group for the deep learning analyses.  
+For this project, we used temporal 3D brain data from 52 healthy adolescents (14 - 16 years old) and young adults (25 - 27 years old). We split our analyses up by subject as well as group for the SVM analyses and by group for the deep learning analyses.  
+
+We have three approaches to looking at the fMRI data captured through this study: 
+- First, single subject SVM to look at individual differences in brain activation and metrics associated within a single subject. This approach would allow us to use trained models at the individual level to help in personalizing treatment for addiction to help individuals up or down-regulate areas in the brain that could be playing a role in their addiction. 
+- Second, a group-level SVM approach to study whether we can predict brain states or locate other regions of interest other than the Nucleus Accumbens on a group level and apply it across subjects, as well as understand if differences exist between groups. 
+- Third, a deep-learning approach to group level analysis to see if we can provide better predictions to brain-state data. 
 
 ## Repository Organization
     ├── Dockerfile                                   <- Details to build and run Docker container
@@ -35,22 +40,23 @@ In our study, we used temporal 3D brain data from 52 healthy adolescents (14 - 1
     └── source/
     |    ├── streamlit/
     |    |    └──                                    <- Contains landing_page.py app
-    |    |__single_subject
+    |    |__single_subject/
     |    |__  |__ SingleSubjectSVM_Norm_CV.ipynb          <- Contains modules to test normalization strategies (no normalization, percent signal change,z
-    |    |                                              normalization) and to run a cv search on best strategy once chosen.
-    |    |__  |__ BuildSingleSubjectSVM_Models.ipynb      <- Contains modules to run single subject SVM model. Output can be used inline or saved for future
-    |    |                                              use.
+    |    |    |                                              normalization) and to run a cv search on best strategy once chosen.
+    |    |__  |__ BuildSingleSubjectSVM_Models.ipynb      <- Contains modules to run single subject SVM model. Output can be used inline or saved for
+    |    |    |                                              future use.
+    |    |    |                            
     |    |__  |__ DataExplorationNotebook_SingleSubjectSVM.ipynb  <- Contains modules to explore normalization strategies we employed and to look at cross
-    |    |                                                      validation results. 
+    |    |    |                                                      validation results. 
     |    |__  |__ VisualizationPlayground.ipynb           
     |    |__  |__ single_subject.py                       <- Contains functions to access data, mask data, normalize data, run single subject model. The
-    |    |                                              model
-    |    |                                              will run on more than one turn for training, if desired. At this point testing is done on single
-    |    |                                              runs only. This also contains functions for getting predictions to be stored for later use,
-    |    |                                              accuracy scores for data exploration.
-    |    |__   |__brain_viz_single_subj.py                <- Contains functions to create bmaps for brain visualizations, functions for brain images,
-    |    |                                              interactive brain images, and functions to display decision functions scores across the
-    |    |                                              timeseries
+    |    |    |                                              model will run on more than one turn for training, if desired. At this point testing is done
+    |    |    |                                              on single  runs only. This also contains functions for getting predictions to be stored for       |    |    |                                              later use, accuracy scores for data exploration.
+    |    |    |                                          
+    |    |    |                                          
+    |    |__  |__brain_viz_single_subj.py                <- Contains functions to create bmaps for brain visualizations, functions for brain images,
+    |    |                                                  interactive brain images, and functions to display decision functions scores across the
+    |    |                                                  timeseries
     |    ├── group_svm/                            
     |    |__  |__ data/                           
     |    |__  |__ images/                          
