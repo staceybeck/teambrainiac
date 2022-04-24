@@ -35,19 +35,20 @@ In our study, we used temporal 3D brain data from 52 healthy adolescents (14 - 1
     └── source/
     |    ├── streamlit/
     |    |    └──                                    <- Contains landing_page.py app
-    |    |__ SingleSubjectSVM_Norm_CV.ipynb          <- Contains modules to test normalization strategies (no normalization, percent signal change,z
+    |    |__single_subject
+    |    |__  |__ SingleSubjectSVM_Norm_CV.ipynb          <- Contains modules to test normalization strategies (no normalization, percent signal change,z
     |    |                                              normalization) and to run a cv search on best strategy once chosen.
-    |    |__ BuildSingleSubjectSVM_Models.ipynb      <- Contains modules to run single subject SVM model. Output can be used inline or saved for future
+    |    |__  |__ BuildSingleSubjectSVM_Models.ipynb      <- Contains modules to run single subject SVM model. Output can be used inline or saved for future
     |    |                                              use.
-    |    |__ DataExplorationNotebook_SingleSubjectSVM.ipynb  <- Contains modules to explore normalization strategies we employed and to look at cross
-    |    |                                                      validation results. This notebook pulls in previously stored data after running the XXXX
-    |    |__ VisualizationPlayground.ipynb           
-    |    |__ single_subject.py                       <- Contains functions to access data, mask data, normalize data, run single subject model. The
+    |    |__  |__ DataExplorationNotebook_SingleSubjectSVM.ipynb  <- Contains modules to explore normalization strategies we employed and to look at cross
+    |    |                                                      validation results. 
+    |    |__  |__ VisualizationPlayground.ipynb           
+    |    |__  |__ single_subject.py                       <- Contains functions to access data, mask data, normalize data, run single subject model. The
     |    |                                              model
     |    |                                              will run on more than one turn for training, if desired. At this point testing is done on single
     |    |                                              runs only. This also contains functions for getting predictions to be stored for later use,
     |    |                                              accuracy scores for data exploration.
-    |    |__ brain_viz_single_subj.py                <- Contains functions to create bmaps for brain visualizations, functions for brain images,
+    |    |__   |__brain_viz_single_subj.py                <- Contains functions to create bmaps for brain visualizations, functions for brain images,
     |    |                                              interactive brain images, and functions to display decision functions scores across the
     |    |                                              timeseries
     |    ├── group_svm/                            
@@ -107,7 +108,8 @@ In our study, we used temporal 3D brain data from 52 healthy adolescents (14 - 1
         
 
 ### Single Subject
-
+The single subject analysis approach aims to explore whether SVM can be used to train individual models to predict brain states in regulating reward circuity in the brain. This approach can be used to explore whether there are differences between individuals that alter how well the model can predict and two whether or not other areas of the brain beyond the nucleus accumbens are involved in how well a person is able to up or down regulate their reward system. The nucleus accumbens is thought to be a key driver for reward regulation, but individuals could have unique regions that help them regulate their reward state. Below is the notebook to run the single subject model. It has the ability to access the data in cloud, process the data (masking, filtering by label, train on the whole brain, the 4 submasks, and the 4 regions of interest, save the data and metrics locally and visualize the brain mask, run roc curves, confusion matrix, and decision scores.
+[Single Subject SVM Notebook](source/single_subject/BuildSingleSubjectSVM_Models.ipynb)
 
 ### Adolescent and Young Adult
 The group analysis approach aims to explore differences within groups and between groups in regulating the reward circuitry in the Nucleus Accumbens and to see if other regions of interest are involved in this regulation. Below are the two notebooks that split each analyses. Due to the length of training for each notebook, in order to train on the whole brain, 5 submasks and 4 regions of interests, each model training is run one at a time. The notebook is able to access the data in cloud storage, process the data (masking, filtering by label, split and concatenate the data) and train/ save the model locally, save the metrics to the cloud and visualize the brain mask as well as a few key regions of interest, visualize the decision function scores and histogram. 
