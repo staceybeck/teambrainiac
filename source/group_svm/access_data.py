@@ -29,15 +29,23 @@ from collections import defaultdict
 
 def access_aws():
     """
-
-    :return:
+    Accesses AWS S3 bucket
+    :return: Returns all bucket object names, bucket name, host client
     """
 
     # Acces AWS S3 MATLAB file
     pubkey = mat_path['ACCESS_KEY']
     seckey = mat_path['SECRET_KEY']
-    client = boto3.client('s3', aws_access_key_id = pubkey, aws_secret_access_key = seckey)
-    s3 = boto3.resource('s3', aws_access_key_id = pubkey, aws_secret_access_key = seckey)
+    client = boto3.client(
+        's3',
+        aws_access_key_id = pubkey,
+        aws_secret_access_key = seckey
+    )
+    s3 = boto3.resource(
+        's3',
+        aws_access_key_id = pubkey,
+        aws_secret_access_key = seckey
+    )
     bucket = s3.Bucket('teambrainiac')
     bucket_ = bucket.name
     obj_name = list(bucket.objects.all())
@@ -50,8 +58,11 @@ def access_aws():
 
 def create_paths():
     """
+    Accesses AWS S3 to extract objects in bucket
+    and create paths to access these items later
+    when running and building datasets
 
-    :return:
+    closes pickle file dictionary of bucket object paths
     """
     # Create a dictionary to store data values, subject IDs
     data_path_dictionary = defaultdict(list)
@@ -67,8 +78,6 @@ def create_paths():
 
     # Populate the dictionary
     for i in obj_name:
-        # print(type(i.key))
-        # print(i.key)
         if substring_data in i.key:
             data_path_dictionary['subject_data'].append(i.key)
             data_path_dictionary['subject_ID'].extend(re.findall(sub_ID_regex, i.key))
@@ -88,10 +97,10 @@ def create_paths():
 
 def data_to_nib(path):
     """
-    using Nibabel open NiFTI files
+    Using Nibabel to open NiFTI files
 
-    :param nifti data path:
-    :return loads nifti data:
+    :param  nifti data path
+    :return loads nifti data
     """
 
     filename = os.path.join(path)
@@ -104,10 +113,11 @@ def data_to_nib(path):
 
 def load_mat(path):
     """
+    uses scipy to convert mat file
+    to be used in python
 
-    :param .mat data path
-    uses scipy to convert access to mat file in python
-    :return mat data
+    :param  .mat data path
+    :return  mat data
 
     """
     mat_file = scipy.io.loadmat(path)
@@ -120,14 +130,14 @@ def load_mat(path):
 
 def open_pickle(file_path):
     """
-    :param file path for dictionary
-    :return dictionary:
+    :param  opens pickle files
+    :return data from pickle
     """
     f = open(file_path, "rb")
-    dictionary = pickle.load(f)
+    data = pickle.load(f)
     f.close()
 
-    return dictionary
+    return data
 
 
 
@@ -136,14 +146,15 @@ def open_pickle(file_path):
 
 def access_load_data(obj, bool_mat):
     """
-    :param data_file: file path to data. For example can be pickle file containing a dictionary
+    :param obj        file path to data. For example can be pickle file containing a dictionary
                       or csv file path to load as a dataframe, e.g. file_names_dict['subject_data'][0]
                       or nifti file path to load as nifti object
                       or load a matlab file if bool_mat == TRUE
+                      Stores the data in a temporary file before loading
 
-    :param bool_mat:  if true will run load_mat() and return .mat file
+    :param bool_mat   if true will run load_mat() and return .mat file
 
-    :return        :  will open matlab data if bool_mat == True,
+    :return           will open matlab data if bool_mat == True,
                       pickle file
                       csv file as a dataframe
                       nifti file
@@ -181,21 +192,22 @@ def access_load_data(obj, bool_mat):
 
 def s3_upload(data, object_name, data_type):
     """Upload a file to an S3 bucket
-    :param data: our data to upload
-    :param data_type: type of data file we are creating
-    :param object_name: S3 object name. If not specified then name of temp.name is used
-    :return: True if file was uploaded, else False
+    :param data:         The data to upload
+                         .npy, .csv or .nifit file
+    :param object_name:  (String) S3 object name. If not specified then name of temp.name is used
+    :param data_type:    (String) type of data file we are creating "pickle" "numpy" "csv" "nifiti"
+    :return:             True if file was uploaded, else False
     """
 
     # Upload the file
-    # Connect to AWS client
+    # Connect to AWS clientm return bucket name and client
     _, bucket_name, client = access_aws()
 
     try:
 
         with tempfile.NamedTemporaryFile(delete=False) as temp:
             if data_type == "pickle":
-                pickle.dump(data, temp, protocol = pickle.HIGHEST_PROTOCOL)
+                pickle.dump(data, temp, protocol = pickle.HIGHEST_PROTOCOL) # Protocols are finicky
 
             elif data_type == "numpy":
                 np.save(temp, data)
@@ -227,10 +239,10 @@ def s3_upload(data, object_name, data_type):
 def load_mask_indices(data_paths, mask_type, m_path_ind):
     """
 
-    :param data_paths:
-    :param mask_type:
-    :param m_path_ind:
-    :return:
+    :param data_paths:  dictionary containing paths to data on AWS
+    :param mask_type:   (String) type of mask
+    :param m_path_ind:  (int) either 0 or 1, 0 for submasks, 1 for ROI masks
+    :return:            Matrix or array of index values
     """
     mask_data_path = data_paths['mask_data'][m_path_ind]
     mask_type_dict = access_load_data(mask_data_path, True)

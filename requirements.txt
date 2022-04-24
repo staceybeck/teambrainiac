@@ -2,7 +2,7 @@ matplotlib
 numpy
 jupyter
 imageio
-scikit-learn
+sklearn
 tqdm
 nibabel
 scipy
@@ -11,3 +11,9 @@ nitime
 nilearn
 numpy==1.22.3
 scipy==1.8.0
+re
+pickle
+pandas
+tempfile
+collections
+

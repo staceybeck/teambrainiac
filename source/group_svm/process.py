@@ -27,8 +27,10 @@ def data_for_cv(data, group_sub_ids, runs_train, runs_test, norm):
     group_sub_ids: (list of string ID names) either child or teen_plus ids of subjects split on age
     runs_train   : int , (which run are we using for the training data)
     runs_test    : int, (which run are we using for the test data)
-    norm         : string, ("RUNS": normalizing separately on each run;
-                            "SUBJECT": Normalizing separately by each subject)
+    norm         : string, "RUNS": normalizing separately on each run;
+                            "SUBJECT": Normalizing separately by each subject,
+                            "Detrend_Znorm": Detrends and zscore normalizes,
+                            False: do not apply normalization nor detrending
     returns      : nd.arrays, Concatenated X data of (time points, x*y*z) x = 79, y = 95, z = 75
                    and Concatenated y labels of (time points,)
     """
@@ -145,6 +147,10 @@ def concat_data(train, val, test):
 
 def transform_data(data, group_sub_ids, runs_train, runs_val, runs_test, norm):
     """
+    Processes the data into the correct shape and normalizes. Accommodates for
+    multiple runs as well as whether there is a use for a validation set.
+
+
     data.        : (52 subject data, keys as subject ID for frmi data or labels)
     group_sub_ids: (list of string ID names)
     runs_train   : int , (which run are we using for the training data)
@@ -153,7 +159,8 @@ def transform_data(data, group_sub_ids, runs_train, runs_val, runs_test, norm):
     norm         : string, ("RUNS": normalizing separately on each run;
                             "SUBJECT": Normalizing separately by each subject,
                             fitted to the train data of current subject. Can only
-                            use when all sets utilize the same subject IDs.)
+                            use when all sets utilize the same subject IDs.
+                            "Detrend_Znorm" Detrends and normalizes the data)
     :returns     : All data returned as (time points, 237979) and labels (time points,) normalized
     """
 
@@ -228,12 +235,13 @@ def scale_data(data, sub_ids, runs, train_run, norm):
     """
     data      : (52 subject data, keys as subject ID for frmi data or labels)
     sub_ids   : (list of string ID names)
-    run       : int, (which run are we using for the current data)
-    train_run : int , (which run are we using for the training data)
+    runs      : array of int, (which runs are we using for the current data)
+    train_run : array of int , (which runs are we using for the training data)
     norm      : string, ("RUNS": normalizing separately on each run;
                         "SUBJECT": Normalizing separately by each subject,
                         fitted to the train data of current subject. Can only
-                        use when all sets utilize the same subject IDs.)
+                        use when all sets utilize the same subject IDs.,
+                        "Detrend_Znorm")
     returns   : X and y data normalized based on across all runs for a subject or per subject for a single run
     """
 
@@ -293,9 +301,9 @@ def scale_data(data, sub_ids, runs, train_run, norm):
 
 def create_mask(mask_data_filepath, mask_type='mask'):
     """
-    mask_data_filepath: Takes in filepaths
-    mask_type: and mask type
-    returns: a numpy-compatible mask
+    mask_data_filepath  : (String) path to access data on S3
+    mask_type           : (String) mask label
+    returns             :a numpy-compatible mask in 2D (time, voxel)
 
     """
     mask_type_dict = access_load_data(mask_data_filepath, True)
@@ -311,7 +319,12 @@ def create_mask(mask_data_filepath, mask_type='mask'):
 
 def labels_mask_binary(label_data_path, label_type='rt_labels'):
     """
+    Filters the data by time points, removing rest periods
+    in the fmri data
 
+    :param label_data_path: (String) path to access labels
+    :param label_type:      (String) label string
+    :return:                mask indices, labels of data
     """
     # Get Mask data
     label_data_dict = access_load_data(label_data_path, True)
@@ -332,8 +345,14 @@ def labels_mask_binary(label_data_path, label_type='rt_labels'):
 
 def masking_data(subject, mask, mask_labels, binary_labels):
     """
+    Applies the brain Mask and filters the time points by labels
 
 
+    :param subject:         2D Data (time, voxels)
+    :param mask:            Mask data (2D)
+    :param mask_labels:     Mask indices
+    :param binary_labels:   labels (len of time points)
+    :return:                X, labels
     """
 
     arr = []
@@ -356,13 +375,13 @@ def masking_data(subject, mask, mask_labels, binary_labels):
 
 def masked_data_n_labels(mask_type, label_type, path_dict, m_path_ind, l_path_ind):
     """
-    mask_type: String for type of mask we want
-    label_type: String for which labels we want
-    path_dict: dictionary that contains all the paths for data in AWS
-    norm: To normalize on PSC True or False
-    m_path_ind: the index to get either masks.mat or roi_masks.mat , 0 or 1 respectively
-    l_path_ind: index to get the data from labels in dictionary
-    Returns: a dictionary of subject masked data and the cleaned labels
+
+    mask_type:      String for type of mask we want
+    label_type:     String for which labels we want
+    path_dict:      dictionary that contains all the paths for data in AWS
+    m_path_ind:     (int) the index to get either masks.mat or roi_masks.mat , 0 or 1 respectively
+    l_path_ind:     (int) index to get the data from labels in dictionary
+    Returns:        a dictionary of subject masked data and the labels
     """
     # Define variable to return
     user_data_dict = defaultdict(list)

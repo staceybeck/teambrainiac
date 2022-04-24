@@ -30,33 +30,49 @@ from collections import defaultdict
 def time_series_cv(X, y, max_train, test_size, splits, gd_srch, param_dict, file_name):
 
     """
-    :param X        : nd.array shape (time points, 237979)
-    :param y        : nd.array shape (time points, )
-    :param max_train: (int) max size to allow training set for splits
-    :param test_size: (int) max size to allow test split
-    :param splits   : (int) number of times to split for cross validation
-    :return         : prints accuracy scores and mean accuracy score over all cross validation runs
+    :param X            : nd.array shape (time points, 237979)
+    :param y            : nd.array shape (time points, )
+    :param max_train    : (int) max size to allow training set for splits
+    :param test_size    : (int) max size to allow test split
+    :param splits       : (int) number of times to split for cross validation
+    :param gd_srch      : (bool) perform grid search or not
+    :param param_dict   : Dictionary of Parameters to pass to grid search, otherwise False
+    :param file_name    : (string) path to save metric data gathered from gridsearch
+    :return             : prints accuracy scores and mean accuracy score over all cross validation runs
     """
 
-    tscv = TimeSeriesSplit(max_train_size=max_train, n_splits=splits, test_size=test_size)
+    tscv = TimeSeriesSplit(
+        max_train_size=max_train,
+        n_splits=splits,
+        test_size=test_size
+    )
     accuracy_ = []
     it = 0
 
     if gd_srch == True:
         grid_dict = defaultdict(list)
         with warnings.catch_warnings():
-            warnings.simplefilter("ignore", category=ConvergenceWarning)
-            clf = SVC(random_state = 42,
-                      class_weight = 'balanced'
-                      )
+            warnings.simplefilter(
+                "ignore",
+                category=ConvergenceWarning
+            )
+            clf = SVC(
+                random_state = 42,
+                class_weight = 'balanced'
+            )
 
             param_search = param_dict
-            grid = HalvingGridSearchCV(estimator= clf,
-                                       cv = tscv,
-                                       param_grid = param_search)
+            grid = HalvingGridSearchCV(
+                estimator= clf,
+                cv = tscv,
+                param_grid = param_search
+            )
+            # Fit data to grid
             grid.fit(X, y)
             print("Uploading gridsearch results to cloud...")
             grid_dict['grid_search'].append(grid.cv_results_)
+
+            #Upload to S3
             s3_upload(grid_dict, file_name, 'pickle')
             print("Best parameters: ", grid.best_params_)
             print('Best estimator: ', grid.best_estimator_)
@@ -67,13 +83,20 @@ def time_series_cv(X, y, max_train, test_size, splits, gd_srch, param_dict, file
 
         for train_index, test_index in tqdm.tqdm(tscv.split(X)):
             it += 1
-            # print("TRAIN:", train_index, "TEST:", test_index)
             X_train, X_test = X[train_index], X[test_index]
             y_train, y_test = y[train_index], y[test_index]
 
             with warnings.catch_warnings():
-                warnings.simplefilter("ignore", category=ConvergenceWarning)
-                clf = SVC(C=5.0, class_weight='balanced', max_iter=1000, random_state=42)
+                warnings.simplefilter(
+                    "ignore",
+                    category=ConvergenceWarning
+                )
+                clf = SVC(
+                    C=5.0,
+                    class_weight='balanced',
+                    max_iter=1000,
+                    random_state=42
+                )
                 print(f"Fitting Classifier for iteration number {it}")
                 clf.fit(X_train, y_train)
 

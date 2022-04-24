@@ -24,21 +24,23 @@ from collections import defaultdict
 
 def get_roi_bmaps(previous_bmap_data, indices_mask, affine_image):
     """
+    Extracts region of interest from whole brain beta values
 
-    :param previous_bmap_data:
-    :param indices_mask:
-    :param affine_image:
-    :return:
+    :param previous_bmap_data:  3D Numpy matrix of (79,95,79)
+    :param indices_mask:        (int) either 0 for submasks or 1 for ROIs
+    :param affine_image:        Nifti 3D brain image
+    :return:                    Nifti 3D brain image of ROI
     """
     bmap2 = previous_bmap_data.reshape(79 * 95 * 79)
     bmap2_3 = np.zeros((79, 95, 79))
     bmap2_3 = bmap2_3.reshape(79 * 95 * 79)
     bmap2_3[indices_mask] = bmap2[indices_mask]
     bmap2_3d = bmap2_3.reshape(79, 95, 79, order='F')
-    bmap3d = nib.Nifti1Image(bmap2_3d,
-                             affine=affine_image.affine,
-                             header=affine_image.header
-                             )
+    bmap3d = nib.Nifti1Image(
+        bmap2_3d,
+        affine=affine_image.affine,
+        header=affine_image.header
+    )
     return bmap3d
 
 
@@ -48,11 +50,21 @@ def get_roi_bmaps(previous_bmap_data, indices_mask, affine_image):
 
 def create_bmaps(clf, X, indices_mask, image):
     """
-    :param clf:
-    :param X:
-    :param indices_mask:
-    :param image:
-    :return:
+    Creates Whole brain, Submask or ROI Beta map
+    using the weights specifically from the support
+    vectors learned from the model and applying them
+    to the training data using a dot product, creating
+    a new map of the brain that includes significant
+    voxel signals
+
+    :param clf:             SVM Model
+    :param X:               2D Training Data of (Time, voxels)
+    :param indices_mask:    (int) 0 for submasks/Whole brain, 1 for ROI
+    :param image:           Affine image (T1 weighted Nifti image)
+
+    :return:                3D brain map as Nifti, 3D brain map in numpy,
+                            alpha values (weights of support vectors)
+                            before applied to the data, 2D beta map
     """
 
     # Create alpha matrix and map weights to support vector indices
@@ -69,10 +81,11 @@ def create_bmaps(clf, X, indices_mask, image):
     bmap2[indices_mask] = bmap
     bmap2_3 = bmap2.reshape(79, 95, 79, order="F")
 
-    bmap3 = nib.Nifti1Image(bmap2_3,
-                            affine=image.affine,
-                            header=image.header
-                            )
+    bmap3 = nib.Nifti1Image(
+        bmap2_3,
+        affine=image.affine,
+        header=image.header
+    )
 
     return bmap3, bmap2_3, alphas1, bmap
 
@@ -83,25 +96,29 @@ def create_bmaps(clf, X, indices_mask, image):
 
 def get_threshold_image(bmap3, score_percentile, image_intensity):
     """
+    Thresholds the voxel values in the brain. Percentiles will
+    perform a two-tailed threhsold.
 
-    :param bmap3:
-    :param score_percentile:
-    :param image_intensity:
+    :param bmap3:               3D Nifti brain image
+    :param score_percentile:    (float)
+    :param image_intensity:     (int)
     :return:
     """
     # Two types of strategies can be used from this threshold function
     # Type 1: strategy used will be based on score percentile
-    threshold_percentile_img = threshold_img(bmap3,
-                                             threshold=score_percentile,
-                                             copy=False
-                                             )
+    threshold_percentile_img = threshold_img(
+        bmap3,
+        threshold=score_percentile,
+        copy=False
+    )
 
     # Type 2: threshold strategy used will be based on image intensity
     # Here, threshold value should be within the limits i.e. less than max value.
-    threshold_value_img = threshold_img(bmap3,
-                                        threshold=image_intensity,
-                                        copy=False
-                                        )
+    threshold_value_img = threshold_img(
+        bmap3,
+        threshold=image_intensity,
+        copy=False
+    )
     return threshold_percentile_img, threshold_value_img
 
 
@@ -111,16 +128,24 @@ def get_threshold_image(bmap3, score_percentile, image_intensity):
 
 def metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type, m_path_ind):
     """
+    Calculates the metrics of the classifier:
+        - Predict
+        - Probabilities of classes
+        - Decision function scores
+        - accuracy scores
+        - Classification report
+    Creates a dictionary of metrics to upload to S3
+    Options for saving a validation set
 
-    :param clf:
-    :param X_v:
-    :param y_v:
-    :param X_t:
-    :param y_t:
-    :param data_type:
-    :param runs_id:
-    :param mask_type:
-    :param model_type:
+    :param clf:         SVM model
+    :param X_v:         Validation Data if True
+    :param y_v:         Validation labels if True
+    :param X_t:         Test data (Time, Voxels)
+    :param y_t:         Test labels (values, ) # label per time point
+    :param data_type:   (String) for labeling the group of data used
+    :param runs_id:     (array of ints) which runs were used
+    :param mask_type:   (string) mask labels
+    :param m_path_ind:  (int) value labeling which masks to get from AWS 0, 1
     :return:
     """
     metrics_dict = defaultdict(list)
@@ -205,21 +230,35 @@ def metrics(clf, X, y, X_v, y_v, X_t, y_t, data_type, runs_id, mask_type, m_path
 
     for report in type_report:
         if report == 'validation_classreport':
-            class_report = classification_report(y_v, yval_pred, output_dict=True)
-            class_report.update({"accuracy": {"precision": None, "recall": None,
+            class_report = classification_report(
+                y_v,
+                yval_pred,
+                output_dict=True
+            )
+            class_report.update({"accuracy": {"precision": None,
+                                              "recall": None,
                                               "f1-score": class_report["accuracy"],
-                                              "support": class_report['macro avg']['support']}})
+                                              "support": class_report['macro avg']['support']
+                                              }
+                                 }
+                                )
             df = pd.DataFrame(class_report).T
             print(f"Classification report for {mask_type} {report}")
             print(classification_report(y_v, yval_pred))
 
         elif report == 'test_classreport':
-            class_report = classification_report(y_t,
-                                                 ytest_pred, output_dict=True)
+            class_report = classification_report(
+                y_t,
+                ytest_pred,
+                output_dict=True
+            )
             class_report.update({"accuracy": {"precision": None,
                                               "recall": None,
                                               "f1-score": class_report["accuracy"],
-                                              "support": class_report['macro avg']['support']}})
+                                              "support": class_report['macro avg']['support']
+                                              }
+                                 }
+                                )
             df = pd.DataFrame(class_report).T
             print(f"Classification report for {mask_type} {report}")
             print(classification_report(y_t, ytest_pred))

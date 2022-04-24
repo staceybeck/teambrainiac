@@ -25,17 +25,24 @@ from analysis import metrics
 
 def run_grp_svm_model(data, mask_type, group_sub_ids, runs_train, runs_val, runs_test, norm, data_type, m_path_ind):
     """
+    Classifier set up for two different groups based on current best parameters
+    Trains the model
+    calls a metric function to get a dictionary of metric values
+    save model as a dictionary to store locally (since having issues with pickles)
 
-    :param data:
-    :param mask_type:
-    :param group_sub_ids:
-    :param runs_train:
-    :param runs_val:
-    :param runs_test:
-    :param norm:
-    :param svm_type:
-    :return:
+
+    :param data:            Masked and filter labelled data
+    :param mask_type:       (string) mask label we want
+    :param group_sub_ids:   array of string IDs
+    :param runs_train:      array of int/ints
+    :param runs_val:        if True, array of int/ints, else False
+    :param runs_test:       array of int/ints
+    :param norm:            (string) normalization label to apply for processing
+    :param data_type:       (string) group label we specify (young adult versus adolscent)
+    :param m_path_ind:      (int) binary 0 or 1 for mask path in AWS
+    :return:                Dictionary containing the model, dictionary containing all the metric data
     """
+
     model_dict = defaultdict(list)
 
     if runs_val != False:
