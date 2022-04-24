@@ -328,7 +328,7 @@ def plot_hist_decision(y_ng_dscore, y_ps_dscore, suptitle, savefile, if_save):
 
 
 
-def plot_decisions(ds, labels, time, title, file):
+def plot_decisions(ds, labels, time, title, file, sub):
     """
     plots a line graph of one run at a time for
     decision scores
@@ -390,7 +390,7 @@ def plot_decisions(ds, labels, time, title, file):
     ax.set_xticklabels([""])
 
 
-    ax.set_title(f"{title}: Support Vector Decision Scores over {time} time points for test subjects 1 and 2")
+    ax.set_title(f"{title}: Support Vector Decision Scores over {time} time points for test subjects {sub[0]} and {sub[1]}")
     lgd = ax.legend(loc=(1.01, 0.5))
     plt.savefig(file,
                 dpi=200,
