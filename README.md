@@ -2,11 +2,11 @@
 # Using Support Vector Machine and 3D Convolutional Neural Networks to Predict Brain States in Task-Based Functional Magnetic Resonance Imaging (fMRI)
 ## University of Michigan Master of Applied Data Science Capstone 
 
-Authors:
+**Authors:**
 
-- Stacey Beck 
-- Benjamin Merrill
-- Mary Soules
+- **Stacey Beck**: starbeck@umich.edu
+- **Benjamin Merrill**: benme@umich.edu
+- **Mary Soules**: mfield@umich.edu
 
 
 This README contains the following sections:
@@ -30,6 +30,9 @@ We have three approaches to looking at the fMRI data captured through this study
 - First, single subject SVM to look at individual differences in brain activation and metrics associated within a single subject. This approach would allow us to use trained models at the individual level to help in personalizing treatment for addiction to help individuals up or down-regulate areas in the brain that could be playing a role in their addiction. 
 - Second, a group-level SVM approach to study whether we can predict brain states or locate other regions of interest other than the Nucleus Accumbens on a group level and apply it across subjects, as well as understand if differences exist between groups. 
 - Third, a deep-learning approach to group level analysis to see if we can provide better predictions to brain-state data. 
+
+For details on our approaches and findings, check out our report: 
+We also have a landing page with interactive brain maps, charts and descriptions of what we looked at in this study: 
 
 ## Repository Organization
     ├── Dockerfile                                   <- Details to build and run Docker container
