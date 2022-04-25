@@ -63,9 +63,9 @@ if st.session_state.page_select == 'Brain Images':
                 " are active brain areas during a task and voxel intensities that are dark-blue/light-blue are areas where blood and "
                 "oxygen levels are decreasing."
                 "\n"
-                "In our research, we have found that the Young Adult models predicted better than the Adolescent models. "
+                "In our research, we have found that the young adult models predicted better than the adolescent models. "
                 " You can see clear and distinct voxel clusters in the output from the "
-                " Young Adult model (dark red and blue shades) compared to the Adolescent model output where "
+                " young adult model (dark red and blue shades) compared to the adolescent model output where "
                 "voxel intensities are scattered and dampened (light blue and yellow).")
             HtmlFile = open("/app/teambrainiac/source/streamlit/YA_detrend_mask_1.html", 'r', encoding='utf-8')
             source_code = HtmlFile.read()
@@ -89,14 +89,14 @@ if st.session_state.page_select == 'Brain Images':
                      "\n")
             st.write(
                 "These are interactive brain maps showing the Medial Prefrontal Cortex (mPFC) - an area of the brain researchers "
-                "believe to be involved in the impulse-reward system. Each interactive visual is set to the same cut coordinates. We removed"
-                " the grid cross since these areas of the brain are small to visualize. "
+                "believe to be involved in the impulse-reward system and inhibited in substance use disorders. Each "
+                "interactive visual is set to the same cut coordinates. We removed the grid cross since these areas of "
+                "the brain are small to visualize. "
                 "\n"
-                "In our Young Adult model, we can see there are large areas of the mPFC that are down-regulating, "
-                "meaning a decrease in activation during the impulse-reward task that the subjects are performing while "
-                " in the magnetic resonance (MR) machine. "
-                "In the Adolescent model, we see more yellow intensities, which imply increased voxel activity (up-regulation) "
-                " in this region.")
+                "The young adult model shows more intense blue voxel clusters where the adolescent model is showing yellow "
+                "and red clusters in the mPFC. This means that young adults are able to inhibit the mPFC during the impulse-reward task, "
+                " which is what we should expect. Adolescents seem to be activating the mPFC, which is saying they have less "
+                "control over their ability to control impulses.")
             HtmlFile = open("/app/teambrainiac/source/streamlit/YA_detrend_mPFC_nocross.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
@@ -126,8 +126,9 @@ if st.session_state.page_select == 'Brain Images':
                 " the grid cross since these areas of the brain are small to visualize."
                 ""
                 "\n"
-                " In our Young Adult model, we can see there are large clusters of red voxels in the NAcc, which imply these "
-                " subjects are increasing activation during the impulse-reward task that they are performing in while in the MR machine."
+                " We see more intense red and blue voxel clusters in the young adult model than in the adolescent model. "
+                " This means that these subjects are better at increasing and decreasing activation during the impulse-reward "
+                " task inside the scanner. "
             )
 
             HtmlFile = open("/app/teambrainiac/source/streamlit/YA_detrend_nacc_aal_nocross.html", 'r',
@@ -176,7 +177,7 @@ if st.session_state.page_select == "Chart Metrics":
     """)
 
     st.subheader ("Young Adult Whole Brain Mask Model Decision Scores")
-    st.write(" When we trained our young adult models on the support vector machine (SVM) the model output a  "
+    st.write(" When we trained our young adult model on the support vector machine (SVM), the model calculated a  "
              "score for each time point (essentially a score for one full 3D brain image). That score represents a  "
              "distance between the important voxels to the classifier's decision boundary. As in, how far away "
              " are we from making a good prediction? "
@@ -184,7 +185,7 @@ if st.session_state.page_select == "Chart Metrics":
              "\n"
              "You can see how the young adult decision scores follow the true labels of the data and do so better "
              " than the adolescent model scores displayed further down this page. This means that the classifier is "
-             " able to predict the brain states in Young Adults.")
+             " able to predict the brain states in young adults.")
     st.write(""
               "\n"
               "\n"
@@ -266,9 +267,9 @@ if st.session_state.page_select == 'Exploration':
              "\n"
              "We took a dive into plotting voxel distributions of our brain data to see "
              " how we could reduce variance - or noise - in our data. We learned that fMRI data, like other"
-             " time series data can drift. So, a techinque called 'Detrending' has to be applied to"
-             " the series of brain images. We also found that by subtracting our data from the mean over time points"
-             " helped to reduce the noise in our data the most."
+             " time series data can drift - or distort. So, a technique called 'Detrending' had to be "
+             " applied to the series of brain images. We also found that subtracting the mean from our data "
+             " over time points helped to reduce the noise in our data set the most."
              "\n"
              "\n"
              "\n"
@@ -331,7 +332,7 @@ if st.session_state.page_select == 'Tables':
     st.sidebar.write("""
             ## Tables
             The tables on this page provide use with useful information about our decision choices for further
-            preprocessing of our data. 
+            pre-processing of our data. 
             """)
     st.image("/app/teambrainiac/source/streamlit/newplot.png",
              width=None,
