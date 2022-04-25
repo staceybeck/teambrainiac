@@ -18,7 +18,10 @@ PAGES = [
     'Exploration',
     'Chart Metrics',
 ]
-
+st.sidebar.header(("Brainiacs"))
+st.sidebar.write("Authors: Stacey Rivet Beck"
+                 "\n"
+                 "\n")
 st.sidebar.title('Explore Data')
 st.session_state.page_select = st.sidebar.radio('Pages', PAGES)
 
@@ -27,20 +30,21 @@ if st.session_state.page_select == 'Brain Images':
     st.sidebar.write("""
             ## Brain Images
              - What is a Voxel? A voxel is a 3D pixel, like a cube! If you were to take a picture of your brain 
-            in 3D space, each pixel of that image would represent a voxel. 
+               in 3D space, each pixel of that image would represent a voxel. 
             \n
             \n
              - What is fMRI? Functional Magnetic Resonance Imaging. A tube like machine where a person lies flat and still while 
-             the machine records brain voxel signals over a period of time - usually while that person is performing some
-             sort of visual task on a computer screen inside the machine. 
+               the machine records brain voxel signals over a period of time - usually while that person is performing some
+               sort of visual task on a computer screen inside the machine. 
             \n
             \n
             The images on this page display BOLD (Blood oxygen level dependent) voxel signals in the brain. 
             Areas in yellow/red indicate areas of the brain where
             blood volume is increased and where increases in oxygen exchange occur. Meaning, the brain is active! 
-             The blue areas in the brain mean that the blood volume and oxygen exchange decrease, indicating these areas
-             are less active.
+            The blue areas in the brain mean that the blood volume and oxygen exchange decrease, indicating these areas
+            are less active.
             """)
+
     display = ('Young Adult and Adolescent Whole Brain',
                'Young Adult and Adolescent Medial Prefrontal Cortex',
                'Young Adult and Adolescent Nucleus Accumbens',
@@ -133,14 +137,14 @@ if st.session_state.page_select == "Chart Metrics":
     st.sidebar.write("""
             ## Chart Metrics
               - What is a Support Vector Machine? - It is a type of classifier used for non-linear, high dimensional data 
-             that tries to separate dissimilar data by defining decision boundaries, which is often created by a hyperplane. 
-             (Imagine taking a piece of paper and placing it between an apple and an orange - the paper - like the 
-              hyperplane splits the two dissimilar fruits). The classifier tries to maximize the minimal distance 
-              between dissimilar data points.
+                that tries to separate dissimilar data by defining decision boundaries, which is often created by a hyperplane. 
+                (Imagine taking a piece of paper and placing it between an apple and an orange - the paper - like the 
+                hyperplane splits the two dissimilar fruits). The classifier tries to maximize the minimal distance 
+                between dissimilar data points.
                \n
                \n  
             - What is a decision boundary? - A decision boundary is where the classifier defines whether a data point belongs
-            to one class or another. It is defined by vectors that sit 90 degrees from the decision plane. 
+              to one class or another. It is defined by vectors that sit 90 degrees from the decision plane. 
             \n
             \n
             The charts on this page discuss decision function scores which represent the distance of important 
@@ -148,7 +152,8 @@ if st.session_state.page_select == "Chart Metrics":
     """)
 
     st.write("(images can be enhanced - click the double arrow at the top right corner of image")
-    st.write ("Young Adult Whole Brain Mask Model Decision Scores"
+    st.subheader ("Young Adult Whole Brain Mask Model Decision Scores")
+    st.write(""
               "\n"
               "\n"
               "Run 2:"
@@ -180,8 +185,8 @@ if st.session_state.page_select == "Chart Metrics":
              " than the adolescent model scores displayed below. This means that the classifier is able to predict t"
              " he brain states in Young Adults.")
 
-    st.write("Adolescent Whole Brain Mask Model Decision Scores"
-             "\n"
+    st.subheader("Adolescent Whole Brain Mask Model Decision Scores")
+    st.write("\n"
              "\n"
              "Run 2:"
              "\n")
@@ -216,6 +221,13 @@ if st.session_state.page_select == 'Exploration':
     st.title("Exploration")
     st.sidebar.write("""
             ## Exploration 
+            One of the more interesting aspects of working with functional brain data is visualizing the 
+            nature of the data not just as voxel intensities mapped onto a brain template image,
+            but as how they exist in time.   
+            \n
+            \n
+            We will take a look at voxel distributions through time as normalized and unnormalized data,  
+            as well as how voxels can be represented as features in this dataset. 
             """)
     display = ('Adolescent Detrended Z-score normalization',
                'Adolescent Detrended Percent Signal Change',
@@ -224,6 +236,7 @@ if st.session_state.page_select == 'Exploration':
 
     value = 0
     options = list(range(len(display)))
+    st.subheader('Voxel Distribution Animation over Time')
     st.write("\n"
              "\n"
              "\n"
@@ -265,7 +278,7 @@ if st.session_state.page_select == 'Exploration':
 
     value = st.selectbox("Choose the type of voxel normalization to view:", options, format_func=lambda x: display[x])
     get_html(value)
-
+    st.subheader('Voxel Feature Space')
     st.write("We also wanted to understand our data's feature space"
              " When you think of a data set, maybe you imagine stock prices, or the color of fruit, or even"
              " the number of rooms in a single family home. These data are what we would call the features of "
@@ -280,7 +293,6 @@ if st.session_state.page_select == 'Exploration':
              " a strange concept when you think about human brains!"
              "\n")
     st.image("/app/teambrainiac/source/streamlit/feature_space.png",
-             caption="Young Adult Model Scores",
              width=None,
              use_column_width=None,
              clamp=False,
@@ -296,7 +308,6 @@ if st.session_state.page_select == 'Tables':
             preprocessing of our data. 
             """)
     st.image("/app/teambrainiac/source/streamlit/newplot.png",
-             caption="Young Adult Model Scores",
              width=None,
              use_column_width=None,
              clamp=False,
