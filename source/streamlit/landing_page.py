@@ -39,6 +39,8 @@ if st.session_state.page_select == 'Brain Images':
             blood volume is increased and where increases in oxygen exchange occur. Meaning, the brain is active! 
             The blue areas in the brain mean that the blood volume and oxygen exchange decrease, indicating these areas
             are less active.
+            \n
+            \n
             """)
 
     display = ('Young Adult and Adolescent Whole Brain',
@@ -166,6 +168,8 @@ if st.session_state.page_select == "Chart Metrics":
             \n
             The charts on this page discuss decision function scores which represent the distance of important 
             voxels to the classifier's decision boundary. We again compare scores between adolescents and young adults.
+            \n
+            \n
     """)
 
     st.subheader ("Young Adult Whole Brain Mask Model Decision Scores")
@@ -244,6 +248,8 @@ if st.session_state.page_select == 'Exploration':
             \n
             We will take a look at voxel distributions through time as normalized and  
             unnormalized data, as well as how voxels can be represented as features in this dataset. 
+            \n
+            \n
             """)
     display = ('Adolescent Detrended Z-score normalization',
                'Adolescent Detrended Percent Signal Change',
@@ -323,7 +329,7 @@ st.sidebar.write("\n"
                  ""
                  )
 gitlink = '[Project on GitHub](https://github.com/yecatstevir/teambrainiac)'
-st.markdown(gitlink, unsafe_allow_html=True)
+st.sidebar.markdown(gitlink, unsafe_allow_html=True)
 
 if st.session_state.page_select == 'Tables':
     st.title("Tables")
