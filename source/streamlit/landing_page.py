@@ -315,9 +315,16 @@ if st.session_state.page_select == 'Exploration':
              channels="RGB",
              output_format="auto")
 
-st.sidebar.write("Authors: Stacey Rivet Beck"
+st.sidebar.write("\n"
                  "\n"
-                 "\n")
+                 "Authors: Stacey Rivet Beck"
+                 "\n"
+                 "\n"
+                 ""
+                 )
+gitlink = '[Project on GitHub](https://github.com/yecatstevir/teambrainiac)'
+st.markdown(gitlink, unsafe_allow_html=True)
+
 if st.session_state.page_select == 'Tables':
     st.title("Tables")
     st.sidebar.write("""
