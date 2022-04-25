@@ -18,10 +18,6 @@ PAGES = [
     'Exploration',
     'Chart Metrics',
 ]
-st.sidebar.header(("Brainiacs"))
-st.sidebar.write("Authors: Stacey Rivet Beck"
-                 "\n"
-                 "\n")
 st.sidebar.title('Explore Data')
 st.session_state.page_select = st.sidebar.radio('Pages', PAGES)
 
@@ -60,12 +56,18 @@ if st.session_state.page_select == 'Brain Images':
             HtmlFile = open("/app/teambrainiac/source/streamlit/YA_detrend_mask_1.html", 'r', encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
-            components.html(source_code, height=250)
+            components.html(
+                source_code,
+                height=250
+            )
 
             HtmlFile = open("/app/teambrainiac/source/streamlit/AD_detrend_mask_1.html", 'r', encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
-            components.html(source_code, height=250)
+            components.html(
+                source_code,
+                height=250
+            )
 
             st.write("This is an interactive brain map. We trained a Support Vector Machine on Young Adult Brains (aged 25 - 27) "
                      "and Adolescent Brains (aged 14 - 16) to predict states of up-regulation and down-regulation - meaning "
@@ -85,13 +87,19 @@ if st.session_state.page_select == 'Brain Images':
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
-            components.html(source_code, height=250)
+            components.html(
+                source_code,
+                height=250
+            )
 
             HtmlFile = open("/app/teambrainiac/source/streamlit/AD_detrend_mPFC_nocross.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
-            components.html(source_code, height=250)
+            components.html(
+                source_code,
+                height=250
+            )
 
 
 
@@ -112,13 +120,19 @@ if st.session_state.page_select == 'Brain Images':
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
-            components.html(source_code, height=250)
+            components.html(
+                source_code,
+                height=250
+            )
 
             HtmlFile = open("/app/teambrainiac/source/streamlit/AD_detrend_nacc_aal_nocross.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
-            components.html(source_code, height=250)
+            components.html(
+                source_code,
+                height=250
+            )
             st.write(
                 "These are interactive brain maps showing the Nucleus Accumbens (NAcc)- an area of the brain researchers "
                 "know to be involved in the impulse-reward system and brain disorders. Each interactive visual is set to the same cut coordinates. We removed"
@@ -129,7 +143,10 @@ if st.session_state.page_select == 'Brain Images':
                 " subjects are increasing activation during the impulse-reward task that they are performing in while in the MR machine."
                 )
 
-    value = st.selectbox("Interactive Brain Visualization. Choose the type of brain activation to view and use your cursor to move the grid cross:", options, format_func=lambda x: display[x])
+    value = st.selectbox("Interactive Brain Visualization. Choose the type of brain activation to view and use your cursor to move the grid cross:",
+                         options,
+                         format_func=lambda x: display[x]
+                         )
     get_html(value)
 
 if st.session_state.page_select == "Chart Metrics":
@@ -151,7 +168,6 @@ if st.session_state.page_select == "Chart Metrics":
             voxels to the classifier's decision boundary. We again compare scores between adolescents and young adults.
     """)
 
-    st.write("(images can be enhanced - click the double arrow at the top right corner of image")
     st.subheader ("Young Adult Whole Brain Mask Model Decision Scores")
     st.write(""
               "\n"
@@ -226,8 +242,8 @@ if st.session_state.page_select == 'Exploration':
             but as how they exist in time.   
             \n
             \n
-            We will take a look at voxel distributions through time as normalized and unnormalized data,  
-            as well as how voxels can be represented as features in this dataset. 
+            We will take a look at voxel distributions through time as normalized and  
+            unnormalized data, as well as how voxels can be represented as features in this dataset. 
             """)
     display = ('Adolescent Detrended Z-score normalization',
                'Adolescent Detrended Percent Signal Change',
@@ -258,28 +274,28 @@ if st.session_state.page_select == 'Exploration':
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
-            components.html(source_code, height=600)
+            components.html(source_code, height=400)
 
         if value == 1:
             HtmlFile = open("/app/teambrainiac/source/streamlit/ADdtrndpscnormvid.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
-            components.html(source_code, height=600)
+            components.html(source_code, height=400)
 
         if value == 2:
             HtmlFile = open("/app/teambrainiac/source/streamlit/YA_dtrnd_Unorm_mvid.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
-            components.html(source_code, height=600)
+            components.html(source_code, height=400)
 
 
 
     value = st.selectbox("Choose the type of voxel normalization to view:", options, format_func=lambda x: display[x])
     get_html(value)
     st.subheader('Voxel Feature Space')
-    st.write("We also wanted to understand our data's feature space"
+    st.write("We also wanted to understand our data's feature space."
              " When you think of a data set, maybe you imagine stock prices, or the color of fruit, or even"
              " the number of rooms in a single family home. These data are what we would call the features of "
              " a data set. In brain data, the features are not well defined and are more abstract. They are the "
@@ -299,7 +315,9 @@ if st.session_state.page_select == 'Exploration':
              channels="RGB",
              output_format="auto")
 
-
+st.sidebar.write("Authors: Stacey Rivet Beck"
+                 "\n"
+                 "\n")
 if st.session_state.page_select == 'Tables':
     st.title("Tables")
     st.sidebar.write("""
