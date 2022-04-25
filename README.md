@@ -31,8 +31,10 @@ We have three approaches to looking at the fMRI data captured through this study
 - Second, a group-level SVM approach to study whether we can predict brain states or locate other regions of interest other than the Nucleus Accumbens on a group level and apply it across subjects, as well as understand if differences exist between groups. 
 - Third, a deep-learning approach to group level analysis to see if we can provide better predictions to brain-state data. 
 
-For details on our approaches and findings, check out our report: 
-We also have a landing page with interactive brain maps, charts and descriptions of what we looked at in this study: 
+
+For details on our approaches and findings, check out our report: [Report](https://github.com/yecatstevir/teambrainiac/blob/main/Capstone_Final_Report.pdf)
+
+We also have a landing page with interactive brain maps, charts and descriptions of what we looked at in this study: [Landing Page](https://share.streamlit.io/yecatstevir/teambrainiac/main/source/streamlit/landing_page.py)
 
 ## Repository Organization
     ├── Dockerfile                                   <- Details to build and run Docker container
