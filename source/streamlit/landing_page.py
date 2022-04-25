@@ -17,7 +17,6 @@ PAGES = [
     'Brain Images',
     'Exploration',
     'Chart Metrics',
-    'Tables'
 ]
 
 st.sidebar.title('Explore Data')
@@ -65,12 +64,12 @@ if st.session_state.page_select == 'Brain Images':
 
             st.write("This is an interactive brain map. We trained a Support Vector Machine on Young Adult Brains (aged 25 - 27) "
                      "and Adolescent Brains (aged 14 - 16) to predict states of up-regulation and down-regulation - meaning "
-                     "an uptake in blood-oxygen volume or decrease in volume during an impulse-task. Areas that are yellow/red"
-                     " are active brain areas during this task and areas that are dark-blue/light-blue are areas where blood and "
+                     "an uptake in blood-oxygen volume or decrease in volume during an impulse-task. Voxel intensities that are yellow/red"
+                     " are active brain areas during a task and voxel intensities that are dark-blue/light-blue are areas where blood and "
                      "oxygen levels are decreasing."
                      "\n"
-                     "In our research, we have found that the Young Adult models predicted better than the Adolescent models, "
-                     "which is evident in the two visuals. You can see clear and distinct voxel clusters in the output from the "
+                     "In our research, we have found that the Young Adult models predicted better than the Adolescent models. "
+                     " You can see clear and distinct voxel clusters in the output from the "
                      " Young Adult model (dark red and blue shades) compared to the Adolescent model output where "
                      "voxel intensities are scattered and dampened (light blue and yellow).")
 
@@ -138,6 +137,7 @@ if st.session_state.page_select == "Chart Metrics":
 
 
     st.write ("Young Adult Whole Brain Mask Model Decision Scores")
+    st.write("(the images can be enhanced - click the double arrow at the top right corner of image")
     st.image('/app/teambrainiac/source/streamlit/YA_wb_run2_dfunc_line.png',
              caption=None,
              width=None,
@@ -162,14 +162,14 @@ if st.session_state.page_select == "Chart Metrics":
              "means that the classifier is able to predict the brain states in Young Adults.")
 
     st.write("Adolescent Whole Brain Mask Model Decision Scores")
-    st.image('/app/teambrainiac/source/streamlit/AD_wb_run2_dfunc_line.png',
+    st.image('/app/teambrainiac/source/streamlit/Adolescent_wb_run2_dfunc_line.png',
              caption=None,
              width=None,
              use_column_width=None,
              clamp=False,
              channels="RGB",
              output_format="auto")
-    st.image('/app/teambrainiac/source/streamlit/AD_wb_run3_dfunc_line.png',
+    st.image('/app/teambrainiac/source/streamlit/Adolescent_wb_run3_dfunc_line.png',
              caption=None,
              width=None,
              use_column_width=None,
@@ -182,57 +182,50 @@ if st.session_state.page_select == "Chart Metrics":
              "activity while in the scanner and that the classifier is learning to predict better as a result.")
 
 
+
+
+
+# Explore page - normalization, voxel feature space
 if st.session_state.page_select == 'Exploration':
     st.title("Exploration")
     st.sidebar.write("""
             ## Exploration 
             """)
-    display = ('Young Adult Z-score Normalization',
-               'Young Adult Percent Signal Change',
-               'Young Adult Unnormalized',
-               'Adolescent Z-score Normalization',
-               'Adolescent Percent Signal Change',
+    display = ('Young Adult Detrended Unnormalized Data',
+               'Adolescent Detrended Percent Signal Change',
+               'Adolescent Detrended Z-score normalization',
                )
 
     value = 0
     options = list(range(len(display)))
-
+    st.write("We took a dive into plotting voxel distributions of our brain data to see"
+             "how we could reduce variance - or noise - in our data. We learned that fMRI data, like other"
+             "time series data can drift. So, a techinque called 'Detrending' has to be applied to"
+             "the series of brain images. We also found that by subtracting our data from the mean over time points"
+             "helped to reduce the noise in our data the most.")
     def get_html(value):
         # print(value)
         if value == 0:
-            HtmlFile = open("/app/teambrainiac/source/streamlit/YA_dtrnd_ZSCORE_normvid.html", 'r',
-                            encoding='utf-8')
-            source_code = HtmlFile.read()
-            print(source_code)
-            components.html(source_code, height=500)
-
-        if value == 1:
-            HtmlFile = open("/app/teambrainiac/source/streamlit/YA_dtrnd_psc_normvid.html", 'r',
-                            encoding='utf-8')
-            source_code = HtmlFile.read()
-            print(source_code)
-            components.html(source_code, height=500)
-
-        if value == 2:
             HtmlFile = open("/app/teambrainiac/source/streamlit/YA_dtrnd_Unorm_mvid.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
-            components.html(source_code, height=500)
+            components.html(source_code, height=600)
 
-        if value == 3:
-            HtmlFile = open("/app/teambrainiac/source/streamlit/ADdtrnd_ZSCORE_normvid.html", 'r',
-                            encoding='utf-8')
-            source_code = HtmlFile.read()
-            print(source_code)
-            components.html(source_code, height=500)
-
-        if value == 4:
+        if value == 1:
             HtmlFile = open("/app/teambrainiac/source/streamlit/ADdtrndpscnormvid.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
-            components.html(source_code, height=500)
+            components.html(source_code, height=600)
+
+        if value == 2:
+            HtmlFile = open("/app/teambrainiac/source/streamlit/ADdtrnd_ZSCORE_normvid.html", 'r',
+                            encoding='utf-8')
+            source_code = HtmlFile.read()
+            print(source_code)
+            components.html(source_code, height=600)
+
 
 
     value = st.selectbox("Choose the type of brain activations to view:", options, format_func=lambda x: display[x])
