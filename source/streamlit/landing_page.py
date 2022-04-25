@@ -26,11 +26,11 @@ if st.session_state.page_select == 'Brain Images':
     st.title("Brain States")
     st.sidebar.write("""
             ## Brain Images
-            What is a Voxel? A voxel is a 3D pixel, like a cube! If you were to take a picture of your brain 
+            - What is a Voxel? A voxel is a 3D pixel, like a cube! If you were to take a picture of your brain 
             in 3D space, each pixel of that image would represent a voxel. 
             \n
             \n
-            What is fMRI? Functional Magnetic Resonance Imaging. A tube like machine where a person lies flat and still while 
+            - What is fMRI? Functional Magnetic Resonance Imaging. A tube like machine where a person lies flat and still while 
              the machine records brain voxel signals over a period of time - usually while that person is performing some
              sort of visual task on a computer screen inside the machine. 
             \n
@@ -132,14 +132,14 @@ if st.session_state.page_select == "Chart Metrics":
     st.title("Chart Metrics")
     st.sidebar.write("""
             ## Chart Metrics
-            What is a Support Vector Machine? - It is a type of classifier used for non-linear, high dimensional data 
+             - What is a Support Vector Machine? - It is a type of classifier used for non-linear, high dimensional data 
              that tries to separate dissimilar data by defining decision boundaries, which is often created by a hyperplane. 
              (Imagine taking a piece of paper and placing it between an apple and an orange - the paper - like the hyperplane
-               - splits the two dissimilar fruits). The classifier tries to maximize the minimal distance between dissimilar 
+               splits the two dissimilar fruits). The classifier tries to maximize the minimal distance between dissimilar 
                data points.
                \n
                \n  
-            What is a decision boundary? - A decision boundary is where the classifier defines whether a data point belongs
+            - What is a decision boundary? - A decision boundary is where the classifier defines whether a data point belongs
             to one class or another. It is defined by vectors that sit 90 degrees from the decision plane. 
             \n
             \n
@@ -224,11 +224,16 @@ if st.session_state.page_select == 'Exploration':
 
     value = 0
     options = list(range(len(display)))
-    st.write("We took a dive into plotting voxel distributions of our brain data to see "
+    st.write("\n"
+             "\n"
+             "\n"
+             "We took a dive into plotting voxel distributions of our brain data to see "
              " how we could reduce variance - or noise - in our data. We learned that fMRI data, like other"
              " time series data can drift. So, a techinque called 'Detrending' has to be applied to"
              " the series of brain images. We also found that by subtracting our data from the mean over time points"
              " helped to reduce the noise in our data the most."
+             "\n"
+             "\n"
              "\n"
              "\n")
     st.write("The below voxel distribution animations represent the time series of four separate series (or runs) "
@@ -261,10 +266,7 @@ if st.session_state.page_select == 'Exploration':
     value = st.selectbox("Choose the type of voxel normalization to view:", options, format_func=lambda x: display[x])
     get_html(value)
 
-    st.write("\n"
-             "\n"
-             "\n"
-             "We also wanted to understand our data's feature space"
+    st.write("We also wanted to understand our data's feature space"
              " When you think of a data set, maybe you imagine stock prices, or the color of fruit, or even"
              " the number of rooms in a single family home. These data are what we would call the features of "
              " a data set. In brain data, the features are not well defined and are more abstract. They are the "
