@@ -29,10 +29,11 @@ if st.session_state.page_select == 'Brain Images':
             What is a Voxel? A voxel is a 3D pixel, like a cube! If you were to take a picture of your brain 
             in 3D space, each pixel of that image would represent a voxel. 
             \n
+            \n
             What is fMRI? Functional Magnetic Resonance Imaging. A tube like machine where a person lies flat and still while 
              the machine records brain voxel signals over a period of time - usually while that person is performing some
              sort of visual task on a computer screen inside the machine. 
-
+            \n
             \n
             The images on this page display BOLD (Blood oxygen level dependent) voxel signals in the brain. 
             Areas in yellow/red indicate areas of the brain where
@@ -131,13 +132,27 @@ if st.session_state.page_select == "Chart Metrics":
     st.title("Chart Metrics")
     st.sidebar.write("""
             ## Chart Metrics
-            The charts on this page are metrics from the SVM models on Adolescents (14 - 16 years old)
-             and Young Adults (25 - 27 years old). 
+            What is a Support Vector Machine? - It is a type of classifier used for non-linear, high dimensional data 
+             that tries to separate dissimilar data by defining decision boundaries, which is often created by a hyperplane. 
+             (Imagine taking a piece of paper and placing it between an apple and an orange - the paper - like the hyperplane
+               - splits the two dissimilar fruits). The classifier tries to maximize the minimal distance between dissimilar 
+               data points.
+               \n
+               \n  
+            What is a decision boundary? - A decision boundary is where the classifier defines whether a data point belongs
+            to one class or another. It is defined by vectors that sit 90 degrees from the decision plane. 
+            \n
+            \n
+            The charts on this page discuss decision function scores which represent the distance of important 
+            voxels to the classifier's decision boundary. We again compare scores between adolescents and young adults.
     """)
 
-
-    st.write ("Young Adult Whole Brain Mask Model Decision Scores")
-    st.write("(the images can be enhanced - click the double arrow at the top right corner of image")
+    st.write("(images can be enhanced - click the double arrow at the top right corner of image")
+    st.write ("Young Adult Whole Brain Mask Model Decision Scores"
+              "\n"
+              "\n"
+              "Run 2:"
+              "\n")
     st.image('/app/teambrainiac/source/streamlit/YA_wb_run2_dfunc_line.png',
              caption=None,
              width=None,
@@ -145,6 +160,9 @@ if st.session_state.page_select == "Chart Metrics":
              clamp=False,
              channels="RGB",
              output_format="auto")
+    st.write("Run 3: "
+             "\n"
+             "\n")
     st.image('/app/teambrainiac/source/streamlit/YA_wb_run3_dfunc_line.png',
              caption=None,
              width=None,
@@ -152,16 +170,21 @@ if st.session_state.page_select == "Chart Metrics":
              clamp=False,
              channels="RGB",
              output_format="auto")
-    st.write(" When we trained our young adult models on the support vector machine (SVM) the model output a "
-             "score for each time point (essentially a score for one full 3D brain image). That score represents a "
-             "distance of important voxels to the classifier's decision boundary. As in, how far away are we from "
-             "making a good prediction on where we need to be. "
+    st.write(" When we trained our young adult models on the support vector machine (SVM) the model output a  "
+             "score for each time point (essentially a score for one full 3D brain image). That score represents a  "
+             "distance between the important voxels to the classifier's decision boundary. As in, how far away "
+             " are we from making a good prediction? "
              ""
              "\n"
-             "You can see how in the Young adults, their decision scores follow the true labels of the data well. This"
-             "means that the classifier is able to predict the brain states in Young Adults.")
+             "You can see how the young adult decision scores follow the true labels of the data and do so better "
+             " than the adolescent model scores displayed below. This means that the classifier is able to predict t"
+             " he brain states in Young Adults.")
 
-    st.write("Adolescent Whole Brain Mask Model Decision Scores")
+    st.write("Adolescent Whole Brain Mask Model Decision Scores"
+             "\n"
+             "\n"
+             "Run 2:"
+             "\n")
     st.image('/app/teambrainiac/source/streamlit/Adolescent_wb_run2_dfunc_line.png',
              caption=None,
              width=None,
@@ -169,6 +192,9 @@ if st.session_state.page_select == "Chart Metrics":
              clamp=False,
              channels="RGB",
              output_format="auto")
+    st.write("Run 3: "
+             "\n"
+             "\n")
     st.image('/app/teambrainiac/source/streamlit/Adolescent_wb_run3_dfunc_line.png',
              caption=None,
              width=None,
@@ -176,10 +202,10 @@ if st.session_state.page_select == "Chart Metrics":
              clamp=False,
              channels="RGB",
              output_format="auto")
-    st.write("You can see how in the Adolescents, the decision scores from the classifier have a hard time "
-             "predicting the brain states in Run 2. But in Run 3, the decision scores appear to be following the curves"
-             "of the true labels better. This suggests that the adolescents are learning to regulate their brain "
-             "activity while in the scanner and that the classifier is learning to predict better as a result.")
+    st.write("You can see how the adolescent decision scores have a hard time following the true labels of the data"
+             " in Run 2. However, in Run 3, the decision scores appear to be following the curves of the true labels "
+             " better. This suggests that adolescents are learning to regulate their brain activity from one run to "
+             " the next while in the scanner, and that the classifier is learning to predict better as a result.")
 
 
 
@@ -191,22 +217,26 @@ if st.session_state.page_select == 'Exploration':
     st.sidebar.write("""
             ## Exploration 
             """)
-    display = ('Young Adult Detrended Unnormalized Data',
+    display = ('Adolescent Detrended Z-score normalization',
                'Adolescent Detrended Percent Signal Change',
-               'Adolescent Detrended Z-score normalization',
+               'Young Adult Detrended Unnormalized Data',
                )
 
     value = 0
     options = list(range(len(display)))
-    st.write("We took a dive into plotting voxel distributions of our brain data to see"
-             "how we could reduce variance - or noise - in our data. We learned that fMRI data, like other"
-             "time series data can drift. So, a techinque called 'Detrending' has to be applied to"
-             "the series of brain images. We also found that by subtracting our data from the mean over time points"
-             "helped to reduce the noise in our data the most.")
+    st.write("We took a dive into plotting voxel distributions of our brain data to see "
+             " how we could reduce variance - or noise - in our data. We learned that fMRI data, like other"
+             " time series data can drift. So, a techinque called 'Detrending' has to be applied to"
+             " the series of brain images. We also found that by subtracting our data from the mean over time points"
+             " helped to reduce the noise in our data the most."
+             "\n"
+             "\n")
+    st.write("The below voxel distribution animations represent the time series of four separate series (or runs) "
+             "of brain scans on a single subject")
     def get_html(value):
         # print(value)
         if value == 0:
-            HtmlFile = open("/app/teambrainiac/source/streamlit/YA_dtrnd_Unorm_mvid.html", 'r',
+            HtmlFile = open("/app/teambrainiac/source/streamlit/ADdtrnd_ZSCORE_normvid.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
@@ -220,7 +250,7 @@ if st.session_state.page_select == 'Exploration':
             components.html(source_code, height=600)
 
         if value == 2:
-            HtmlFile = open("/app/teambrainiac/source/streamlit/ADdtrnd_ZSCORE_normvid.html", 'r',
+            HtmlFile = open("/app/teambrainiac/source/streamlit/YA_dtrnd_Unorm_mvid.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
@@ -228,8 +258,32 @@ if st.session_state.page_select == 'Exploration':
 
 
 
-    value = st.selectbox("Choose the type of brain activations to view:", options, format_func=lambda x: display[x])
+    value = st.selectbox("Choose the type of voxel normalization to view:", options, format_func=lambda x: display[x])
     get_html(value)
+
+    st.write("\n"
+             "\n"
+             "\n"
+             "We also wanted to understand our data's feature space"
+             " When you think of a data set, maybe you imagine stock prices, or the color of fruit, or even"
+             " the number of rooms in a single family home. These data are what we would call the features of "
+             " a data set. In brain data, the features are not well defined and are more abstract. They are the "
+             " voxel intensities. "
+             "\n"
+             "\n"
+             "Below we have plotted the voxel signals of whole brain data over the course of time."
+             " In this data set, we have approximately 84 time points along the x-axis and "
+             "  3D brain data (represented in 2D) along the y - axis. Each time point is plotting "
+             " approximately 238,000 voxel values for a single person. They look like straight lines, which is "
+             " a strange concept when you think about human brains!"
+             "\n")
+    st.image("/app/teambrainiac/source/streamlit/feature_space.png",
+             caption="Young Adult Model Scores",
+             width=None,
+             use_column_width=None,
+             clamp=False,
+             channels="RGB",
+             output_format="auto")
 
 
 if st.session_state.page_select == 'Tables':
