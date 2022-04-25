@@ -26,11 +26,11 @@ if st.session_state.page_select == 'Brain Images':
     st.title("Brain States")
     st.sidebar.write("""
             ## Brain Images
-            - What is a Voxel? A voxel is a 3D pixel, like a cube! If you were to take a picture of your brain 
+             - What is a Voxel? A voxel is a 3D pixel, like a cube! If you were to take a picture of your brain 
             in 3D space, each pixel of that image would represent a voxel. 
             \n
             \n
-            - What is fMRI? Functional Magnetic Resonance Imaging. A tube like machine where a person lies flat and still while 
+             - What is fMRI? Functional Magnetic Resonance Imaging. A tube like machine where a person lies flat and still while 
              the machine records brain voxel signals over a period of time - usually while that person is performing some
              sort of visual task on a computer screen inside the machine. 
             \n
@@ -132,11 +132,11 @@ if st.session_state.page_select == "Chart Metrics":
     st.title("Chart Metrics")
     st.sidebar.write("""
             ## Chart Metrics
-             - What is a Support Vector Machine? - It is a type of classifier used for non-linear, high dimensional data 
+              - What is a Support Vector Machine? - It is a type of classifier used for non-linear, high dimensional data 
              that tries to separate dissimilar data by defining decision boundaries, which is often created by a hyperplane. 
-             (Imagine taking a piece of paper and placing it between an apple and an orange - the paper - like the hyperplane
-               splits the two dissimilar fruits). The classifier tries to maximize the minimal distance between dissimilar 
-               data points.
+             (Imagine taking a piece of paper and placing it between an apple and an orange - the paper - like the 
+              hyperplane splits the two dissimilar fruits). The classifier tries to maximize the minimal distance 
+              between dissimilar data points.
                \n
                \n  
             - What is a decision boundary? - A decision boundary is where the classifier defines whether a data point belongs
