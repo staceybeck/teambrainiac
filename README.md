@@ -45,13 +45,13 @@ We also have a landing page with interactive brain maps, charts and descriptions
     |    |    └──                                    <- Contains landing_page.py app
     |    |__single_subject/
     |    |__  |__ SingleSubjectSVM_Norm_CV.ipynb          <- Contains modules to test normalization strategies (no normalization, percent signal change,z
-    |    |    |                                              normalization) and to run a cv search on best strategy once chosen.
+    |    |    |                                              normalization) and to run a cv search on best strategy once chosen. Will also run visualizations if don't want to store.
     |    |__  |__ BuildSingleSubjectSVM_Models.ipynb      <- Contains modules to run single subject SVM model. Output can be used inline or saved for
     |    |    |                                              future use.
-    |    |    |                            
+    |    |__  |__SingleSubjSVM_Analysis.ipynb               <-Contains modules to load and run Single Subject Models that have been stored locally.                           
     |    |__  |__ DataExplorationNotebook_SingleSubjectSVM.ipynb  <- Contains modules to explore normalization strategies we employed and to look at cross
-    |    |    |                                                      validation results. 
-    |    |__  |__ VisualizationPlayground.ipynb           
+    |    |    |                                                      validation results. This module loads data stored locally.
+    |    |__  |__DataExplorationofSingleSubject_SVM.ipynp <-Contains modules to explore normalization and cross validations while also running visualizations
     |    |__  |__ single_subject.py                       <- Contains functions to access data, mask data, normalize data, run single subject model. The
     |    |    |                                              model will run on more than one turn for training, if desired. At this point testing is done
     |    |    |                                              on single  runs only. This also contains functions for getting predictions to be stored for       |    |    |                                              later use, accuracy scores for data exploration.
