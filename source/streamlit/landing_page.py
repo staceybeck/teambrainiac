@@ -8,10 +8,7 @@
 
 import streamlit as st
 import streamlit.components.v1 as components
-#from access_data import *
-#import plotly.graph_objects as go
-#import pandas as pd
-#import numpy as np
+
 
 
 
@@ -30,13 +27,19 @@ if st.session_state.page_select == 'Brain Images':
     st.title("Brain States")
     st.sidebar.write("""
             ## Brain Images
-            These images display the BOLD (Blood oxygen level dependent) voxel signal in the brain
-            thresholded at a specific value. Areas in white/yellow indicate areas of the brain where
-            blood volume is increased and where increases in oxygen exchange occur. This indicates that this part 
-            of the brain is active when the image in the MR machine is captured. Areas in the brain that are blue are
-            when the blood volume and oxygen exchange decrease, indicating that these areas of the brain as becoming
-            less active.
-                
+            What is a Voxel? A voxel is a 3D pixel, like a cube! If you were to take a picture of your brain 
+            in 3D space, each pixel of that image would represent a voxel. 
+            \n
+            What is fMRI? Functional Magnetic Resonance Imaging. A tube like machine where a person lies flat and still while 
+             the machine records brain voxel signals over a period of time - usually while that person is performing some
+             sort of visual task on a computer screen inside the machine. 
+
+            \n
+            The images on this page display BOLD (Blood oxygen level dependent) voxel signals in the brain. 
+            Areas in yellow/red indicate areas of the brain where
+            blood volume is increased and where increases in oxygen exchange occur. Meaning, the brain is active! 
+             The blue areas in the brain mean that the blood volume and oxygen exchange decrease, indicating these areas
+             are less active.
             """)
     display = ('Young Adult and Adolescent Whole Brain',
                'Young Adult and Adolescent Medial Prefrontal Cortex',
@@ -60,16 +63,16 @@ if st.session_state.page_select == 'Brain Images':
             print(source_code)
             components.html(source_code, height=250)
 
-            st.write("This is an interactive brain map. We trained a Support Vector Machine on Young Adult Brains (aged 19 - 21) "
-                     "and Adolescent Brains (aged 16 - 19) to predict states of up-regulation and down-regulation - meaning "
+            st.write("This is an interactive brain map. We trained a Support Vector Machine on Young Adult Brains (aged 25 - 27) "
+                     "and Adolescent Brains (aged 14 - 16) to predict states of up-regulation and down-regulation - meaning "
                      "an uptake in blood-oxygen volume or decrease in volume during an impulse-task. Areas that are yellow/red"
                      " are active brain areas during this task and areas that are dark-blue/light-blue are areas where blood and "
                      "oxygen levels are decreasing."
                      "\n"
                      "In our research, we have found that the Young Adult models predicted better than the Adolescent models, "
-                     "which is evident in the two visuals. You can see clear and distinct areas of increased voxel significance "
-                     "in the Young Adult model output with dark red and blue shades compared to the Adolescent model output, where "
-                     "the significant signals are scattered and are light blue and yellow. ")
+                     "which is evident in the two visuals. You can see clear and distinct voxel clusters in the output from the "
+                     " Young Adult model (dark red and blue shades) compared to the Adolescent model output where "
+                     "voxel intensities are scattered and dampened (light blue and yellow).")
 
         if value == 1:
 
@@ -89,13 +92,14 @@ if st.session_state.page_select == 'Brain Images':
 
 
             st.write("These are interactive brain maps showing the Medial Prefrontal Cortex (mPFC) - an area of the brain researchers "
-                     "know to be involved in the impulse-reward system. Each interactive visual is set to the same cut coordinates. We removed"
+                     "believe to be involved in the impulse-reward system. Each interactive visual is set to the same cut coordinates. We removed"
                      " the grid cross since these areas of the brain are small to visualize. "
                      "\n"
                      "In our Young Adult model, we can see there are large areas of the mPFC that are down-regulating, "
-                     "meaning an decrease in activation during the impulse-reward task that the subjects are performing while "
-                     " in the MR machine. "
-                     "In the Adolescent model, we are seeing more yellow, which implies increased up-regulation in this region.")
+                     "meaning a decrease in activation during the impulse-reward task that the subjects are performing while "
+                     " in the magnetic resonance (MR) machine. "
+                     "In the Adolescent model, we see more yellow intensities, which imply increased voxel activity (up-regulation) "
+                     " in this region.")
 
         if value == 2:
             st.write("Signals thresholded at 95%")
@@ -113,13 +117,12 @@ if st.session_state.page_select == 'Brain Images':
             components.html(source_code, height=250)
             st.write(
                 "These are interactive brain maps showing the Nucleus Accumbens (NAcc)- an area of the brain researchers "
-                "know to be involved in the impulse-reward system. Each interactive visual is set to the same cut coordinates. We removed"
+                "know to be involved in the impulse-reward system and brain disorders. Each interactive visual is set to the same cut coordinates. We removed"
                      " the grid cross since these areas of the brain are small to visualize."
                 ""
                 "\n"
-                " In our Young Adult model, we can see there are large areas of red voxels in the NAcc, which imply these "
-                " subjects are up-regulating; an increase in activation during the impulse-reward task that the subjects "
-                " are performing in while in the MR machine."
+                " In our Young Adult model, we can see there are large clusters of red voxels in the NAcc, which imply these "
+                " subjects are increasing activation during the impulse-reward task that they are performing in while in the MR machine."
                 )
 
     value = st.selectbox("Interactive Brain Visualization. Choose the type of brain activation to view and use your cursor to move the grid cross:", options, format_func=lambda x: display[x])
@@ -129,19 +132,54 @@ if st.session_state.page_select == "Chart Metrics":
     st.title("Chart Metrics")
     st.sidebar.write("""
             ## Chart Metrics
-            The charts on this page are metrics captured when running our models on single subjects or when grouping subjects
-            by age. Adolescents range from 14 - 16 years old and Young Adults range from 25 - 27 years old. 
+            The charts on this page are metrics from the SVM models on Adolescents (14 - 16 years old)
+             and Young Adults (25 - 27 years old). 
     """)
 
 
     st.write ("Young Adult Whole Brain Mask Model Decision Scores")
-    st.image('/app/teambrainiac/source/streamlit/YA_detrend_mask_dfunpred_1.png',
+    st.image('/app/teambrainiac/source/streamlit/YA_wb_run2_dfunc_line.png',
              caption=None,
              width=None,
              use_column_width=None,
              clamp=False,
              channels="RGB",
              output_format="auto")
+    st.image('/app/teambrainiac/source/streamlit/YA_wb_run3_dfunc_line.png',
+             caption=None,
+             width=None,
+             use_column_width=None,
+             clamp=False,
+             channels="RGB",
+             output_format="auto")
+    st.write(" When we trained our young adult models on the support vector machine (SVM) the model output a "
+             "score for each time point (essentially a score for one full 3D brain image). That score represents a "
+             "distance of important voxels to the classifier's decision boundary. As in, how far away are we from "
+             "making a good prediction on where we need to be. "
+             ""
+             "\n"
+             "You can see how in the Young adults, their decision scores follow the true labels of the data well. This"
+             "means that the classifier is able to predict the brain states in Young Adults.")
+
+    st.write("Adolescent Whole Brain Mask Model Decision Scores")
+    st.image('/app/teambrainiac/source/streamlit/AD_wb_run2_dfunc_line.png',
+             caption=None,
+             width=None,
+             use_column_width=None,
+             clamp=False,
+             channels="RGB",
+             output_format="auto")
+    st.image('/app/teambrainiac/source/streamlit/AD_wb_run3_dfunc_line.png',
+             caption=None,
+             width=None,
+             use_column_width=None,
+             clamp=False,
+             channels="RGB",
+             output_format="auto")
+    st.write("You can see how in the Adolescents, the decision scores from the classifier have a hard time "
+             "predicting the brain states in Run 2. But in Run 3, the decision scores appear to be following the curves"
+             "of the true labels better. This suggests that the adolescents are learning to regulate their brain "
+             "activity while in the scanner and that the classifier is learning to predict better as a result.")
 
 
 if st.session_state.page_select == 'Exploration':
