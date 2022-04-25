@@ -94,9 +94,8 @@ if st.session_state.page_select == 'Brain Images':
                 "the brain are small to visualize. "
                 "\n"
                 "The young adult model shows more intense blue voxel clusters where the adolescent model is showing yellow "
-                "and red clusters in the mPFC. This means that young adults are able to inhibit the mPFC during the impulse-reward task, "
-                " which is what we should expect. Adolescents seem to be activating the mPFC, which is saying they have less "
-                "control over their ability to control impulses.")
+                "clusters in the mPFC. This is saying that young adults may be able to decrease voxel activity in the mPFC "
+                "during the impulse-reward task better than adolescents.")
             HtmlFile = open("/app/teambrainiac/source/streamlit/YA_detrend_mPFC_nocross.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
