@@ -135,11 +135,11 @@ Other notebooks in this directory used as a part of these analyses include norma
 ### Deep Learning Notebook
 The deep-learning approach to group level analysis is an attempt to see if we can provide better predictions to brain-states than Support Vector Machines. The preprocessing, model building and training, and visualizations can be found in the DL folder in source. It is split into three main notebooks. PreprocessToAws.ipynb outlines the preprocessing, data normalization, and formatting for the Pytorch dataloader. Group3DCNN.ipynb creates the model and has scripts for training, validation, and testing. VisualizationCreation.ipynb is in the metrics folder and uses metrics returned by the model and creates meaningful insights from the neural network. All .py files contain helper functions for these three notebooks, and the metrics folder contains some csv metric files, a few trained CNN models, and visualizations.
 
-[Preprocessing Notebook](souce/DL/PreprocessToAws.ipynb)
+[Preprocessing Notebook](source/DL/PreprocessToAws.ipynb)
 
-[Modeling Notebook](souce/DL/Group3DCNN.ipynb)
+[Modeling Notebook](source/DL/Group3DCNN.ipynb)
 
-[Run the Visualizations Here](souce/DL/metrics/VisualizationCreation.ipynb)
+[Run the Visualizations Here](source/DL/metrics/VisualizationCreation.ipynb)
 
 ### Information only
 All pre-processing of the data was done outside of the repository. The following software packages were used for pre-processing: MATLAB, SPM (Statistical Parametric Modulation). Automated Anatomical Labeling (AAL) (or Anatomical Automatic Labeling) is a software package that captures the digital atlas of the brain. The following steps were used to create the pre-processed .mat files. Preprocessing included using pre-created preprocessing pipelines Mary Soules had built in SPM for fMRI research. Preprocessing steps included: slicetiming correction, realignment of scans, structural images coregistered to functional images, warping of high-resolution structural image to common MNI space using MNI152 image, warping functional images to common MNI space. All quality control of images used in analysis were performed prior to uploading to AWS. Quality control measures included checking coregistered structural images and functional images to make sure they were in the same space, checking warped structural images and warped functional images against the MNI template supplied to make sure all images were in the correct space, checked motion by running a script that looks at amount of motion in all runs and threw out individuals that exceeded our threshold for motion. Once the final dataset was processed, a MATLAB function was used to flatten the 4-D images to a 2-D matrix for each run and saved these data in a .mat file that could be read from python.
