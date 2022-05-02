@@ -114,8 +114,7 @@ We also have a landing page with interactive brain maps, charts and descriptions
         
         streamlit run landing_page.py
         
-#### To view the app in browser:
-        https://share.streamlit.io/yecatstevir/teambrainiac/main/source/streamlit/landing_page.py
+#### [Click here to view our app in your browser](https://share.streamlit.io/yecatstevir/teambrainiac/main/source/streamlit/landing_page.py)
         
 
 ### Single Subject
@@ -133,7 +132,7 @@ The group analysis approach aims to explore differences within groups and betwee
 Other notebooks in this directory used as a part of these analyses include normalization exploration, cross-validation, metrics analysis, and statistical analyses of beta maps as well as decision function scores. Each notebook defines the variables of interest to run (such as group type, mask type, runs to train and test, normalization to apply) and uses function calls to various modules stored in this directory for a more clean presentation. 
 
 
-### Deep Learning
+### [Deep Learning Notebook](souce/DL/Group3DCNN)
 The deep-learning approach to group level analysis is an attempt to see if we can provide better predictions to brain-states than Support Vector Machines. The preprocessing, model building and training, and visualizations can be found in the DL folder in source. It is split into three main notebooks. PreprocessToAws.ipynb outlines the preprocessing, data normalization, and formatting for the Pytorch dataloader. Group3DCNN.ipynb creates the model and has scripts for training, validation, and testing. VisualizationCreation.ipynb is in the metrics folder and uses metrics returned by the model and creates meaningful insights from the neural network. All .py files contain helper functions for these three notebooks, and the metrics folder contains some csv metric files, a few trained CNN models, and visualizations.
 
 ### Information only
