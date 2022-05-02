@@ -136,7 +136,9 @@ Other notebooks in this directory used as a part of these analyses include norma
 The deep-learning approach to group level analysis is an attempt to see if we can provide better predictions to brain-states than Support Vector Machines. The preprocessing, model building and training, and visualizations can be found in the DL folder in source. It is split into three main notebooks. PreprocessToAws.ipynb outlines the preprocessing, data normalization, and formatting for the Pytorch dataloader. Group3DCNN.ipynb creates the model and has scripts for training, validation, and testing. VisualizationCreation.ipynb is in the metrics folder and uses metrics returned by the model and creates meaningful insights from the neural network. All .py files contain helper functions for these three notebooks, and the metrics folder contains some csv metric files, a few trained CNN models, and visualizations.
 
 [Preprocessing Notebook](souce/DL/PreprocessToAws.ipynb)
+
 [Modeling Notebook](souce/DL/Group3DCNN.ipynb)
+
 [Run the Visualizations Here](souce/DL/metrics/VisualizationCreation.ipynb)
 
 ### Information only
