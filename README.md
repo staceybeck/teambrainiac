@@ -4,13 +4,13 @@
 
 **Authors:**
 
-- **Stacey Beck**: starbeck@umich.edu
-- **Benjamin Merrill**: benme@umich.edu
-- **Mary Soules**: mfield@umich.edu
+[**Stacey Beck**](starbeck@umich.edu)
+[**Benjamin Merrill**](benme@umich.edu)
+[**Mary Soules**](mfield@umich.edu)
 
 For details on our approaches and findings, check out our report: [Report](https://github.com/yecatstevir/teambrainiac/blob/main/Capstone_Final_Report.pdf)
 
-We also have a landing page with interactive brain maps, charts and descriptions of what we looked at in this study: [Landing Page](https://share.streamlit.io/yecatstevir/teambrainiac/main/source/streamlit/landing_page.py)
+Check out our interactive brain maps, graphs and descriptions of what we looked at in this study: [Landing Page](https://share.streamlit.io/yecatstevir/teambrainiac/main/source/streamlit/landing_page.py)
 
 
 This README contains the following sections:
@@ -21,7 +21,7 @@ This README contains the following sections:
     - [Streamlit set-up](https://github.com/yecatstevir/teambrainiac#for-streamlit-app)
 -   [Single Subject](https://github.com/yecatstevir/teambrainiac#single-subject)
 -   [Adolescent and Young Adult](https://github.com/yecatstevir/teambrainiac#adolescent-and-young-adult)
--   [Deep Learning Notebook](https://github.com/yecatstevir/teambrainiac#deep-learning)
+-   [Deep Learning Notebook](https://github.com/yecatstevir/teambrainiac#deep-learning-notebook)
   
 
 ## Project Description
