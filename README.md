@@ -4,9 +4,11 @@
 
 **Authors:**
 
-[**Stacey Beck**](starbeck@umich.edu)
-[**Benjamin Merrill**](benme@umich.edu)
-[**Mary Soules**](mfield@umich.edu)
+[**Stacey Beck**](mailto:starbeck@umich.edu)
+
+[**Benjamin Merrill**](mailto:benme@umich.edu)
+
+[**Mary Soules**](mailto:mfield@umich.edu)
 
 For details on our approaches and findings, check out our report: [Report](https://github.com/yecatstevir/teambrainiac/blob/main/Capstone_Final_Report.pdf)
 
