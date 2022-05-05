@@ -117,7 +117,10 @@ We have three approaches to looking at the fMRI data captured through this study
         streamlit run landing_page.py
         
 #### [Click here to view our app in your browser](https://share.streamlit.io/yecatstevir/teambrainiac/main/source/streamlit/landing_page.py)
-        
+
+### Preprocessing Pipeline
+
+<img src="https://github.com/yecatstevir/teambrainiac/blob/main/source/streamlit/preprocessing_pipeline.PNG" alt="Preprocessing Pipeline" title="Preprocessing Pipeline">
 
 ### Single Subject
 The single subject analysis approach aims to explore whether SVM can be used to train individual models to predict brain states in regulating reward circuity in the brain. This approach can be used to explore whether there are differences between individuals that alter how well the model can predict and two whether or not other areas of the brain beyond the nucleus accumbens are involved in how well a person is able to up or down regulate their reward system. The nucleus accumbens is thought to be a key driver for reward regulation, but individuals could have unique regions that help them regulate their reward state. Below is the notebook to run the single subject model. It has the ability to access the data in cloud, process the data (masking, filtering by label, train on the whole brain, the 4 submasks, and the 4 regions of interest, save the data and metrics locally and visualize the brain mask, run roc curves, confusion matrix, and decision scores.
