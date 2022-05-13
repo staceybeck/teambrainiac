@@ -94,7 +94,29 @@ We have three approaches to looking at the fMRI data captured through this study
 
 - requires path_config.py to access data from cloud storage
 - store path_config.py in the directory from which you are running the notebooks and scripts
+- It is recommended to run everything through the Notebooks using Google Colab Pro + to access the 51 GB of 
+RAM to run the models successfully. If working locally, you can connect to docker through your IDE. Steps outlined below.
 
+## Connect to Docker
+If you want to run everything through the IDE, you will need up to 51 GB of RAM and to connect to a Docker container: 
+
+First, clone repository
+
+    git clone https://github.com/yecatstevir/teambrainiac.git
+    
+build container
+       
+    docker build -t test_container .
+    
+run
+
+    docker run -p 80:80 -v ~/./teambrainiac:/source test_container
+
+Install packages locally
+
+run:
+       
+    pip install boto3 nibabel nilearn 
 
 ### For Streamlit app
     Streamlit's prerequisites:
