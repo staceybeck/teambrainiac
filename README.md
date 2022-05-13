@@ -19,7 +19,7 @@ This README contains the following sections:
 -   [Project Description](https://github.com/yecatstevir/teambrainiac#project-description)
 -	[Repository Organization](https://github.com/yecatstevir/teambrainiac#repository-organization)
 -	[Environment Requirements](https://github.com/yecatstevir/teambrainiac#environment-requirements)
-    - [Connect to Docker](https://github.com/yecatstevir/teambrainiac#connect-to-dockerfile)
+    - [Connect to Docker](https://github.com/yecatstevir/teambrainiac#connect-to-docker)
     - [Streamlit set-up](https://github.com/yecatstevir/teambrainiac#for-streamlit-app)
 -   [Single Subject](https://github.com/yecatstevir/teambrainiac#single-subject)
 -   [Adolescent and Young Adult](https://github.com/yecatstevir/teambrainiac#adolescent-and-young-adult)
