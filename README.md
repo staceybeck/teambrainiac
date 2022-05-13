@@ -58,7 +58,7 @@ We have three approaches to looking at the fMRI data captured through this study
     |    |__  |__DataExplorationofSingleSubject_SVM.ipynp <-Contains modules to explore normalization and cross validations while also running visualizations
     |    |__  |__ single_subject.py                       <- Contains functions to access data, mask data, normalize data, run single subject model. The
     |    |    |                                              model will run on more than one turn for training, if desired. At this point testing is done
-    |    |    |                                              on single  runs only. This also contains functions for getting predictions to be stored for       |    |    |                                              later use, accuracy scores for data exploration.
+    |    |    |                                              on single  runs only. This also contains functions for getting predictions to be stored for later use, accuracy scores for data exploration.
     |    |    |                                          
     |    |    |                                          
     |    |__  |__brain_viz_single_subj.py                <- Contains functions to create bmaps for brain visualizations, functions for brain images,
