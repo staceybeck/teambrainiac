@@ -14,7 +14,7 @@ For details on our approaches and findings, check out our report: [Report](https
 
 Check out our interactive brain maps, graphs and descriptions of what we looked at in this study: [Landing Page](https://share.streamlit.io/yecatstevir/teambrainiac/main/source/streamlit/landing_page.py)
 
-<img src="https://github.com/yecatstevir/teambrainiac/blob/main/source/streamlit/landing_page.PNG" alt="Landing Page" title="Landing Page">
+<img src="[https://github.com/yecatstevir/teambrainiac/blob/main/source/streamlit/landing_page.PNG](https://github.com/yecatstevir/teambrainiac/blob/main/source/streamlit/landing_page.png)" alt="Landing Page" title="Landing Page">
 
 
 This README contains the following sections:
