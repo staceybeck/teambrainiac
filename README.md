@@ -12,6 +12,9 @@
 
 For details on our approaches and findings, check out our report: [Report](https://github.com/yecatstevir/teambrainiac/blob/main/Capstone_Final_Report.pdf)
 
+Here is a link to a presentation summary of our findings: [Presentation]
+(https://docs.google.com/presentation/d/1rgV0FIzK1ZAWEi6xt35em-JNRcYkSIC4ncL3lQRaBHY/edit?usp=sharing)
+
 ## Interactive App
 ![landing page app](https://github.com/yecatstevir/teambrainiac/blob/main/source/streamlit/landing_page.png?raw=True) 
 
