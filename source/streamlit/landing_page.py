@@ -67,7 +67,7 @@ if st.session_state.page_select == 'Brain Images':
                 " You can see clear and distinct voxel clusters in the output from the "
                 " young adult model (dark red and blue shades) compared to the adolescent model output where "
                 "voxel intensities are scattered and dampened (light blue and yellow).")
-            HtmlFile = open("/app/teambrainiac/source/streamlit/YA_detrend_mask_1.html", 'r', encoding='utf-8')
+            HtmlFile = open("YA_detrend_mask_1.html", 'r', encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
             components.html(
@@ -75,7 +75,7 @@ if st.session_state.page_select == 'Brain Images':
                 height=250
             )
 
-            HtmlFile = open("/app/teambrainiac/source/streamlit/AD_detrend_mask_1.html", 'r', encoding='utf-8')
+            HtmlFile = open("AD_detrend_mask_1.html", 'r', encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
             components.html(
@@ -96,7 +96,7 @@ if st.session_state.page_select == 'Brain Images':
                 "The young adult model shows more intense blue voxel clusters where the adolescent model is showing yellow "
                 "clusters in the mPFC. This is saying that young adults may be able to decrease voxel activity in the mPFC "
                 "during the impulse-reward task better than adolescents.")
-            HtmlFile = open("/app/teambrainiac/source/streamlit/YA_detrend_mPFC_nocross.html", 'r',
+            HtmlFile = open("YA_detrend_mPFC_nocross.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
@@ -105,7 +105,7 @@ if st.session_state.page_select == 'Brain Images':
                 height=250
             )
 
-            HtmlFile = open("/app/teambrainiac/source/streamlit/AD_detrend_mPFC_nocross.html", 'r',
+            HtmlFile = open("AD_detrend_mPFC_nocross.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
@@ -130,7 +130,7 @@ if st.session_state.page_select == 'Brain Images':
                 " task inside the scanner. "
             )
 
-            HtmlFile = open("/app/teambrainiac/source/streamlit/YA_detrend_nacc_aal_nocross.html", 'r',
+            HtmlFile = open("YA_detrend_nacc_aal_nocross.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
@@ -139,7 +139,7 @@ if st.session_state.page_select == 'Brain Images':
                 height=250
             )
 
-            HtmlFile = open("/app/teambrainiac/source/streamlit/AD_detrend_nacc_aal_nocross.html", 'r',
+            HtmlFile = open("AD_detrend_nacc_aal_nocross.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
@@ -190,7 +190,7 @@ if st.session_state.page_select == "Chart Metrics":
               "\n"
               "Run 2:"
               "\n")
-    st.image('/app/teambrainiac/source/streamlit/YA_wb_run2_dfunc_line.png',
+    st.image('YA_wb_run2_dfunc_line.png',
              caption=None,
              width=None,
              use_column_width=None,
@@ -200,7 +200,7 @@ if st.session_state.page_select == "Chart Metrics":
     st.write("Run 3: "
              "\n"
              "\n")
-    st.image('/app/teambrainiac/source/streamlit/YA_wb_run3_dfunc_line.png',
+    st.image('YA_wb_run3_dfunc_line.png',
              caption=None,
              width=None,
              use_column_width=None,
@@ -218,7 +218,7 @@ if st.session_state.page_select == "Chart Metrics":
              "\n"
              "Run 2:"
              "\n")
-    st.image('/app/teambrainiac/source/streamlit/Adolescent_wb_run2_dfunc_line.png',
+    st.image('Adolescent_wb_run2_dfunc_line.png',
              caption=None,
              width=None,
              use_column_width=None,
@@ -228,7 +228,7 @@ if st.session_state.page_select == "Chart Metrics":
     st.write("Run 3: "
              "\n"
              "\n")
-    st.image('/app/teambrainiac/source/streamlit/Adolescent_wb_run3_dfunc_line.png',
+    st.image('Adolescent_wb_run3_dfunc_line.png',
              caption=None,
              width=None,
              use_column_width=None,
@@ -278,21 +278,21 @@ if st.session_state.page_select == 'Exploration':
     def get_html(value):
         # print(value)
         if value == 0:
-            HtmlFile = open("/app/teambrainiac/source/streamlit/ADdtrnd_ZSCORE_normvid.html", 'r',
+            HtmlFile = open("ADdtrnd_ZSCORE_normvid.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
             components.html(source_code, height=400)
 
         if value == 1:
-            HtmlFile = open("/app/teambrainiac/source/streamlit/ADdtrndpscnormvid.html", 'r',
+            HtmlFile = open("ADdtrndpscnormvid.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
             components.html(source_code, height=400)
 
         if value == 2:
-            HtmlFile = open("/app/teambrainiac/source/streamlit/YA_dtrnd_Unorm_mvid.html", 'r',
+            HtmlFile = open("YA_dtrnd_Unorm_mvid.html", 'r',
                             encoding='utf-8')
             source_code = HtmlFile.read()
             print(source_code)
@@ -316,7 +316,7 @@ if st.session_state.page_select == 'Exploration':
              " approximately 238,000 voxel values for a single person. They look like straight lines, which is "
              " a strange concept when you think about human brains!"
              "\n")
-    st.image("/app/teambrainiac/source/streamlit/feature_space.png",
+    st.image("feature_space.png",
              width=None,
              use_column_width=None,
              clamp=False,
@@ -333,7 +333,7 @@ if st.session_state.page_select == 'Tables':
             The tables on this page provide use with useful information about our decision choices for further
             pre-processing of our data. 
             """)
-    st.image("/app/teambrainiac/source/streamlit/newplot.png",
+    st.image("newplot.png",
              width=None,
              use_column_width=None,
              clamp=False,
