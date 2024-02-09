@@ -323,7 +323,7 @@ if st.session_state.page_select == 'Exploration':
              channels="RGB",
              output_format="auto")
 
-gitlink = '[Project on GitHub](https://github.com/yecatstevir/teambrainiac)'
+gitlink = '[Project on GitHub](https://github.com/staceybeck/teambrainiac)'
 st.sidebar.markdown(gitlink, unsafe_allow_html=True)
 
 if st.session_state.page_select == 'Tables':
